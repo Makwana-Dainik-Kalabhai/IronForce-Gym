@@ -2,6 +2,7 @@
     img {
         mix-blend-mode: multiply !important;
     }
+
     .btn-group {
         width: 100% !important;
         height: 100% !important;
@@ -50,6 +51,7 @@
 </style>
 
 <div class="sidebar" data-color="white" data-active-color="danger">
+    <i class="fa-solid fa-arrow-left"></i>
     <div class="logo">
         <a class="simple-text logo-mini">
             <div class="logo-image-big">
@@ -63,96 +65,47 @@
     <div class="sidebar-wrapper">
         <ul class="nav">
             <li>
-                <a href="<?php echo HTTP_PATH."/admin_panel/index.php"; ?>">
-                    <i class="fa-solid fa-user"></i>
-                    <p>Members</p>
+                <a href="<?php echo HTTP_PATH . "/admin_panel/index.php"; ?>">
+                    <i class="fa-solid fa-user text-danger"></i>
+                    <h5 class="text-danger">Members</h5>
                 </a>
             </li>
             <li>
-                <a href="<?php echo HTTP_PATH."/admin_panel/trainer/trainer.php"; ?>">
-                    <i class="fa-solid fa-user"></i>
-                    <p>Trainers</p>
+                <a href="<?php echo HTTP_PATH . "/admin_panel/trainer/trainer.php"; ?>">
+                    <i class="fa-solid fa-user text-danger"></i>
+                    <h5 class="text-danger">Trainers</h5>
                 </a>
             </li>
             <li>
-                <a href="<?php echo HTTP_PATH."/admin_panel/membership/membership.php"; ?>">
-                <i class="fa-solid fa-id-card"></i>
-                    <p>Memberships</p>
+                <a href="<?php echo HTTP_PATH . "/admin_panel/membership/membership.php"; ?>">
+                    <i class="fa-solid fa-id-card text-danger"></i>
+                    <h5 class="text-danger">Memberships</h5>
                 </a>
             </li>
             <li>
-                <a href="<?php echo HTTP_PATH."/admin_panel/services/service.php"; ?>">
-                <i class="fa-solid fa-robot"></i>
-                    <p>Services</p>
+                <a href="<?php echo HTTP_PATH . "/admin_panel/services/service.php"; ?>">
+                    <i class="fa-solid fa-robot text-danger"></i>
+                    <h5 class="text-danger">Services</h5>
                 </a>
             </li>
             <li>
-                <a href="<?php echo HTTP_PATH."/admin_panel/feedback/feedback.php"; ?>">
-                <i class="fa-solid fa-face-smile"></i>
-                    <p>Reviews</p>
-                </a>
-            </li>
-<!--             
-            <div class="btn-group">
-                <button class="btn text-danger dropdown-toggle border-bottom" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-shopping-bag text-danger"></i>
-                    Orders <?php echo ($total > 0) ? "<span>$total</span>" : ""; ?>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                        <a href="http://localhost/php/medicine_website/admin_panel/orders/processing.php" class="dropdown-item" type="button">
-                            Processing Orders
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://localhost/php/medicine_website/admin_panel/orders/shipped.php" class="dropdown-item" type="button">
-                            Shipped Orders
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://localhost/php/medicine_website/admin_panel/orders/cancelled.php" class="dropdown-item" type="button">
-                            Cancelled Orders
-                        </a>
-                    </li>
-                </ul>
-            </div> -->
-
-            <div class="btn-group">
-                <button class="btn text-danger dropdown-toggle border-bottom" data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="<?php echo HTTP_PATH . "/admin_panel/products/products.php"; ?>" class="text-danger">
                     <i class="fa-solid fa-list text-danger"></i>
-                    Products
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                        <a href="http://localhost/php/medicine_website/admin_panel/products/medicine_list.php" class="dropdown-item" type="button">
-                            <i class="fa-solid fa-tablets"></i> Medicines
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://localhost/php/medicine_website/admin_panel/products/device_list.php" class="dropdown-item" type="button">
-                            <i class="fa-solid fa-list"></i> Medical Devices
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="btn-group">
-                <button type="button" class="btn text-danger dropdown-toggle border-bottom" data-bs-toggle="dropdown" aria-expanded="false">
+                    <h5 class="text-danger">Products</h5>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo HTTP_PATH . "/admin_panel/feedback/feedback.php"; ?>">
                     <i class="fa-solid fa-star text-danger"></i>
-                    Ratings / Reviews
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                        <a href="http://localhost/php/medicine_website/admin_panel/ratings/medicine_list.php" class="dropdown-item" type="button">
-                            <i class="fa-solid fa-tablets"></i> Medicines
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://localhost/php/medicine_website/admin_panel/ratings/device_list.php" class="dropdown-item" type="button">
-                            <i class="fa-solid fa-list"></i> Medical Devices
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                    <h5 class="text-danger">Reviews</h5>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo HTTP_PATH . "/admin_panel/attendance/attendance.php"; ?>">
+                    <i class="fa-solid fa-tachograph-digital text-danger"></i>
+                    <h5 class="text-danger">Attendance</h5>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

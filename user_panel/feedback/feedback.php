@@ -261,11 +261,496 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
             </div>
         </div>
 
+        <style>
+            :root {
+                --primary: #FF6B35;
+                --primary-light: #ff8c5a;
+                --secondary: #004E89;
+                --secondary-light: #0066a7;
+                --dark: #292F36;
+                --light: #F7FFF7;
+                --accent: #FFD166;
+                --success: #4CAF50;
+                --error: #F44336;
+            }
+
+            /* Particle background */
+            .particles {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                opacity: 0.15;
+            }
+
+            .particle {
+                position: absolute;
+                background-color: var(--primary);
+                border-radius: 50%;
+                opacity: 0.7;
+            }
+
+            /* Fitness icons */
+            .fitness-icon {
+                position: absolute;
+                opacity: 0.1;
+                z-index: -1;
+                font-size: 10rem;
+                color: var(--secondary);
+            }
+
+            .icon-dumbbell {
+                top: 10%;
+                left: 5%;
+                transform: rotate(-15deg);
+            }
+
+            .icon-heart {
+                bottom: 10%;
+                right: 5%;
+                transform: rotate(15deg);
+            }
+
+            .feedback-card {
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+                width: 100%;
+                overflow: hidden;
+                transform: translateY(20px);
+                opacity: 0;
+                animation: fadeInUp 0.6s forwards 0.3s;
+                position: relative;
+                z-index: 1;
+            }
+
+            @keyframes fadeInUp {
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            .feedback-header h2 {
+                font-size: 2rem;
+                margin-bottom: 10px;
+                font-weight: 700;
+                position: relative;
+                z-index: 2;
+            }
+
+            .feedback-header p {
+                font-size: 1rem;
+                opacity: 0.9;
+                position: relative;
+                z-index: 2;
+            }
+
+            #feedbackForm {
+                padding: 30px;
+                display: flex;
+                flex-direction: column;
+                gap: 25px;
+            }
+
+            @keyframes fadeIn {
+                to {
+                    opacity: 1;
+                }
+            }
+
+            .form-group:nth-child(1) {
+                animation-delay: 0.4s;
+            }
+
+            .form-group:nth-child(2) {
+                animation-delay: 0.5s;
+            }
+
+            .form-group:nth-child(3) {
+                animation-delay: 0.6s;
+            }
+
+            .form-group:nth-child(4) {
+                animation-delay: 0.7s;
+            }
+
+            .form-group:nth-child(5) {
+                animation-delay: 0.8s;
+            }
+
+            .form-group:nth-child(6) {
+                animation-delay: 0.9s;
+            }
+
+            .form-group:nth-child(7) {
+                animation-delay: 1.0s;
+            }
+
+            .form-group:nth-child(8) {
+                animation-delay: 1.1s;
+            }
+
+            label {
+                font-weight: 600;
+                color: var(--dark);
+                font-size: 0.9rem;
+            }
+
+            .form-control {
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 0.95rem;
+                transition: all 0.3s ease;
+            }
+
+            .form-control:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+            }
+
+            textarea.form-control {
+                min-height: 100px;
+                resize: vertical;
+            }
+
+            /* Rating stars */
+            .stars {
+                display: flex;
+            }
+
+            .star {
+                font-size: 2rem;
+                color: #e0e0e0;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                position: relative;
+            }
+
+            .star:hover,
+            .star.hover {
+                color: var(--accent);
+                transform: scale(1.1);
+            }
+
+            .star.selected {
+                color: var(--accent);
+            }
+
+            /* Service details - initially hidden */
+            .service-details {
+                display: none;
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+                background-color: #f9f9f9;
+                border-radius: 8px;
+                border-left: 4px solid var(--secondary);
+                animation: slideDown 0.4s ease-out;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Submit button */
+            .submit-btn {
+                background: linear-gradient(to right, var(--primary) 0%, var(--primary-light) 100%);
+                color: white;
+                border: none;
+                padding: 15px;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .submit-btn:hover {
+                background: linear-gradient(to right, var(--primary-light) 0%, var(--primary) 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+            }
+
+            .submit-btn:active {
+                transform: translateY(0);
+            }
+
+            .loading-spinner {
+                display: none;
+                width: 20px;
+                height: 20px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: white;
+                animation: spin 1s ease-in-out infinite;
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Validation styles */
+            .error-message {
+                color: var(--error);
+                font-size: 0.8rem;
+                margin-top: 5px;
+                display: none;
+            }
+
+            .form-control.error {
+                border-color: var(--error);
+            }
+
+            .form-control.success {
+                border-color: var(--success);
+            }
+
+            /* Confirmation modal */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .modal-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .modal-content {
+                background: white;
+                padding: 30px;
+                border-radius: 12px;
+                max-width: 500px;
+                width: 90%;
+                text-align: center;
+                transform: scale(0.9);
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .modal-overlay.active .modal-content {
+                transform: scale(1);
+            }
+
+            .modal-icon {
+                font-size: 4rem;
+                color: var(--success);
+                margin-bottom: 20px;
+                animation: bounceIn 0.6s;
+            }
+
+            .modal-content h3 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+                color: var(--dark);
+            }
+
+            .modal-content p {
+                margin-bottom: 25px;
+                color: #666;
+            }
+
+            .modal-close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #999;
+                transition: color 0.2s;
+            }
+
+            .modal-close:hover {
+                color: var(--dark);
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 768px) {
+                .feedback-header h2 {
+                    font-size: 1.5rem;
+                }
+
+                .feedback-header p {
+                    font-size: 0.9rem;
+                }
+
+                #feedbackForm {
+                    padding: 20px;
+                }
+
+                .star {
+                    font-size: 1.8rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                body {
+                    padding: 10px;
+                }
+
+                .feedback-card {
+                    border-radius: 12px;
+                }
+
+                .feedback-header {
+                    padding: 20px;
+                }
+
+                .form-control {
+                    padding: 10px 12px;
+                }
+            }
+        </style>
+
+        <script>
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+        </script>
+
+        <?php
+        include(DRIVE_PATH . "../database.php");
+
+        if (isset($_POST["submit"])) {
+            $sel = $conn->prepare("SELECT * FROM `service` WHERE `name`='" . $_POST["service"] . "'");
+            $sel->execute();
+            $sel = $sel->fetchAll();
+            $service = $sel[0];
+
+            $in = $conn->prepare("INSERT INTO `feedback` VALUES('','" . $_POST["email"] . "','" . $service["service_id"] . "','" . $_POST["feedback_type"] . "','" . $_POST["rating"] . "','" . $_POST["comments"] . "',NOW())");
+            $in->execute();
+        }
+        ?>
+
+        <!-- Feedback form card -->
+        <div class="feedback-card m-4 mx-auto">
+            <div class="feedback-header">
+                <h2>Share Your Experience</h2>
+                <p>Help us improve Invigor Fitness Studio</p>
+            </div>
+
+            <form action="" method="post" id="feedbackForm">
+                <div class="row">
+                    <!-- Email field -->
+                    <div class="form-group col-md-6">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="your@email.com" required>
+                        <div class="error-message" id="email-error">Please enter a valid email address</div>
+                    </div>
+
+                    <!-- Rating field -->
+                    <div class="form-group rating-container col-md-6">
+                        <label>Your Rating</label>
+                        <div class="stars">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="rating" name="rating" value="">
+                        <div class="error-message" id="rating-error">Please select a rating</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Feedback type -->
+                    <div class="form-group col-md-6">
+                        <label for="feedbackType">Feedback Type</label>
+                        <select id="feedbackType" name="feedback_type" class="form-control" required>
+                            <option value="" disabled selected>Select feedback type</option>
+                            <option value="General">General Feedback</option>
+                            <option value="Suggestion">Suggestion</option>
+                            <option value="Complaint">Complaint</option>
+                        </select>
+                        <div class="error-message" id="type-error">Please select a feedback type</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="visitDate">Service Name</label>
+                        <select name="service" class="form-control">
+                            <?php
+                            include(DRIVE_PATH . "../database.php");
+
+                            $sel = $conn->prepare("SELECT * FROM `service`");
+                            $sel->execute();
+                            $sel = $sel->fetchAll();
+
+                            foreach ($sel as $r) { ?>
+                                <option value="<?php echo $r["name"]; ?>"><?php echo $r["name"]; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Comments -->
+                    <div class="form-group col-md-12">
+                        <label for="comments">Your Feedback</label>
+                        <textarea id="comments" name="comments" class="form-control" placeholder="Share your thoughts about your experience..." required></textarea>
+                        <div class="error-message" id="comments-error">Please provide your feedback</div>
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" name="submit" class="submit-btn">
+                    <span class="btn-text">Submit Feedback</span>
+                    <span class="loading-spinner"></span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Confirmation modal -->
+        <div class="modal-overlay" id="confirmationModal">
+            <div class="modal-content">
+                <button class="modal-close" id="modalClose">&times;</button>
+                <div class="modal-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Thank You!</h3>
+                <p>Your feedback has been submitted successfully. We appreciate your time and will use your input to improve our services.</p>
+                <button class="submit-btn" id="modalOk" style="width: 100%;">OK</button>
+            </div>
+        </div>
+
         <div class="feedback-grid">
             <?php
             include(DRIVE_PATH . "/database.php");
 
-            $sel = $conn->prepare("SELECT * FROM feedback JOIN service ON service.service_id=feedback.service_id");
+            $sel = $conn->prepare("SELECT service.name, service.description, feedback.* FROM feedback JOIN service ON service.service_id=feedback.service_id");
             $sel->execute();
             $sel = $sel->fetchAll();
 
@@ -290,105 +775,6 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 
     <script>
         $(document).ready(function() {
-            // Sample feedback data with dates
-            const feedbackData = [{
-                    email: "john.doe@example.com",
-                    service: "Personal Training",
-                    description: "One-on-one customized training sessions with certified trainers",
-                    rating: 5,
-                    message: "My trainer Mike is amazing! He's helped me achieve my fitness goals faster than I expected. The personalized attention and workout plans have transformed my physique in just 3 months.",
-                    type: "general",
-                    date: "2023-06-15"
-                },
-                {
-                    email: "sarah.smith@example.com",
-                    service: "Group Classes",
-                    description: "High-energy group fitness sessions including HIIT, Cardio, and more",
-                    rating: 4,
-                    message: "The group energy is fantastic and keeps me motivated. However, the 6pm HIIT class often gets overcrowded - maybe consider adding more sessions at this popular time?",
-                    type: "suggestion",
-                    date: "2023-06-10"
-                },
-                {
-                    email: "mike.johnson@example.com",
-                    service: "Locker Room",
-                    description: "Member locker and shower facilities",
-                    rating: 2,
-                    message: "The lockers need better maintenance. My locker door was broken last week and it took 3 days to get fixed. Also, the showers could use more frequent cleaning during peak hours.",
-                    type: "complaint",
-                    date: "2023-06-05"
-                },
-                {
-                    email: "lisa.wang@example.com",
-                    service: "Nutrition Counseling",
-                    description: "Personalized diet and nutrition planning services",
-                    rating: 5,
-                    message: "The nutritionist gave me a perfect meal plan that fits my lifestyle and goals! I've already seen improvements in my energy levels and body composition in just 4 weeks.",
-                    type: "general",
-                    date: "2023-05-28"
-                },
-                {
-                    email: "david.brown@example.com",
-                    service: "Swimming Pool",
-                    description: "Olympic-sized swimming pool with lap lanes",
-                    rating: 3,
-                    message: "The pool itself is great but the water temperature fluctuates too much. Also, please enforce the lane etiquette rules more strictly - too many people swimming in wrong lanes.",
-                    type: "complaint",
-                    date: "2023-05-20"
-                },
-                {
-                    email: "emily.garcia@example.com",
-                    service: "Yoga Classes",
-                    description: "Beginner to advanced yoga sessions for all levels",
-                    rating: 4,
-                    message: "The yoga instructors are excellent! Would love to see more evening yoga classes added to the schedule, especially restorative yoga options after work hours.",
-                    type: "suggestion",
-                    date: "2023-05-15"
-                },
-                {
-                    email: "robert.lee@example.com",
-                    service: "Weightlifting Area",
-                    description: "Dedicated space with free weights and strength equipment",
-                    rating: 5,
-                    message: "Best weightlifting setup in town! Plenty of racks, platforms, and quality equipment. Never have to wait long even during peak hours. The staff keeps everything well-maintained.",
-                    type: "general",
-                    date: "2023-05-10"
-                }
-            ];
-
-            // Format date to readable format
-            function formatDate(dateString) {
-                const options = {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                };
-                return new Date(dateString).toLocaleDateString('en-US', options);
-            }
-
-            // Generate feedback cards
-            function generateFeedbackCards(filter = "all") {
-
-                const filteredData = filter === "all" ?
-                    feedbackData :
-                    feedbackData.filter(item => item.type === filter);
-
-                if (filteredData.length === 0) {
-                    const emptyState = `
-                        <div class="empty-state">
-                            <i class="fas fa-comment-slash"></i>
-                            <h3>No ${filter === "all" ? '' : filter + ' '}Feedback Found</h3>
-                            <p>There are currently no ${filter === "all" ? '' : filter + ' '}feedback submissions to display.</p>
-                        </div>
-                    `;
-                    $('.feedback-grid').append(emptyState);
-                    return;
-                }
-            }
-
-            // Initial load
-            generateFeedbackCards();
-
             // Filter buttons click handler
             $('.filter-btn').click(function() {
                 $(".feedback-card").hide();
@@ -396,9 +782,6 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 
                 $('.filter-btn').removeClass('active');
                 $(this).addClass('active');
-
-                const filter = $(this).data('filter');
-                generateFeedbackCards(filter);
 
                 // Smooth scroll to top of grid
                 $('html, body').animate({

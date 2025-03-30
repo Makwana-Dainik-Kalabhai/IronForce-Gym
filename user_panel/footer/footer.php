@@ -1,3 +1,6 @@
+<script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2025/03/28/14/20250328145009-MM6XFGJB.js"></script>
+
 <!-- Get In Touch Section Begin -->
 <div class="gettouch-section">
     <div class="container">
@@ -61,10 +64,13 @@
                 <div class="fs-widget">
                     <h4>Support</h4>
                     <ul>
-                        <li><a href="#">Login</a></li>
-                        <li><a href="#">My account</a></li>
-                        <li><a href="#">Subscribe</a></li>
-                        <li><a href="<?php echo HTTP_PATH . "/user_panel/contact.php"; ?>">Contact</a></li>
+                        <?php if (!isset($_SESSION["email"])) { ?>
+                            <li><a href="#" class="login-btn">Login</a></li>
+                            <li><a href="#" class="login-btn">My account</a></li>
+                        <?php } else { ?>
+                            <li><a href="<?php echo HTTP_PATH . "/user_panel/profile/profile.php"; ?>">My account</a></li>
+                        <?php } ?>
+                        <li><a href="<?php echo HTTP_PATH . "/user_panel/contact/contact.php"; ?>">Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -72,14 +78,14 @@
                 <div class="fs-widget">
                     <h4>Tips & Guides</h4>
                     <div class="fw-recent">
-                        <h6><a href="#">Physical fitness may help prevent depression, anxiety</a></h6>
+                        <h6><a href="<?php echo HTTP_PATH . "/user_panel/blog/blog.php"; ?>">Physical fitness may help prevent depression, anxiety</a></h6>
                         <ul>
                             <li>3 min read</li>
                             <li>20 Comment</li>
                         </ul>
                     </div>
                     <div class="fw-recent">
-                        <h6><a href="#">Fitness: The best exercise to lose belly fat and tone up...</a></h6>
+                        <h6><a href="<?php echo HTTP_PATH . "/user_panel/blog/blog.php"; ?>">Fitness: The best exercise to lose belly fat and tone up...</a></h6>
                         <ul>
                             <li>3 min read</li>
                             <li>20 Comment</li>

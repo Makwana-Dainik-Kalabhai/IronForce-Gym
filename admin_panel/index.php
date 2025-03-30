@@ -186,7 +186,7 @@ if (isset($_POST["email"])) {
                   <td class="col-md-1"><?php echo $r["gender"]; ?></td>
                   <td class="col-md-1"><?php $date = date("d/m/Y", strtotime($r["dob"]));
                                         echo ($date != "30/11/-0001") ? $date : "-"; ?></td>
-                                        <td class="col-md-1"><?php echo ($r["MembershipStatus"]!=null)?$r["MembershipStatus"]:"-"; ?></td>
+                  <td class="col-md-1"><?php echo ($r["MembershipStatus"] != null) ? $r["MembershipStatus"] : "-"; ?></td>
 
 
                   <?php if ($r["status"] == "Active") { ?>
@@ -207,7 +207,7 @@ if (isset($_POST["email"])) {
         </div>
       </div>
       <footer class="footer footer-black  footer-white ">
-        <?php include(DRIVE_PATH."/admin_panel/footer/footer.php"); ?>
+        <?php include(DRIVE_PATH . "/admin_panel/footer/footer.php"); ?>
       </footer>
     </div>
   </div>

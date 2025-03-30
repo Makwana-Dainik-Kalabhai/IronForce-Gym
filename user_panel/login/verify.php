@@ -42,7 +42,7 @@ if (isset($_POST["sign"])) {
         {
             global $conn;
 
-            $insert = $conn->prepare("INSERT INTO `member` VALUES ('" . $this->FirstName . "', '" . $this->LastName . "','" . $this->email . "','" . $this->password . "','" . $this->phone . "','" . $this->gender . "','" . $this->dob . "','" . serialize($this->address) . "','','','')");
+            $insert = $conn->prepare("INSERT INTO `member` VALUES ('','" . $this->FirstName . "', '" . $this->LastName . "','" . $this->email . "','" . $this->password . "','" . $this->phone . "','" . $this->gender . "','" . $this->dob . "','" . serialize($this->address) . "','','','')");
             $insert->execute();
         }
     }
@@ -168,11 +168,11 @@ if (isset($_POST["login"])) {
             $_SESSION["phone"] = $row_user["phone"];
             $_SESSION["gender"] = $row_user["gender"];
             $_SESSION["dob"] = date("d/m/Y", strtotime($row_user["dob"]));
-            $_SESSION["house-number"] = $row_user["house-number"];
-            $_SESSION["apartment"] = $_POST["apartment"];
-            $_SESSION["suite"] = $_POST["suite"];
-            $_SESSION["city"] = $_POST["city"];
-            $_SESSION["pincode"] = $_POST["pincode"];
+            $_SESSION["house-number"] = unserialize($row_user["address"])["house-number"];
+            $_SESSION["apartment"] = unserialize($row_user["address"])["apartment"];
+            $_SESSION["suite"] = unserialize($row_user["address"])["suite"];
+            $_SESSION["city"] = unserialize($row_user["address"])["city"];
+            $_SESSION["pincode"] = unserialize($row_user["address"])["pincode"];
 
             $_SESSION["form_succ"] = "Login Successfully";
 
@@ -181,9 +181,6 @@ if (isset($_POST["login"])) {
             }
             if (isset($_SERVER["HTTP_REFERER"])) {
                 header("Location: " . $_SERVER["HTTP_REFERER"]);
-            }
-            if (isset($_SERVER['HTTP_REFERER'])) {
-                header("Location: " . $_SERVER['HTTP_REFERER'] . "");
             }
             return;
         }
@@ -194,11 +191,6 @@ if (isset($_POST["login"])) {
             if (isset($_SESSION["form_succ"])) {
                 unset($_SESSION["form_succ"]);
             }
-
-            if (isset($_SERVER['HTTP_REFERER'])) {
-                header("Location: " . $_SERVER['HTTP_REFERER'] . "");
-            }
-            return;
         }
         //
         else if ($login_email != $row_user["email"] && $login_password == $row_user["password"]) {
@@ -207,14 +199,10 @@ if (isset($_POST["login"])) {
             if (isset($_SESSION["form_succ"])) {
                 unset($_SESSION["form_succ"]);
             }
-
-            if (isset($_SERVER['HTTP_REFERER'])) {
-                header("Location: " . $_SERVER['HTTP_REFERER'] . "");
-            }
-            return;
         }
     }
-    $_SESSION["form_error"] = "No Credential Found";
+    if (!isset($_SESSION["form_error"]))
+        $_SESSION["form_error"] = "No Credential Found";
     if (isset($_SERVER['HTTP_REFERER'])) {
         header("Location: " . $_SERVER['HTTP_REFERER'] . "");
     }

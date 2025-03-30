@@ -44,7 +44,7 @@
                     <table class="service-list">
                         <thead class="bg-danger text-light">
                             <tr>
-                                <th class="col-md-1">Sr.</th>
+                                <th class="col-md-1">ID</th>
                                 <th class="col-md-1">Service</th>
                                 <th class="col-md-1">Name</th>
                                 <th class="col-md-3">Description</th>
@@ -79,6 +79,25 @@
                             } ?>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- //* Categories -->
+                <div class="card p-3 mt-5">
+                    <h6>Categories</h6>
+                </div>
+                <div class="card p-3">
+                    <div class="row">
+                        <?php
+                        $sel = $conn->prepare("SELECT * FROM `service` GROUP BY `category`");
+                        $sel->execute();
+                        $sel = $sel->fetchAll();
+
+                        foreach ($sel as $row) { ?>
+                            <div class="col-2 bg-light m-2"><img src="<?php echo HTTP_PATH . "/img/services/" . $row["img"]; ?>" alt="">
+                                <h6 class="text-center"><?php echo $row["category"]; ?></h6>
+                            </div>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
             <footer class="footer footer-black  footer-white ">

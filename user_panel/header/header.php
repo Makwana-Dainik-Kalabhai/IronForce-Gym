@@ -15,6 +15,18 @@
     });
 </script>
 
+<?php if (isset($_SESSION["mem_succ"])) {
+?>
+    <div class="alert alert-success"><?php echo $_SESSION["mem_succ"]; ?></div>
+    <script>
+        $(document).ready(function() {
+            $(".alert").fadeOut(20000);
+            <?php unset($_SESSION["mem_succ"]); ?>
+        });
+    </script>
+<?php }
+?>
+
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -33,21 +45,34 @@
         <ul>
             <li><a href="<?php echo HTTP_PATH . "/index.php"; ?>">Home</a></li>
             <li><a href="<?php echo HTTP_PATH . "/user_panel/about-us.php"; ?>">About Us</a></li>
+            <li><a href="#">Get Membership</a>
+                <ul class="dropdown">
+                    <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php?type=1&fee=3500"; ?>">Class drop-in</a></li>
+                    <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php?type=2&fee=8500"; ?>">12 Month unlimited</a></li>
+                    <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php?type=3&fee=5000"; ?>">6 Month unlimited</a></li>
+                </ul>
+            </li>
             <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php"; ?>">Classes</a></li>
             <li><a href="<?php echo HTTP_PATH . "/user_panel/services/service.php"; ?>">Services</a></li>
             <li><a href="<?php echo HTTP_PATH . "/user_panel/team.php"; ?> ">Our Team</a></li>
-            <li><a href="#">Pages</a>
+            <li><a href="<?php echo HTTP_PATH . "/user_panel/contact/contact.php"; ?>">Contact</a></li>
+
+            <li><a href="#">More</a>
                 <ul class="dropdown">
-                    <li><a href="<?php echo HTTP_PATH . "/user_panel/about-us.php"; ?> ">About us</a></li>
-                    <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php"; ?>">Membership</a></li>
+                    <?php if (isset($_SESSION["email"])) { ?>
+                        <li><a href="<?php echo HTTP_PATH . "/user_panel/profile/profile.php"; ?>">Account</a></li>
+                        <li><a href="<?php echo HTTP_PATH . "/user_panel/membership/membership.php"; ?>">My Membership</a></li>
+                    <?php } else { ?>
+                        <li><a href="#" class="login-btn">Account</a></li>
+                        <li><a href="#" class="login-btn">My Membership</a></li>
+                    <?php } ?>
                     <li><a href="<?php echo HTTP_PATH . "/user_panel/bmi-calculator.php"; ?>">Bmi calculate</a></li>
-                    <li><a href="<?php echo HTTP_PATH . "/user_panel/team.php"; ?>">Our team</a></li>
                     <li><a href="<?php echo HTTP_PATH . "/user_panel/gallery.php"; ?>">Gallery</a></li>
-                    <li><a href="<?php echo HTTP_PATH . "/user_panel/blog/blog.php"; ?>">Our blog</a></li>
-                    <li><a href="<?php echo HTTP_PATH . "/user_panel/404.php"; ?>">404</a></li>
+                    <li><a href="<?php echo HTTP_PATH . "/user_panel/blog/blog.php"; ?>">Our blogs</a></li>
+                    <li><a href="<?php echo HTTP_PATH . "/user_panel/products/products.php"; ?>">Products</a></li>
                 </ul>
             </li>
-            <li><a href="<?php echo HTTP_PATH . "/user_panel/contact/contact.php"; ?>">Contact</a></li>
+
             <li><button class="btn primary-btn login-btn">Login</button></li>
         </ul>
     </nav>
@@ -77,21 +102,32 @@
                     <ul>
                         <li class="active"><a href="<?php echo HTTP_PATH . "/index.php"; ?>">Home</a></li>
                         <li><a href="<?php echo HTTP_PATH . "/user_panel/about-us.php"; ?>">About Us</a></li>
-                        <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php"; ?>">Membership</a></li>
-                        <li><a href="<?php echo HTTP_PATH . "/user_panel/services/service.php"; ?>">Services</a></li>
-                        <li><a href="<?php echo HTTP_PATH . "/user_panel/team.php"; ?>">Our Team</a></li>
-                        <li><a href="#">Pages</a>
+                        <li><a href="#">Get Membership</a>
                             <ul class="dropdown">
-                                <li><a href="<?php echo HTTP_PATH . "/user_panel/about-us.php"; ?>">About us</a></li>
-                                <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php"; ?>">Classe Details</a></li>
-                                <li><a href="<?php echo HTTP_PATH . "/user_panel/bmi-calculator.php"; ?>">Bmi calculate</a></li>
-                                <li><a href="<?php echo HTTP_PATH . "/user_panel/team.php"; ?>">Our team</a></li>
-                                <li><a href="<?php echo HTTP_PATH . "/user_panel/gallery.php"; ?>">Gallery</a></li>
-                                <li><a href="<?php echo HTTP_PATH . "/user_panel/blog/blog.php"; ?>">Our blog</a></li>
-                                <li><a href="<?php echo HTTP_PATH . "/user_panel/404.php"; ?>">404</a></li>
+                                <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php?type=1&fee=3500"; ?>">Class drop-in</a></li>
+                                <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php?type=2&fee=8500"; ?>">12 Month unlimited</a></li>
+                                <li><a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php?type=3&fee=5000"; ?>">6 Month unlimited</a></li>
                             </ul>
                         </li>
+                        <li><a href="<?php echo HTTP_PATH . "/user_panel/services/service.php"; ?>">Services</a></li>
+                        <li><a href="<?php echo HTTP_PATH . "/user_panel/team.php"; ?>">Our Team</a></li>
                         <li><a href="<?php echo HTTP_PATH . "/user_panel/contact/contact.php"; ?>">Contact</a></li>
+
+                        <li><a href="#">More</a>
+                            <ul class="dropdown">
+                                <?php if (isset($_SESSION["email"])) { ?>
+                                    <li><a href="<?php echo HTTP_PATH . "/user_panel/profile/profile.php"; ?>">Account</a></li>
+                                    <li><a href="<?php echo HTTP_PATH . "/user_panel/membership/membership.php"; ?>">My Membership</a></li>
+                                <?php } else { ?>
+                                    <li><a href="#" class="login-btn">Account</a></li>
+                                    <li><a href="#" class="login-btn">My Membership</a></li>
+                                <?php } ?>
+                                <li><a href="<?php echo HTTP_PATH . "/user_panel/bmi-calculator.php"; ?>">Bmi calculate</a></li>
+                                <li><a href="<?php echo HTTP_PATH . "/user_panel/gallery.php"; ?>">Gallery</a></li>
+                                <li><a href="<?php echo HTTP_PATH . "/user_panel/blog/blog.php"; ?>">Our blogs</a></li>
+                                <li><a href="<?php echo HTTP_PATH . "/user_panel/products/products.php"; ?>">Products</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </div>

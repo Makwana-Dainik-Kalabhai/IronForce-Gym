@@ -15,7 +15,7 @@ include(DRIVE_PATH . "/database.php");
     <meta name="keywords" content="Gym, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>IronForce Gym</title>
+    <title>Invigor Fitness Studio</title>
 </head>
 
 <body>
@@ -33,6 +33,7 @@ include(DRIVE_PATH . "/database.php");
         }
     }
     ?>
+
     <!-- Hero Section Begin -->
     <section class="hero-section">
         <div class="hs-slider owl-carousel">
@@ -43,7 +44,7 @@ include(DRIVE_PATH . "/database.php");
                             <div class="hi-text">
                                 <span>Shape your body</span>
                                 <h1>Be <strong>strong</strong> traning hard</h1>
-                                <a href="<?php echo HTTP_PATH . "/user_panel/class/class-details.php"; ?>" class="primary-btn">Get Membership</a>
+                                <a href="#pricing-section" class="primary-btn">Get Membership</a>
                             </div>
                         </div>
                     </div>
@@ -502,7 +503,7 @@ include(DRIVE_PATH . "/database.php");
     <!-- Banner Section End -->
 
     <!-- Pricing Section Begin -->
-    <section class="pricing-section spad">
+    <section class="pricing-section spad" id="pricing-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -653,32 +654,21 @@ include(DRIVE_PATH . "/database.php");
             <h2 style="font-size: 2.5rem; margin-bottom: 40px; color: #ff5e00; font-weight: 700;">WHAT OUR CUSTOMERS SAY</h2>
 
             <div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 30px;">
-                <!-- Testimonial 1 -->
-                <div style="background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 10px; padding: 25px; max-width: 350px; border-top: 3px solid #ff5e00;">
-                    <div style="font-size: 1.1rem; font-style: italic; margin-bottom: 20px;">
-                        "IronForce Gym transformed my fitness journey. The trainers are knowledgeable and the community is incredibly supportive. I've never felt stronger!"
-                    </div>
-                    <div style="font-weight: bold; color: #ff5e00;">Mike T.</div>
-                    <div style="font-size: 0.9rem;">Member for 2 years</div>
-                </div>
 
-                <!-- Testimonial 2 -->
-                <div style="background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 10px; padding: 25px; max-width: 350px; border-top: 3px solid #ff5e00;">
-                    <div style="font-size: 1.1rem; font-style: italic; margin-bottom: 20px;">
-                        "The best gym in town! Top-notch equipment and classes that challenge me every time. I've seen amazing results in just 6 months."
-                    </div>
-                    <div style="font-weight: bold; color: #ff5e00;">Sarah K.</div>
-                    <div style="font-size: 0.9rem;">Member for 6 months</div>
-                </div>
+                <?php
+                $sel = $conn->prepare("SELECT * FROM feedback JOIN member ON member.email = feedback.email LIMIT 3");
+                $sel->execute();
+                $sel = $sel->fetchAll();
 
-                <!-- Testimonial 3 -->
-                <div style="background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 10px; padding: 25px; max-width: 350px; border-top: 3px solid #ff5e00;">
-                    <div style="font-size: 1.1rem; font-style: italic; margin-bottom: 20px;">
-                        "As a professional athlete, I need a gym that keeps up with my training demands. IronForce has everything I need and more."
+                foreach ($sel as $r) { ?>
+                    <div style="background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 10px; padding: 25px; max-width: 350px; border-top: 3px solid #ff5e00;">
+                        <div style="font-size: 1.1rem; font-style: italic; margin-bottom: 20px;">
+                            "<?php echo $r["comments"]; ?>"
+                        </div>
+                        <div style="font-weight: bold; color: #ff5e00;"><?php echo $r["FirstName"]." ".$r["LastName"]; ?></div>
+                        <div style="font-size: 0.9rem;"><?php echo str_repeat("★", $r["rating"]) . str_repeat("☆", 5 - $r["rating"]); ?></div>
                     </div>
-                    <div style="font-weight: bold; color: #ff5e00;">David R.</div>
-                    <div style="font-size: 0.9rem;">Member for 3 years</div>
-                </div>
+                <?php } ?>
             </div>
 
             <a href="<?php echo HTTP_PATH . "/user_panel/feedback/feedback.php"; ?>" style="display: block;margin: 50px auto; width: fit-content; padding: 12px 30px; background-color: #ff5e00; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s;">

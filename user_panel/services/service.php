@@ -679,7 +679,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                 <h1>Unleash Your Potential</h1>
                 <p>Join IronForce Gym and transform your body with our state-of-the-art facilities, expert trainers, and personalized workout programs designed to help you achieve your fitness goals.</p>
                 <div class="hero-btns">
-                    <a href="#membership" class="btn">Start Your Journey Today</a>
+                    <a href="<?php echo HTTP_PATH . "/index.php"; ?>" class="btn">Start Your Journey Today</a>
                     <a href="#services" class="btn btn-secondary">Explore Services</a>
                 </div>
             </div>

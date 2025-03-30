@@ -47,98 +47,36 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                             <span>Our Team</span>
                             <h2>TRAIN WITH EXPERTS</h2>
                         </div>
-                        <a href="#" class="primary-btn btn-normal appoinment-btn">appointment</a>
+                        <?php if (!isset($_SESSION["email"])) { ?>
+                            <a class="btn primary-btn login-btn btn-normal appoinment-btn text-light">appointment</a>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-sm-6">
-                    <div class="ts-item set-bg" data-setbg="<?php echo HTTP_PATH . "/img/team/team-1.jpg"; ?>">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                            <div class="tt_social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa  fa-envelope-o"></i></a>
+                <?php
+                include(DRIVE_PATH . "/database.php");
+
+                $trainer = $conn->prepare("SELECT * FROM `trainer`");
+                $trainer->execute();
+                $trainer = $trainer->fetchAll();
+
+                foreach ($trainer as $tr) {
+                ?>
+                    <div class="col-lg-4">
+                        <div class="ts-item set-bg" data-setbg="<?php echo HTTP_PATH . "/img/trainer/" . $tr["img"] . ""; ?>">
+                            <div class="ts_text">
+                                <h4><?php echo $tr["FirstName"] . " " . $tr["LastName"]; ?></h4>
+                                <span><?php echo $tr["Specialization"]; ?></span>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
                 <div class="col-lg-4 col-sm-6">
-                    <div class="ts-item set-bg" data-setbg="<?php echo HTTP_PATH . "/img/team/team-2.jpg"; ?>">
+                    <div class="ts-item set-bg" data-setbg="<?php echo HTTP_PATH . "/img/trainer/" . $tr["img"] . ""; ?>">
                         <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                            <div class="tt_social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa  fa-envelope-o"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="ts-item set-bg" data-setbg="<?php echo HTTP_PATH . "/img/team/team-3.jpg"; ?>">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                            <div class="tt_social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa  fa-envelope-o"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="ts-item set-bg" data-setbg="<?php echo HTTP_PATH . "/img/team/team-4.jpg"; ?>">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                            <div class="tt_social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa  fa-envelope-o"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="ts-item set-bg" data-setbg="<?php echo HTTP_PATH . "/img/team/team-5.jpg"; ?>">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                            <div class="tt_social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa  fa-envelope-o"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="ts-item set-bg" data-setbg="<?php echo HTTP_PATH . "/img/team/team-6.jpg"; ?>">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                            <div class="tt_social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa  fa-envelope-o"></i></a>
-                            </div>
+                            <h4><?php echo $tr["FirstName"] . " " . $tr["LastName"]; ?></h4>
+                            <span><?php echo $tr["Specialization"]; ?></span>
                         </div>
                     </div>
                 </div>

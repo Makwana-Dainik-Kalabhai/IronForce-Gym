@@ -49,25 +49,16 @@
         <hr />
 
         <div class="card p-3">
-          <?php
-          $sel = $conn->prepare("SELECT * FROM `membership` ORDER BY `id` DESC LIMIT 1");
-          $sel->execute();
-          $sel = $sel->fetchAll();
-          $sel = $sel[0];
-
-          echo $sel["id"] + 1;
-          ?>
           <table class="membership-list">
             <thead class="bg-danger text-light">
               <tr>
-                <th class="col-md-1">Sr.</th>
                 <th class="col-md-1">ID</th>
                 <th class="col-md-1">Type</th>
                 <th class="col-md-1">Start Date</th>
                 <th class="col-md-1">End Date</th>
                 <th class="col-md-1">Status</th>
                 <th class="col-md-1">Fees</th>
-                <th class="col-md-1">Timing</th>
+                <th class="col-md-2">Timing</th>
                 <th class="col-md-1">Plan Duration</th>
                 <th class="col-md-1">Payment Type</th>
                 <th class="col-md-1">Payment Status</th>
@@ -80,25 +71,22 @@
               $sel_user = $conn->prepare("SELECT * FROM `membership`");
               $sel_user->execute();
               $sel_user = $sel_user->fetchAll();
-              $i = 1;
 
               foreach ($sel_user as $r) { ?>
                 <tr class="border-bottom">
-                  <td class="col-md-1"><?php echo $i . ")"; ?></td>
-                  <td class="col-md-1"><?php echo $r["id"]; ?></td>
+                  <td class="col-md-1"><?php echo $r["MemberID"]; ?></td>
                   <td class="col-md-1"><?php echo $r["membership_type"]; ?></td>
                   <td class="col-md-1"><?php echo date("d/m/Y", strtotime($r["start_date"])); ?></td>
                   <td class="col-md-1"><?php echo date("d/m/Y", strtotime($r["end_date"])); ?></td>
                   <td class="col-md-1"><?php echo $r["status"] ?></td>
                   <td class="col-md-1"><?php echo "&#8377; " . $r["membership_fee"]; ?></td>
-                  <td class="col-md-1"><?php echo $r["timing"]; ?></td>
+                  <td class="col-md-2"><?php echo $r["timing"]; ?></td>
                   <td class="col-md-1"><?php echo $r["plan_duration"]; ?></td>
                   <td class="col-md-1"><?php echo $r["payment_type"]; ?></td>
                   <td class="col-md-1"><?php echo ($r["payment_type"] == "Razorpay") ? "Paid" : "Pending"; ?></td>
-                  <td class="col-md-1"><a href="<?php echo HTTP_PATH . "/admin_panel/membership/details.php?id=" . $r["id"] . ""; ?>">View</a></td>
+                  <td class="col-md-1"><a href="<?php echo HTTP_PATH . "/admin_panel/membership/details.php?id=" . $r["MemberID"] . ""; ?>">View</a></td>
                 </tr>
-              <?php $i++;
-              } ?>
+              <?php } ?>
             </tbody>
           </table>
         </div>

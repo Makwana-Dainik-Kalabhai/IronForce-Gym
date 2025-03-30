@@ -5,8 +5,8 @@ use Razorpay\Api\Api;
 
 use function PHPSTORM_META\map;
 
-$api_key = "rzp_test_omt6wXyJiqN0lX";
-$api_secret = "7e63a7DNPonx2Rh3WoDMR3fj";
+$api_key = "API KEY";
+$api_secret = "API SECRET";
 
 $api = new Api($api_key, $api_secret);
 

@@ -1,3 +1,10 @@
+<?php
+require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
+include(DRIVE_PATH . "/user_panel/header/header.php");
+
+include(DRIVE_PATH . "/user_panel/login/login.php");
+?>
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -11,12 +18,6 @@
 </head>
 
 <body>
-    <?php
-    require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
-    include(DRIVE_PATH . "/user_panel/header/header.php");
-
-    include(DRIVE_PATH . "/user_panel/login/login.php");
-    ?>
 
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="<?php echo HTTP_PATH . "/img/breadcrumb-bg.jpg"; ?>">
@@ -431,15 +432,20 @@
         }
     </style>
 
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+
     <section class="class-form-section">
-        <?php echo $_SESSION["name"]; ?>
         <div class="membership-form form-container">
             <div class="form-header">
                 <h1>Get Membership</h1>
                 <p>Start your fitness journey with us today!</p>
             </div>
 
-            <form action="<?php echo HTTP_PATH . "/user_panel/class/add_member.php"; ?>" method="post" id="gymForm" class="form-body">
+            <form action="<?php echo HTTP_PATH . "/user_panel/class/payment.php"; ?>" method="post" id="gymForm" class="form-body">
                 <!-- Personal Information Section -->
                 <div class="form-section">
                     <h2 class="section-title">Personal Information</h2>
@@ -449,7 +455,7 @@
                             <input type="text" id="name" name="name" value="<?php echo (isset($_SESSION["name"])) ? $_SESSION["name"] : ""; ?>" required placeholder="John Doe">
                         </div>
                         <div class="form-group">
-                            <label for="email" class="required">Email Address</label>
+                            <label for="email" class="required">Email ID</label>
                             <input type="email" id="email" name="email" value="<?php echo (isset($_SESSION["email"])) ? $_SESSION["email"] : ""; ?>" disabled required placeholder="john@example.com">
                         </div>
                     </div>
@@ -504,7 +510,7 @@
                             <label for="goal" class="required">Primary Fitness Goal</label>
                             <select id="goal" name="goal" required>
                                 <option value="" disabled selected>Select your goal</option>
-                                <option value="weight-loss" selected>Weight Loss</option>
+                                <option value="weight-loss">Weight Loss</option>
                                 <option value="muscle-gain">Muscle Gain</option>
                                 <option value="endurance">Endurance Training</option>
                                 <option value="toning">Body Toning</option>
@@ -514,9 +520,9 @@
                         </div>
                         <div class="form-group">
                             <label for="experience">Gym Experience</label>
-                            <select id="experience" name="experience">
+                            <select id="experience" name="experience" required>
                                 <option value="" disabled selected>Select your experience level</option>
-                                <option value="beginner" selected>Beginner (0-6 months)</option>
+                                <option value="beginner">Beginner (0-6 months)</option>
                                 <option value="intermediate">Intermediate (6 months - 2 years)</option>
                                 <option value="advanced">Advanced (2+ years)</option>
                             </select>
@@ -525,11 +531,11 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="weight" class="required">Weight (kg)</label>
-                            <input type="number" id="weight" name="weight" value="60" min="30" max="200" placeholder="e.g. 75" required>
+                            <input type="number" id="weight" name="weight" min="30" max="200" placeholder="e.g. 75" required>
                         </div>
                         <div class="form-group">
                             <label for="height" class="required">Height (cm)</label>
-                            <input type="number" id="height" name="height" value="170" min="100" max="250" placeholder="e.g. 175" required>
+                            <input type="number" id="height" name="height" min="100" max="250" placeholder="e.g. 175" required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -549,7 +555,7 @@
                             <select id="payment" name="payment_type" required>
                                 <option value="" disabled selected>Select payment method</option>
                                 <option value="Cash">Cash</option>
-                                <option value="Razorpay" selected>Razorpay</option>
+                                <option value="Razorpay">Razorpay</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -578,27 +584,27 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="house-number" class="required">House Number</label>
-                            <input type="text" id="house-number" name="house-number" value="<?php echo (isset($_SESSION["house-number"]))?$_SESSION["house-number"]:""; ?>" placeholder="D/302" required>
+                            <input type="text" id="house-number" name="house-number" value="<?php echo (isset($_SESSION["house-number"])) ? $_SESSION["house-number"] : ""; ?>" placeholder="D/302" required>
                         </div>
                         <div class="form-group">
                             <label for="apartment" class="required">Apartment Name</label>
-                            <input type="text" id="apartment" name="apartment" value="<?php echo (isset($_SESSION["apartment"]))?$_SESSION["apartment"]:""; ?>" placeholder="Amrakunj" required>
+                            <input type="text" id="apartment" name="apartment" value="<?php echo (isset($_SESSION["apartment"])) ? $_SESSION["apartment"] : ""; ?>" placeholder="Amrakunj" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="suite">Suite/Apt Number</label>
-                            <input type="text" id="suite" name="suite" value="<?php echo (isset($_SESSION["suite"]))?$_SESSION["suite"]:""; ?>" placeholder="KB Royal" />
+                            <input type="text" id="suite" name="suite" value="<?php echo (isset($_SESSION["suite"])) ? $_SESSION["suite"] : ""; ?>" placeholder="KB Royal" />
                         </div>
                         <div class="form-group">
                             <label for="city" class="required">City</label>
-                            <input type="text" id="city" name="city" value="<?php echo (isset($_SESSION["city"]))?$_SESSION["city"]:""; ?>" required placeholder="Ahmedabad">
+                            <input type="text" id="city" name="city" value="<?php echo (isset($_SESSION["city"])) ? $_SESSION["city"] : ""; ?>" required placeholder="Ahmedabad">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="pincode" class="required">Postal/Zip Code</label>
-                            <input type="text" id="pincode" name="pincode" value="<?php echo (isset($_SESSION["pincode"]))?$_SESSION["pincode"]:""; ?>" required placeholder="382424">
+                            <input type="text" id="pincode" name="pincode" value="<?php echo (isset($_SESSION["pincode"])) ? $_SESSION["pincode"] : ""; ?>" required placeholder="382424">
                         </div>
                     </div>
                 </div>

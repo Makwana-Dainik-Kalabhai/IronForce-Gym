@@ -29,7 +29,7 @@
                 <!-- //! Trainer's List -->
                 <div class="card">
                     <div class="row">
-                        <h6 class="mx-5 py-3 text-danger">User's List</h6>
+                        <h6 class="mx-5 py-3 text-danger">Trainer's List</h6>
                     </div>
                 </div>
                 <hr />
