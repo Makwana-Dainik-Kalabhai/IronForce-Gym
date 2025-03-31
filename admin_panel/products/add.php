@@ -8,7 +8,7 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 
     <title>Products List</title>
-    <?php include("C:/xampp/htdocs/php/IronForce-Gym/admin_panel/links.php"); ?>
+    <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
 </head>
 
 <script>

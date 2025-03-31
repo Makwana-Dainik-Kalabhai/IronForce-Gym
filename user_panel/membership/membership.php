@@ -1,5 +1,5 @@
 <?php
-require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
+require("C:/xampp/htdocs/php/IFS/path.php");
 include(DRIVE_PATH . "/user_panel/header/header.php");
 
 include(DRIVE_PATH . "/user_panel/login/login.php");
@@ -288,16 +288,27 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
         }
 
         .progress-container {
-            margin-top: 5px;
-            background-color: #d9d9d9;
+            margin-top: 15px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
             height: 8px;
+            background: #e2e8f0;
             border-radius: 4px;
             overflow: hidden;
         }
 
-        .progress-bar {
+        .progress-fill {
             height: 100%;
-            background-color: var(--primary);
+            background: var(--primary);
             border-radius: 4px;
             transition: width 0.5s ease;
         }
@@ -441,6 +452,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
             }
         }
 
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .membership-cards {
@@ -520,6 +532,35 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 
         <div class="membership-cards" id="membershipCards">
             <?php
+            function calculateDaysPercentage($startDate, $endDate = null)
+            {
+                // Convert input dates to DateTime objects
+                $start = new DateTime($startDate);
+                $end = $endDate ? new DateTime($endDate) : new DateTime(); // Use current date if no end date provided
+
+                // Calculate total days in the period
+                $totalDays = $start->diff($end)->days;
+
+                // Calculate days elapsed from start to now
+                $now = new DateTime();
+                $daysElapsed = $start->diff($now)->days;
+
+                // Ensure we don't exceed the total period
+                if ($daysElapsed > $totalDays) {
+                    $daysElapsed = $totalDays;
+                }
+
+                // Calculate percentage (avoid division by zero)
+                $percentage = $totalDays > 0 ? ($daysElapsed / $totalDays) * 100 : 0;
+
+                return [
+                    'percentage' => round($percentage, 2),
+                    'days_elapsed' => $daysElapsed,
+                    'days_remaining' => max(0, $totalDays - $daysElapsed),
+                    'total_days' => $totalDays
+                ];
+            }
+
             include(DRIVE_PATH . "../database.php");
 
             $sel = $conn->prepare("SELECT * FROM membership WHERE `email`='" . $_SESSION["email"] . "'");
@@ -555,7 +596,24 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                         <div class="card-section">
                             <h4><i class="fas fa-calendar-alt"></i> Membership Period</h4>
                             <div class="progress-container">
-                                <div class="progress-bar" style="width: <?php echo (($startDate - $endDate) * 100); ?>%;"></div>
+                                <div class="progress-label">
+                                    <?php
+                                    // Example usage:
+                                    $membershipStart = date("Y-m-d", strtotime($r["start_date"]));
+                                    $membershipEnd = date("Y-m-d", strtotime($r["end_date"]));
+
+                                    $result = calculateDaysPercentage($membershipStart, $membershipEnd);
+
+                                    // For your frontend display (like the progress bar):
+                                    $progressWidth = $result['percentage'];
+                                    $remainingDays = $result['days_remaining'];
+                                    ?>
+                                    <span><?php echo $progressWidth . "% completed"; ?></span>
+                                    <span><?php echo $remainingDays; ?> days remaining</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: <?php echo $progressWidth . "%"; ?>"></div>
+                                </div>
                             </div>
                             <div class="dates">
                                 <span><?php echo date("M d, Y", strtotime($r["start_date"])); ?></span>
@@ -626,18 +684,19 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                             <i class="fas fa-chevron-down"></i> Show Details
                         </button>
                         <div class="actions">
-                            <a href="<?php echo HTTP_PATH . "/user_panel/membership/PDF/genReceipt.php?MemberID=" . $r["MemberID"] . "" ?>" class="action-btn secondary">
+                            <a href="<?php echo HTTP_PATH . "/user_panel/membership/PDF/genReceipt.php?MemberID=" . $r["MemberID"] . "" ?>" class="action-btn secondary mb-2">
                                 <i class="fas fa-print"></i> Print
                             </a>
-                            <button class="action-btn">
+                            <a href="<?php echo HTTP_PATH . "/user_panel/membership/renew.php?MemberID=" . $r["MemberID"]; ?>" class="action-btn">
                                 <i class="fas fa-sync-alt"></i> Renew
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
             <?php } ?>
         </div>
     </div>
+
 
     <?php include(DRIVE_PATH . "/user_panel/footer/footer.php"); ?>
 
@@ -670,7 +729,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                         $('.membership-card').show();
                     } else {
                         $('.membership-card').hide();
-                        $(`.membership-card[data-status="${filter}"]`).show();
+                        $(`.${filter}`).show();
                     }
                 });
 

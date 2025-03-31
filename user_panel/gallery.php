@@ -1,5 +1,5 @@
 <?php
-require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
+require("C:/xampp/htdocs/php/IFS/path.php");
 include(DRIVE_PATH . "/user_panel/header/header.php");
 
 include(DRIVE_PATH . "/user_panel/login/login.php");
@@ -78,7 +78,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 
     .gallery-item:hover {
         transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0, 255, 157, 0.2);
+        box-shadow: 0px 0px 10px 1px var(--accent-secondary);
     }
 
     .gallery-item img {
@@ -113,6 +113,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
     }
 
     .overlay-content h3 {
+        color: white;
         font-size: 1.5rem;
         margin-bottom: 15px;
     }

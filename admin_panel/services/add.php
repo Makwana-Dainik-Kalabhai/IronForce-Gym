@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Service</title>
-    <?php include("C:/xampp/htdocs/php/IronForce-Gym/admin_panel/links.php"); ?>
+    <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
 
     <style>
         /* Admin Panel Styles */

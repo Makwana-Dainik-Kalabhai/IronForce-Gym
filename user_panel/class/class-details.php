@@ -1,5 +1,5 @@
 <?php
-require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
+require("C:/xampp/htdocs/php/IFS/path.php");
 include(DRIVE_PATH . "/user_panel/header/header.php");
 
 include(DRIVE_PATH . "/user_panel/login/login.php");
@@ -551,12 +551,8 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                     <h2 class="section-title">Membership Details</h2>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="payment" class="required">Payment Type</label>
-                            <select id="payment" name="payment_type" required>
-                                <option value="" disabled selected>Select payment method</option>
-                                <option value="Cash">Cash</option>
-                                <option value="Razorpay">Razorpay</option>
-                            </select>
+                            <label for="payment" class="required">Start Date</label>
+                            <input type="date" name="start_date" required />
                         </div>
                         <div class="form-group">
                             <label class="required">Preferred Timing</label>
@@ -575,6 +571,15 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="payment" class="required">Payment Type</label>
+                            <select id="payment" name="payment_type" required>
+                                <option value="" disabled selected>Select payment method</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Razorpay">Razorpay</option>
+                            </select>
+                        </div>
+
                     </div>
                 </div>
 
@@ -610,7 +615,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                 </div>
                 <?php
                 if (isset($_SESSION["email"])) { ?>
-                    <button type="submit" class="btn btn-block">Submit Application</button>
+                    <button type="submit" name="fresh_submit" class="btn btn-block">Submit Application</button>
                 <?php } ?>
             </form>
             <div class="px-4 pb-3">

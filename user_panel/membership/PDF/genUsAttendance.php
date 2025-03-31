@@ -6,7 +6,7 @@ use Dompdf\Dompdf;
 
 $pdf = new Dompdf();
 
-include("C:/xampp/htdocs/php/IronForce-Gym/user_panel/membership/PDF/userAttendance.php");
+include("C:/xampp/htdocs/php/IFS/user_panel/membership/PDF/userAttendance.php");
 
 $pdf->load_html($html);
 $pdf->set_option("isRemoteEnabled", true);

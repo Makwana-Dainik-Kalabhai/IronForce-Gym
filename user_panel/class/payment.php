@@ -4,125 +4,105 @@ session_start();
 use Razorpay\Api\Api;
 use function PHPSTORM_META\map;
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
+require("C:/xampp/htdocs/php/IFS/path.php");
 
 include(DRIVE_PATH . "../database.php");
 
-$_SESSION["name"] = $_POST["name"];
-$_SESSION["phone"] = $_POST["phone"];
-$_SESSION["gender"] = $_POST["gender"];
 
-if (str_contains($_POST["dob"], "-")) {
-    $_SESSION["dob"] = date("Y/m/d", strtotime($_POST["dob"]));
-} else {
-    $_POST["dob"] = explode("/", $_POST["dob"]);
-    $_SESSION["dob"] = $_POST["dob"][2] . "/" . $_POST["dob"][1] . "/" . $_POST["dob"][0];
-}
-
-$_SESSION["start_date"] = date("Y/m/d", strtotime('tomorrow'));
-
-if ($_SESSION["membership_type"] == 1) {
-    $_SESSION["end_date"] = date("Y/m/d", strtotime("+1 day"));
-} else if ($_SESSION["membership_type"] == 2) {
-    $_SESSION["end_date"] = date("Y/m/d", strtotime("+12 months"));
-} else {
-    $_SESSION["end_date"] = date("Y/m/d", strtotime("+6 months"));
-}
-
-$_SESSION["status"] = 1;
-$_SESSION["goal"] = $_POST["goal"];
-$_SESSION["weight"] = $_POST["weight"];
-$_SESSION["height"] = $_POST["height"];
-$_SESSION["medical_condition"] = $_POST["medical_condition"];
-$_SESSION["experience"] = $_POST["experience"];
-
-if ($_SESSION["membership_type"] == 1) {
-    $_SESSION["plan_duration"] = "1 Day";
-} else if ($_SESSION["membership_type"] == 2) {
-    $_SESSION["plan_duration"] = "12 Months";
-} else {
-    $_SESSION["plan_duration"] = "6 Months";
-}
-
-$_SESSION["payment_type"] = $_POST["payment_type"];
-
-$_SESSION["address"] = array(
-    "house-number" => $_POST["house-number"],
-    "apartment" => $_POST["apartment"],
-    "suite" => $_POST["suite"],
-    "city" => $_POST["city"],
-    "pincode" => $_POST["pincode"]
-);
-$_SESSION["timing"] = $_POST["timing"];
-
-//! Send Email
-function send_email($name, $email, $membership_type, $start_date, $end_date, $timing)
+function setValues($membership_type, $name, $phone, $gender, $dob, $start_date, $end_date, $membership_fee, $goal, $weight, $height, $medical_condition, $experience, $plan_duration, $payment_type, $address, $timing)
 {
+    $_SESSION["membership_type"] = $membership_type;
+    $_SESSION["name"] = $name;
+    $_SESSION["phone"] = $phone;
+    $_SESSION["gender"] = $gender;
+    $_SESSION["dob"] = $dob;
+    $_SESSION["start_date"] = $start_date;
+    $_SESSION["end_date"] = $end_date;
+    $_SESSION["status"] = 1;
+    $_SESSION["membership_fee"] = $membership_fee;
+    $_SESSION["goal"] = $goal;
+    $_SESSION["weight"] = $weight;
+    $_SESSION["height"] = $height;
+    $_SESSION["medical_condition"] = $medical_condition;
+    $_SESSION["experience"] = $experience;
+    $_SESSION["plan_duration"] = "1 Day";
+    $_SESSION["payment_type"] = $payment_type;
 
-    require DRIVE_PATH . "/user_panel/class/phpmailer/src/Exception.php";
-    require DRIVE_PATH . "/user_panel/class/phpmailer/src/PHPMailer.php";
-    require DRIVE_PATH . "/user_panel/class/phpmailer/src/SMTP.php";
+    ($_SESSION["payment_type"] == "Razorpay") ? $_SESSION["payment_status"] = "Paid" : "Pending";
+    $_SESSION["address"] = $address;
+    $_SESSION["timing"] = $timing;
+}
 
-    $mail = new PHPMailer(true);
 
-    $mail->isSMTP();
-    $mail->Host = "smtp.gmail.com";
-    $mail->SMTPAuth = true;
-    $mail->Username = "dainikmakwana31@gmail.com";
-    $mail->Password = "kjhc tkbb hzcn ciep";
-    $mail->SMTPSecure = "tls";
-    $mail->Port = 587;
+if (isset($_POST["renew_submit"])) {
+    $sel = $conn->prepare("SELECT * FROM membership JOIN member ON member.email=membership.email WHERE membership.MemberID=" . $_POST["MemberID"] . "");
+    $sel->execute();
+    $sel = $sel->fetchAll();
+    $sel = $sel[0];
 
-    $mail->setFrom("dainikmakwana31@gmail.com");
-    $mail->addAddress($email);
+    setValues($sel["membership_type"], $sel["FirstName"] . " " . $sel["LastName"], $sel["phone"], $sel["gender"], $sel["dob"], $sel["start_date"], $sel["end_date"], $sel["membership_fee"], $sel["goal"], $sel["weight"], $sel["height"], $sel["medical_condition"], $sel["experience"], $sel["plan_duration"], $sel["payment_type"], $sel["address"], $sel["timing"]);
 
-    $mail->isHTML(true);
-    $mail->Subject = "Welcome to IronForce Gym - Let's Crush Your Fitness Goals!";
+    $_SESSION["renew"] = true;
+}
+//
+else if (isset($_POST["renew_cancel"])) {
+    unset($_SESSION["renew"]);
+?>
+    <script>
+        history.go(-3);
+    </script>
+<?php
+}
+//
+else if (isset($_POST["fresh_submit"])) {
+    unset($_SESSION["renew"]);
 
-    $msg = "Congratulations on taking the first step toward a stronger, healthier you! We're thrilled to welcome you to the IronForce Gym family. Your membership is now active, and we can't wait to help you achieve your fitness goals.
-    <br/><br/>
-Here's what's next:<br/>
-✅ Membership Details:<br/>
-Plan: $membership_type<br/>
-Start Date: $start_date<br/>
-End Date: $end_date<br/>
-Access Hours: $timing
-<br/><br/>
-Facilities: Full access to weightlifting zones, cardio equipment etc.
-<br/><br/>
-📍 Gym Location: 123 Fitness Plaza, Near Shivranjani Crossroads Opposite Skyline Tower, Bodakdev Ahmedabad, Gujarat - 380054
-<br/><br/>
-🔑 How to Access: Use your member ID (attached) at the front desk
-<br/><br/>
-Pro Tip: Check out our [class schedule/personal training options] to maximize your results. Book sessions via our Website or at the front desk!
-<br/><br/>
-Need help or have questions? Reply to this email or call us at +91 98765 43210. Our team is here to support you.
-<br/><br/>
-Let's make every rep count! 💪
-<br/>
-See you at the gym,<br/>
-John Carter<br/>
-Manager of the IronForce Gym<br/>
-IronForce Gym<br/>
-+91 98765 43210
-<br/><br/>
-Why this works:<br/>
-Warm & motivating tone - Celebrates their decision and builds excitement.<br/>
-Clear next steps - Avoids confusion with key details upfront.<br/>
-Call-to-action - Encourages engagement (booking classes, asking questions).<br/>
-Brand personality - Adjust emojis/formality to match your gym's vibe (e.g., more hardcore or community-focused).";
+    if (str_contains($_POST["dob"], "-")) {
+        $_POST["dob"] = date("Y/m/d", strtotime($_POST["dob"]));
+    } else {
+        $_POST["dob"] = explode("/", $_POST["dob"]);
+        $_POST["dob"] = $_POST["dob"][2] . "/" . $_POST["dob"][1] . "/" . $_POST["dob"][0];
+    }
 
-    $mail->Body = $msg;
-    $mail->send();
+    $_POST["start_date"] = date("Y/m/d", strtotime($_POST["start_date"]));
+
+    if ($_SESSION["membership_type"] == 1) {
+        $_POST["end_date"] = date("Y/m/d", strtotime("+1 day"));
+    } else if ($_SESSION["membership_type"] == 2) {
+        $_POST["end_date"] = date("Y/m/d", strtotime("+12 months"));
+    } else {
+        $_POST["end_date"] = date("Y/m/d", strtotime("+6 months"));
+    }
+
+    if ($_SESSION["membership_type"] == 1) {
+        $_POST["plan_duration"] = "1 Day";
+    } else if ($_SESSION["membership_type"] == 2) {
+        $_POST["plan_duration"] = "12 Months";
+    } else {
+        $_POST["plan_duration"] = "6 Months";
+    }
+
+    ($_POST["payment_type"] == "Razorpay") ? $payment_status = "Paid" : "Pending";
+
+    $_POST["address"] = array(
+        "house-number" => $_POST["house-number"],
+        "apartment" => $_POST["apartment"],
+        "suite" => $_POST["suite"],
+        "city" => $_POST["city"],
+        "pincode" => $_POST["pincode"]
+    );
+
+    setValues($_SESSION["membership_type"], $_POST["name"], $_POST["phone"], $_POST["phone"], $_POST["dob"], $_POST["start_date"], $_POST["end_date"], $_SESSION["membership_fee"], $_POST["goal"], $_POST["weight"], $_POST["height"], $_POST["medical_condition"], $_POST["experience"], $_POST["plan_duration"], $_POST["payment_type"], $_POST["address"], $_POST["timing"]);
 } ?>
 
 <input type="hidden" class="name" value="<?php echo $_SESSION["name"]; ?>" />
 <input type="hidden" class="email" value="<?php echo $_SESSION["email"]; ?>" />
 <input type="hidden" class="phone" value="<?php echo $_SESSION["phone"]; ?>" />
-<input type="hidden" class="address" value="<?php echo $_POST["house-number"] . " " . $_POST["apartment"] . " near " . $_POST["suite"] . ", " . $_POST["city"] . " - " . $_POST["pincode"]; ?>" />
+<input type="hidden" class="address" value="<?php echo $_SESSION["address"]; ?>" />
+
+
+
+
 
 <?php //! Payment
 if ($_POST["payment_type"] == "Razorpay") {
@@ -176,7 +156,6 @@ if ($_POST["payment_type"] == "Razorpay") {
                 rzp1.on('payment.failed', function(response) {
                     alert("Transaction Failed");
                 });
-                history.back();
             });
         </script>
     <?php

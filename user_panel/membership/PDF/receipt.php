@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
+require("C:/xampp/htdocs/php/IFS/path.php");
 include(DRIVE_PATH . "../database.php");
 
 if (isset($_GET["MemberID"])) {
@@ -20,7 +20,7 @@ foreach ($sel as $row) {
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Download Invoice</title>
-    <link rel='stylesheet' href='http://localhost/php/IronForce-Gym/css/bootstrap.min.css' type='text/css'>
+    <link rel='stylesheet' href='http://localhost/php/IFS/css/bootstrap.min.css' type='text/css'>
 </head>
 
 <style>

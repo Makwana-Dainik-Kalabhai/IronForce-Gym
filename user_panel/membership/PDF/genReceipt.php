@@ -5,7 +5,7 @@ use Dompdf\Dompdf;
 
 $pdf = new Dompdf();
 
-include("C:/xampp/htdocs/php/IronForce-Gym/user_panel/membership/PDF/receipt.php");
+include("C:/xampp/htdocs/php/IFS/user_panel/membership/PDF/receipt.php");
 
 $pdf->load_html($html);
 $pdf->set_option("isRemoteEnabled", true);

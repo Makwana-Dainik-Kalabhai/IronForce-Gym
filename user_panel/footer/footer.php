@@ -40,13 +40,6 @@
                         <a href="#"><img src="<?php echo HTTP_PATH . "/user_panel/logo.png"; ?>" alt="" /></a>
                     </div>
                     <p>IronForce Gym is a fitness-focused website offering information about gym facilities, membership plans, training programs, and expert coaching.</p>
-                    <div class="fa-social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-youtube-play"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-envelope-o"></i></a>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-2 col-md-3 col-sm-6">
@@ -66,9 +59,9 @@
                     <ul>
                         <?php if (!isset($_SESSION["email"])) { ?>
                             <li><a href="#" class="login-btn">Login</a></li>
-                            <li><a href="#" class="login-btn">My account</a></li>
+                            <li><a href="#" class="login-btn">My Account</a></li>
                         <?php } else { ?>
-                            <li><a href="<?php echo HTTP_PATH . "/user_panel/profile/profile.php"; ?>">My account</a></li>
+                            <li><a href="<?php echo HTTP_PATH . "/user_panel/profile/profile.php"; ?>">My Account</a></li>
                         <?php } ?>
                         <li><a href="<?php echo HTTP_PATH . "/user_panel/contact/contact.php"; ?>">Contact</a></li>
                     </ul>
@@ -108,11 +101,11 @@
 </section>
 <!-- Footer Section End -->
 
-<script src="http://localhost/php/IronForce-Gym/js/jquery-3.3.1.min.js"></script>
-<script src="http://localhost/php/IronForce-Gym/js/bootstrap.min.js"></script>
-<script src="http://localhost/php/IronForce-Gym/js/jquery.magnific-popup.min.js"></script>
-<script src="http://localhost/php/IronForce-Gym/js/masonry.pkgd.min.js"></script>
-<script src="http://localhost/php/IronForce-Gym/js/jquery.barfiller.js"></script>
-<script src="http://localhost/php/IronForce-Gym/js/jquery.slicknav.js"></script>
-<script src="http://localhost/php/IronForce-Gym/js/owl.carousel.min.js"></script>
-<script src="http://localhost/php/IronForce-Gym/js/main.js"></script>
+<script src="http://localhost/php/IFS/js/jquery-3.3.1.min.js"></script>
+<script src="http://localhost/php/IFS/js/bootstrap.min.js"></script>
+<script src="http://localhost/php/IFS/js/jquery.magnific-popup.min.js"></script>
+<script src="http://localhost/php/IFS/js/masonry.pkgd.min.js"></script>
+<script src="http://localhost/php/IFS/js/jquery.barfiller.js"></script>
+<script src="http://localhost/php/IFS/js/jquery.slicknav.js"></script>
+<script src="http://localhost/php/IFS/js/owl.carousel.min.js"></script>
+<script src="http://localhost/php/IFS/js/main.js"></script>

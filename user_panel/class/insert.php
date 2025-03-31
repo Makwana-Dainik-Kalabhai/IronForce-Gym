@@ -4,7 +4,7 @@ session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
+require("C:/xampp/htdocs/php/IFS/path.php");
 
 include(DRIVE_PATH . "../database.php");
 
@@ -29,6 +29,7 @@ class Membership
     public $experience;
     public $plan_duration;
     public $payment_type;
+    public $payment_status;
     public $address;
     public $timing;
 
@@ -52,6 +53,7 @@ class Membership
         $this->plan_duration = $_SESSION["plan_duration"];
 
         $this->payment_type = $_SESSION["payment_type"];
+        $this->payment_status = $_SESSION["payment_status"];
 
         $this->address = $_SESSION["address"];
         $this->timing = $_SESSION["timing"];
@@ -61,7 +63,12 @@ class Membership
     {
         global $conn;
 
-        $insert = $conn->prepare("INSERT INTO `membership` VALUES('', '" . $this->email . "','" . $this->membership_type . "', '" . $this->start_date . "', '" . $this->end_date . "', '" . $this->status . "', '" . $this->membership_fee . "', NOW(), NOW(), '" . $this->goal . "', '" . $this->weight . "', '" . $this->height . "', '" . $this->medical_condition . "', '" . $this->experience . "', '" . $this->plan_duration . "', '" . $this->payment_type . "','" . $this->timing . "')");
+        if (isset($_SESSION["renew"])) {
+            $insert = $conn->prepare("INSERT INTO `membership` VALUES('', '" . $this->email . "','" . $this->membership_type . "', '" . $this->start_date . "', '" . $this->end_date . "', '" . $this->status . "', '" . $this->membership_fee . "', NOW(), NOW(), '" . $this->goal . "', '" . $this->weight . "', '" . $this->height . "', '" . $this->medical_condition . "', '" . $this->experience . "', '" . $this->plan_duration . "', '" . $this->payment_type . "', '" . $this->payment_status . "','" . $this->timing . "')");
+        } //
+        else {
+            $insert = $conn->prepare("INSERT INTO `membership` VALUES('', '" . $this->email . "','" . $this->membership_type . "', '" . $this->start_date . "', '" . $this->end_date . "', '" . $this->status . "', '" . $this->membership_fee . "', NOW(), '0000-00-00 00:00:00', '" . $this->goal . "', '" . $this->weight . "', '" . $this->height . "', '" . $this->medical_condition . "', '" . $this->experience . "', '" . $this->plan_duration . "', '" . $this->payment_type . "', '" . $this->payment_status . "','" . $this->timing . "')");
+        }
 
         if ($insert->execute()) {
             $this->name = explode(" ", $this->name);
@@ -72,12 +79,14 @@ class Membership
 
             send_email($this->name, $this->email, $this->membership_type, $this->start_date, $this->end_date, $this->timing);
 
-            $_SESSION["mem_succ"] = "Congratulations! " . $this->name[0]." ".$this->name[1] . ", Your Membership has been activated for " . $this->plan_duration;
-?>
-            <script>
-                history.go(-3);
-            </script>
-<?php
+            $_SESSION["mem_succ"] = "Congratulations! " . $this->name[0] . " " . $this->name[1] . ", Your Membership has been activated for " . $this->plan_duration;
+
+            if(isset($_SESSION["renew"])) {
+                header("Refresh:0, url=".HTTP_PATH."/user_panel/membership/membership.php");
+            }
+            else {
+                header("Refresh:0, url=".HTTP_PATH."/user_panel/class/class-details.php");
+            }
         }
     }
 }

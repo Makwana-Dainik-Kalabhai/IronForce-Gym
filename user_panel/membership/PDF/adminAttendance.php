@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
+require("C:/xampp/htdocs/php/IFS/path.php");
 include(DRIVE_PATH . "../database.php");
 
 if (isset($_POST["month"])) {
@@ -14,7 +14,7 @@ if (isset($_POST["month"]) && isset($_POST["year"])) {
     $year = $_POST["year"];
 }
 
-$sel = $conn->prepare("SELECT * FROM attendance JOIN member ON member.email=attendance.email");
+$sel = $conn->prepare("SELECT * FROM attendance JOIN member ON member.email=attendance.email ORDER BY attendance.attendance_id");
 $sel->execute();
 $sel = $sel->fetchAll();
 
@@ -27,7 +27,7 @@ foreach ($sel as $r) {
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Download Attendance Sheet</title>
-    <link rel='stylesheet' href='http://localhost/php/IronForce-Gym/css/bootstrap.min.css' type='text/css'>
+    <link rel='stylesheet' href='http://localhost/php/IFS/css/bootstrap.min.css' type='text/css'>
 </head>
 
 <style>
@@ -130,7 +130,7 @@ td {
 
     if (isset($month) && (isset($year))) {
         foreach ($sel as $r) {
-            if (((int)date("m", strtotime($r["date"]))) == $month && ((int)date("y", strtotime($r["date"]))) == $year) {
+            if (((int)date("m", strtotime($r["date"]))) == $month && ((int)date("Y", strtotime($r["date"]))) == $year) {
                 $html .= "<tr>
                         <td class='border py-2 px-3 fs'>" . $r['attendance_id'] . "</td>
                         <td class='border py-2 px-3 fs'>" . $r['FirstName'] . ' ' . $r['LastName'] . "</td>

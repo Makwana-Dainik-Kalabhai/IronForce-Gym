@@ -55,7 +55,7 @@
     <div class="logo">
         <a class="simple-text logo-mini">
             <div class="logo-image-big">
-                <img src="http://localhost/php/medicine_website/admin_panel/admin.png" type="image/x-icon" />
+                <img src="<?php echo HTTP_PATH . "/admin_panel/admin.png"; ?>" type="image/x-icon" />
             </div>
         </a>
         <a class="simple-text logo-normal">
@@ -104,6 +104,12 @@
                 <a href="<?php echo HTTP_PATH . "/admin_panel/attendance/attendance.php"; ?>">
                     <i class="fa-solid fa-tachograph-digital text-danger"></i>
                     <h5 class="text-danger">Attendance</h5>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo HTTP_PATH . "/admin_panel/logout.php"; ?>">
+                    <i class="fa-solid fa-right-from-bracket" style="color: red;"></i>
+                    <h5 style="color: red;">Logout</h5>
                 </a>
             </li>
         </ul>

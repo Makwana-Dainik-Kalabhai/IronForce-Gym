@@ -7,8 +7,15 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 
     <title>Trainer's List</title>
-    <?php include("C:/xampp/htdocs/php/IronForce-Gym/admin_panel/links.php"); ?>
+    <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
 </head>
+
+<style>
+    td img {
+        width: 150px;
+        height: 75px;
+    }
+</style>
 
 <script>
     $(document).ready(() => {
@@ -39,10 +46,10 @@
                         <thead class="bg-danger text-light">
                             <tr>
                                 <th class="col-md-1">Sr.</th>
-                                <th class="col-md-2">Trainer ID</th>
+                                <th class="col-md-1">Trainer ID</th>
                                 <th class="col-md-1">Profile</th>
-                                <th class="col-md-2">First Name</th>
-                                <th class="col-md-2">Last Name</th>
+                                <th class="col-md-2 text-center">First Name</th>
+                                <th class="col-md-2 text-center">Last Name</th>
                                 <th class="col-md-3">Specialization</th>
                                 <th class="col-md-2">Phone</th>
                             </tr>
@@ -58,10 +65,10 @@
                             foreach ($sel_user as $r) { ?>
                                 <tr class="border-bottom">
                                     <td class="col-md-1"><?php echo $i . ")"; ?></td>
-                                    <td class="col-md-2"><?php echo $r["TrainerID"]; ?></td>
+                                    <td class="col-md-1"><?php echo $r["TrainerID"]; ?></td>
                                     <td class="col-md-1"><img style="border-radius: 50%;" src="<?php echo HTTP_PATH . "/img/trainer/" . $r["img"]; ?>" /></td>
-                                    <td class="col-md-2"><?php echo $r["FirstName"]; ?></td>
-                                    <td class="col-md-2"><?php echo $r["LastName"]; ?></td>
+                                    <td class="col-md-2 text-center"><?php echo $r["FirstName"]; ?></td>
+                                    <td class="col-md-2 text-center"><?php echo $r["LastName"]; ?></td>
                                     <td class="col-md-3"><?php echo $r["Specialization"]; ?></td>
                                     <td class="col-md-2"><?php if ($r["Phone"] != 0) {
                                                                 echo $r["Phone"];

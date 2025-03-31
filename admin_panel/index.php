@@ -7,7 +7,7 @@
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 
   <title>User's List</title>
-  <?php include("C:/xampp/htdocs/php/IronForce-Gym/admin_panel/links.php"); ?>
+  <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
 </head>
 
 <script>
@@ -19,7 +19,7 @@
 
       $.ajax({
         type: "POST",
-        url: "http://localhost/php/IronForce-Gym/admin_panel/index.php",
+        url: "http://localhost/php/IFS/admin_panel/index.php",
         data: {
           email: email,
           status: "Active"
@@ -34,7 +34,7 @@
 
       $.ajax({
         type: "POST",
-        url: "http://localhost/php/IronForce-Gym/admin_panel/index.php",
+        url: "http://localhost/php/IFS/admin_panel/index.php",
         data: {
           email: email,
           status: "Blocked"

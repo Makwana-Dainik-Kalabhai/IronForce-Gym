@@ -1,7 +1,27 @@
-<?php session_start(); ?>
+<?php session_start();
+
+if (isset($_SESSION["logout"])) {
+    header("Location: " . HTTP_PATH . "/index.php");
+}
+?>
 <style>
     body {
         background-color: #111111;
+    }
+    @media (max-width: 990px) {
+        .logo {
+            width: 30%;
+        }
+    }
+    @media (max-width: 580px) {
+        .logo {
+            width: 35%;
+        }
+    }
+    @media (max-width: 450px) {
+        .logo {
+            width: 50%;
+        }
     }
 </style>
 <script>
@@ -62,9 +82,11 @@
                     <?php if (isset($_SESSION["email"])) { ?>
                         <li><a href="<?php echo HTTP_PATH . "/user_panel/profile/profile.php"; ?>">Account</a></li>
                         <li><a href="<?php echo HTTP_PATH . "/user_panel/membership/membership.php"; ?>">My Membership</a></li>
+                        <li><a href="<?php echo HTTP_PATH . "/user_panel/attendance/attendance.php"; ?>">My Attendance</a></li>
                     <?php } else { ?>
                         <li><a href="#" class="login-btn">Account</a></li>
                         <li><a href="#" class="login-btn">My Membership</a></li>
+                        <li><a href="#" class="login-btn">My Attendance</a></li>
                     <?php } ?>
                     <li><a href="<?php echo HTTP_PATH . "/user_panel/bmi-calculator.php"; ?>">Bmi calculate</a></li>
                     <li><a href="<?php echo HTTP_PATH . "/user_panel/gallery.php"; ?>">Gallery</a></li>
@@ -73,16 +95,10 @@
                 </ul>
             </li>
 
-            <li><button class="btn primary-btn login-btn">Login</button></li>
+            <li><a href="#" class="login-btn">Login</a></li>
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
-    <div class="canvas-social">
-        <a href="#"><i class="fa fa-facebook"></i></a>
-        <a href="#"><i class="fa fa-twitter"></i></a>
-        <a href="#"><i class="fa fa-youtube-play"></i></a>
-        <a href="#"><i class="fa fa-instagram"></i></a>
-    </div>
 </div>
 <!-- Offcanvas Menu Section End -->
 
@@ -118,9 +134,11 @@
                                 <?php if (isset($_SESSION["email"])) { ?>
                                     <li><a href="<?php echo HTTP_PATH . "/user_panel/profile/profile.php"; ?>">Account</a></li>
                                     <li><a href="<?php echo HTTP_PATH . "/user_panel/membership/membership.php"; ?>">My Membership</a></li>
+                                    <li><a href="<?php echo HTTP_PATH . "/user_panel/attendance/attendance.php"; ?>">My Attendance</a></li>
                                 <?php } else { ?>
                                     <li><a href="#" class="login-btn">Account</a></li>
                                     <li><a href="#" class="login-btn">My Membership</a></li>
+                                    <li><a href="#" class="login-btn">My Attendance</a></li>
                                 <?php } ?>
                                 <li><a href="<?php echo HTTP_PATH . "/user_panel/bmi-calculator.php"; ?>">Bmi calculate</a></li>
                                 <li><a href="<?php echo HTTP_PATH . "/user_panel/gallery.php"; ?>">Gallery</a></li>

@@ -1,7 +1,9 @@
 <?php
 session_start();
 
-session_destroy();
+unset($_SESSION["email"]);
+
+$_SESSION["logout"] = true;
 if (isset($_SERVER["HTTP_REFERER"])) {
         header("Location: " . $_SERVER["HTTP_REFERER"]);
 }

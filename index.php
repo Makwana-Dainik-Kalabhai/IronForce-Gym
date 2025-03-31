@@ -2,6 +2,16 @@
 require(__DIR__ . "/path.php");
 include(DRIVE_PATH . "/user_panel/header/header.php");
 
+if (isset($_SESSION["logout"])) {
+    unset($_SESSION["logout"]);
+}
+if (isset($_SESSION["set_pass"])) {
+    unset($_SESSION["set_pass"]);
+}
+if (isset($_SESSION["otp"])) {
+    unset($_SESSION["otp"]);
+}
+
 include(DRIVE_PATH . "/user_panel/login/login.php");
 
 include(DRIVE_PATH . "/database.php");
@@ -57,7 +67,7 @@ include(DRIVE_PATH . "/database.php");
                             <div class="hi-text">
                                 <span>Shape your body</span>
                                 <h1>Be <strong>strong</strong> traning hard</h1>
-                                <a href="#" class="primary-btn">Get info</a>
+                                <a href="#pricing-section" class="primary-btn">Get Membership</a>
                             </div>
                         </div>
                     </div>
@@ -665,7 +675,7 @@ include(DRIVE_PATH . "/database.php");
                         <div style="font-size: 1.1rem; font-style: italic; margin-bottom: 20px;">
                             "<?php echo $r["comments"]; ?>"
                         </div>
-                        <div style="font-weight: bold; color: #ff5e00;"><?php echo $r["FirstName"]." ".$r["LastName"]; ?></div>
+                        <div style="font-weight: bold; color: #ff5e00;"><?php echo $r["FirstName"] . " " . $r["LastName"]; ?></div>
                         <div style="font-size: 0.9rem;"><?php echo str_repeat("★", $r["rating"]) . str_repeat("☆", 5 - $r["rating"]); ?></div>
                     </div>
                 <?php } ?>

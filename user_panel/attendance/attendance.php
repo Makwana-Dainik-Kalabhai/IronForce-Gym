@@ -1,5 +1,5 @@
 <?php
-require("C:/xampp/htdocs/php/IronForce-Gym/path.php");
+require("C:/xampp/htdocs/php/IFS/path.php");
 include(DRIVE_PATH . "/user_panel/header/header.php");
 
 include(DRIVE_PATH . "/user_panel/login/login.php");
@@ -85,7 +85,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
         margin-bottom: 10px;
     }
 
-    h2 {
+    .section-title {
         color: white !important;
     }
 
@@ -446,207 +446,185 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
         <?php
         include(DRIVE_PATH . "../database.php");
 
-        $total_days_prev_month = 0;
-        $total_days_month = 0;
-
-        // Total Attended Days in Previous Month
-        $sel = $conn->prepare("SELECT COUNT(date) AS total_days_prev_month FROM attendance WHERE email='" . $_SESSION["email"] . "' AND MONTH(date)=MONTH(CURRENT_DATE() - INTERVAL 1 MONTH)");
-        $sel->execute();
-        $sel = $sel->fetchAll();
-        $sel = $sel[0]["total_days_prev_month"];
-
-        $total_days_prev_month = $sel;
-
-        // Total Attended Days in this Month
-        $sel = $conn->prepare("SELECT COUNT(date) AS total_days_month FROM attendance WHERE email='" . $_SESSION["email"] . "' AND MONTH(date)=MONTH(CURRENT_DATE())");
-        $sel->execute();
-        $sel = $sel->fetchAll();
-        $sel = $sel[0]["total_days_month"];
-
-        $total_days_month = $sel;
-
-
-
-        $sel = $conn->prepare("SELECT COUNT(*) AS total, member.*, attendance.* FROM member JOIN attendance ON member.email=attendance.email WHERE member.email='" . $_SESSION["email"] . "'");
+        $sel = $conn->prepare("SELECT * FROM attendance WHERE email='" . $_SESSION["email"] . "' AND attendance_status='Present' ORDER BY attendance_id DESC");
         $sel->execute();
         $sel = $sel->fetchAll();
 
-        $streak = 1;
-        foreach ($sel as $r) {
-            ($prev == ((int)(date("d", strtotime($r["date"]))) - 1)) ?
-                $streak++ : $streak = 0;
-            $prev = (int)(date("d", strtotime($r["date"])));
+        $streak = 0;
+        $prev = date("Y-m-d");
+        $totalPresents = [];
+
+        foreach ($sel as $key => $r) {
+            if ($prev == date("Y-m-d", strtotime($r["date"]))) {
+                $streak++;
+            } else {
+                break;
+            }
         }
 
-        $sel = $conn->prepare("SELECT COUNT(*) AS total, member.*, attendance.* FROM member JOIN attendance ON member.email=attendance.email WHERE member.email='" . $_SESSION["email"] . "'");
+        $trend = $conn->prepare("SELECT EXTRACT(YEAR FROM date) AS year, EXTRACT(MONTH FROM date) AS month, MONTHNAME(date) AS month_name, COUNT(*) AS total_attendance FROM attendance WHERE email='" . $_SESSION["email"] . "' GROUP BY EXTRACT(YEAR FROM date),EXTRACT(MONTH FROM date) ORDER BY year, month");
+        $trend->execute();
+        $trend = $trend->fetchAll();
+
+        foreach ($trend as $tr) {
+            if (((int)date("m")) === $tr["month"]) {
+                $total_days_month = $tr["total_attendance"];
+            }
+            if ((((int)date("m") - 1) % 12) === $tr["month"]) {
+                $total_days_prev_month = $tr["total_attendance"];
+            }
+        }
+
+
+        $sel = $conn->prepare("SELECT * FROM attendance JOIN member ON member.email=attendance.email WHERE attendance.email='" . $_SESSION["email"] . "' AND attendance_status='Present'");
         $sel->execute();
         $sel = $sel->fetchAll();
-        foreach ($sel as $r) {
+
         ?>
-            <!-- Main Content -->
-            <main class="main-content">
-                <!-- Welcome Section -->
-                <section class="welcome-section">
-                    <div class="welcome-card">
-                        <div class="welcome-text">
-                            <h1>Welcome back, <span class="highlight"><?php echo $r["FirstName"] . " " . $r["LastName"]; ?></span>!</h1>
-                            <p><?php echo ($r["total"] > 10) ? "You're crushing your fitness goals. Keep it up!" : ""; ?></p>
-                        </div>
-                        <div class="profile-pic">
-                            <img src="<?php echo HTTP_PATH . "/img/profile/" . ($r["img"] != null) ? $r["img"] : "avtar.png"; ?>" alt="Profile Picture">
-                        </div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <div class="welcome-text">
+                        <h1>Welcome back, <span class="highlight"><?php echo $sel[0]["FirstName"] . " " . $sel[0]["LastName"]; ?></span>!</h1>
+                        <p><?php echo ($streak > 10) ? "You're crushing your fitness goals. Keep it up!" : ""; ?></p>
                     </div>
-                </section>
+                    <div class="profile-pic">
+                        <img src="<?php echo HTTP_PATH . "/img/profile/" . (isset($sel[0]["img"]) && $sel[0]["img"]!=null) ? $sel[0]["img"] : "avtar.png"; ?>" alt="Profile Picture">
+                    </div>
+                </div>
+            </section>
 
-                <!-- Stats Cards -->
-                <section class="stats-section">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3><?php echo $total_days_month;
-                                    ?></h3>
-                                <p>This Month</p>
-                                <span class="trend up"><i class="fas fa-arrow-up"></i><?php echo (($total_days_month - $total_days_prev_month) > 0) ? ($total_days_month - $total_days_prev_month) . " more than last month" : abs($total_days_prev_month - $total_days_month) . " less than last month"; ?></span>
-                            </div>
+            <!-- Stats Cards -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-fire"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3><?php echo $streak; ?></h3>
-                                <p>Current Streak</p>
-                                <span class="trend up"><i class="fas fa-arrow-up"></i> Keep going!</span>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-trophy"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>3</h3>
-                                <p>Achievements</p>
-                                <span class="trend">New badge available!</span>
-                            </div>
+                        <div class="stat-info">
+                            <h3><?php echo $total_days_month;
+                                ?></h3>
+                            <p>This Month</p>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i><?php echo ($total_days_month > $total_days_prev_month) ? ($total_days_month - $total_days_prev_month) . " more than last month" : abs($total_days_prev_month - $total_days_month) . " less than last month"; ?></span>
                         </div>
                     </div>
-                </section>
-
-                <!-- Calendar Section -->
-                <section class="calendar-section">
-                    <h2 class="section-title">Your Attendance Calendar</h2>
-                    <div id="attendance-calendar"></div>
-                </section>
-
-                <!-- Attendance Records -->
-                <section class="records-section">
-                    <div class="section-header">
-                        <h2 class="section-title">Attendance Records</h2>
-                        <div class="actions">
-                            <div class="search-box">
-                                <input type="text" placeholder="Search records..." id="search-records">
-                                <i class="fas fa-search"></i>
-                            </div>
-                            <button id="download-pdf" class="btn-primary">
-                                <i class="fas fa-file-pdf"></i> Download PDF
-                            </button>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><?php echo $streak; ?></h3>
+                            <p>Current Streak</p>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> Keep going!</span>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    <div class="date-range-picker" id="date-range-picker" style="display: none;">
-                        <div class="date-inputs">
-                            <input type="date" id="start-date" class="date-input">
-                            <span>to</span>
-                            <input type="date" id="end-date" class="date-input">
+            <!-- Calendar Section -->
+            <section class="calendar-section">
+                <h2 class="section-title">Your Attendance Calendar</h2>
+
+                <!-- //! All Attendance -->
+                <?php
+                $allAttendance = $conn->prepare("SELECT * FROM attendance JOIN member ON member.email=attendance.email WHERE attendance.email='" . $_SESSION["email"] . "'");
+                $allAttendance->execute();
+                $allAttendance = $allAttendance->fetchAll();
+
+                foreach ($allAttendance as $all) { ?>
+                    <input type="hidden" class="all-dates" id="<?php echo $all["attendance_status"]; ?>" value="<?php echo date("Y-m-d", strtotime($all["date"])); ?>" />
+                <?php } ?>
+                <div id="attendance-calendar"></div>
+            </section>
+
+            <!-- Attendance Records -->
+            <section class="records-section">
+                <div class="section-header">
+                    <h2 class="section-title">Attendance Records</h2>
+                    <div class="actions">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search records..." id="search-records">
+                            <i class="fas fa-search"></i>
                         </div>
-                        <button id="generate-pdf" class="btn-primary">Generate PDF</button>
+                        <button id="download-pdf" class="btn-primary">
+                            <i class="fas fa-file-pdf"></i> Download PDF
+                        </button>
                     </div>
+                </div>
 
-                    <div class="table-container">
-                        <table id="attendance-table">
-                            <thead>
-                                <tr>
-                                    <th>Date <i class="fas fa-sort"></i></th>
-                                    <th>Time <i class="fas fa-sort"></i></th>
-                                    <th>Workout Type <i class="fas fa-sort"></i></th>
-                                    <th>Duration</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2023-06-15</td>
-                                    <td>08:30 AM</td>
-                                    <td>Strength Training</td>
-                                    <td>1h 15m</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-14</td>
-                                    <td>07:15 AM</td>
-                                    <td>Cardio</td>
-                                    <td>45m</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-12</td>
-                                    <td>06:00 PM</td>
-                                    <td>Yoga</td>
-                                    <td>1h 30m</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-10</td>
-                                    <td>09:00 AM</td>
-                                    <td>HIIT</td>
-                                    <td>50m</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-08</td>
-                                    <td>05:30 PM</td>
-                                    <td>Strength Training</td>
-                                    <td>1h 00m</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-05</td>
-                                    <td>07:00 AM</td>
-                                    <td>Cardio</td>
-                                    <td>1h 00m</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-03</td>
-                                    <td>10:00 AM</td>
-                                    <td>Pilates</td>
-                                    <td>1h 15m</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-01</td>
-                                    <td>06:30 PM</td>
-                                    <td>Strength Training</td>
-                                    <td>1h 30m</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <form action="<?php echo HTTP_PATH . "/user_panel/membership/PDF/genUsAttendance.php"; ?>" method="post" class="date-range-picker" id="date-range-picker" style="display: none;">
+                    <div class="date-inputs">
+                        <input type="date" name="start_date" id="start-date" class="date-input">
+                        <span>to</span>
+                        <input type="date" name="end_date" id="end-date" class="date-input">
                     </div>
+                    <button id="generate-pdf" name="submit" class="btn-primary">Generate PDF</button>
+                </form>
 
-                    <div class="pagination">
-                        <button class="btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
-                        <button class="btn-pagination active">1</button>
-                        <button class="btn-pagination">2</button>
-                        <button class="btn-pagination">3</button>
-                        <button class="btn-pagination"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                </section>
+                <div class="table-container">
+                    <table id="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Date <i class="fas fa-sort"></i></th>
+                                <th>Check In Time <i class="fas fa-sort"></i></th>
+                                <th>Check Out Time <i class="fas fa-sort"></i></th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($sel as $r) { ?>
+                                <tr>
+                                    <td><?php echo date("Y-m-d", strtotime($r["date"])); ?></td>
+                                    <td><?php echo date("H:i A", strtotime($r["check_in_time"])); ?></td>
+                                    <td><?php echo date("H:i A", strtotime($r["check_out_time"])); ?></td>
+                                    <td><?php echo ($r["session_duration"] > 0) ? $r["session_duration"] . " Minutes" : 0; ?></td>
+                                    <td><?php echo $r["attendance_status"]; ?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
 
-                <!-- Charts Section -->
-                <section class="charts-section">
-                    <h2 class="section-title">Your Attendance Trends</h2>
-                    <div class="chart-container">
-                        <canvas id="attendance-chart"></canvas>
-                    </div>
-                </section>
-            </main>
+                <div class="pagination">
+                    <button class="btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button class="btn-pagination active">1</button>
+                    <button class="btn-pagination">2</button>
+                    <button class="btn-pagination">3</button>
+                    <button class="btn-pagination"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
 
-        <?php } ?>
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <?php
+                $min = $trend[0]["month"];
+                $max = 0;
+                foreach ($trend as $tr) {
+                    if ($tr["month"] > $max) $max = $tr["month"];
+                    if ($tr["month"] < $min) $min = $tr["month"]; ?>
+                    <input type="hidden" class="<?php echo $tr["month"]; ?>" value="<?php echo $tr["total_attendance"]; ?>" />
+                    <?php }
+                $i = 1;
+                while ($i <= 12) {
+                    if ($i < $min) { ?>
+                        <input type="hidden" class="<?php echo $i; ?>" value="0" />
+                    <?php }
+                    if ($i > $max) { ?>
+                        <input type="hidden" class="<?php echo $i; ?>" value="0" />
+                    <?php }
+                    ?>
+                <?php $i++;
+                } ?>
+                <h2 class="section-title">Your Attendance Trends (<?php echo date("Y"); ?>)</h2>
+                <div class="chart-container">
+                    <canvas id="attendance-chart"></canvas>
+                </div>
+            </section>
+        </main>
     </div>
 
 
@@ -683,46 +661,25 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
             }
 
             // Initialize Calendar
+            let allAttendance = [];
+
+            $(".all-dates").each(function() {
+                allAttendance.push({
+                    title: $(this).attr("id"),
+                    start: $(this).val(),
+                    color: ($(this).attr("id") == "Present") ? "#4a6bff" : "#ff6b6b"
+                });
+            });
             $('#attendance-calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
+                    right: 'month'
                 },
                 defaultView: 'month',
                 editable: false,
                 eventLimit: true,
-                events: [{
-                        title: 'Workout',
-                        start: moment().subtract(10, 'days').format('YYYY-MM-DD'),
-                        color: '#4a6bff'
-                    },
-                    {
-                        title: 'Workout',
-                        start: moment().subtract(8, 'days').format('YYYY-MM-DD'),
-                        color: '#4a6bff'
-                    },
-                    {
-                        title: 'Workout',
-                        start: moment().subtract(5, 'days').format('YYYY-MM-DD'),
-                        color: '#4a6bff'
-                    },
-                    {
-                        title: 'Workout',
-                        start: moment().subtract(3, 'days').format('YYYY-MM-DD'),
-                        color: '#4a6bff'
-                    },
-                    {
-                        title: 'Workout',
-                        start: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-                        color: '#4a6bff'
-                    },
-                    {
-                        title: 'Workout',
-                        start: moment().format('YYYY-MM-DD'),
-                        color: '#4a6bff'
-                    }
-                ],
+                events: allAttendance,
                 dayRender: function(date, cell) {
                     const today = moment().format('YYYY-MM-DD');
                     const dateStr = date.format('YYYY-MM-DD');
@@ -783,71 +740,6 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                 $('#date-range-picker').slideToggle();
             });
 
-            $('#generate-pdf').on('click', function() {
-                const startDate = $('#start-date').val();
-                const endDate = $('#end-date').val();
-
-                if (!startDate || !endDate) {
-                    alert('Please select both start and end dates');
-                    return;
-                }
-
-                generatePDF(startDate, endDate);
-            });
-
-            function generatePDF(startDate, endDate) {
-                const element = document.createElement('div');
-                element.innerHTML = `
-            <div style="padding: 20px; font-family: Arial, sans-serif;">
-                <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                    <img src="https://via.placeholder.com/150x50?text=INVIGOR+FITNESS" alt="INVIGOR FITNESS STUDIO" style="height: 40px;">
-                    <h1 style="margin-left: 20px; color: #4a6bff;">Attendance Report</h1>
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <p><strong>Member:</strong> John Doe</p>
-                    <p><strong>Period:</strong> ${formatDate(startDate)} to ${formatDate(endDate)}</p>
-                    <p><strong>Generated on:</strong> ${moment().format('MMMM D, YYYY')}</p>
-                </div>
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                    <thead>
-                        <tr style="background-color: #f5f5f5;">
-                            <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Date</th>
-                            <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Time</th>
-                            <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Workout Type</th>
-                            <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Duration</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${generateTableRows(startDate, endDate)}
-                    </tbody>
-                </table>
-                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                    <p><strong>Total Sessions:</strong> ${calculateTotalSessions(startDate, endDate)}</p>
-                    <p style="font-style: italic;">Thank you for being a valued member of INVIGOR FITNESS STUDIO!</p>
-                </div>
-            </div>
-        `;
-
-                const opt = {
-                    margin: 10,
-                    filename: `INVIGOR_Attendance_${moment().format('YYYYMMDD')}.pdf`,
-                    image: {
-                        type: 'jpeg',
-                        quality: 0.98
-                    },
-                    html2canvas: {
-                        scale: 2
-                    },
-                    jsPDF: {
-                        unit: 'mm',
-                        format: 'a4',
-                        orientation: 'portrait'
-                    }
-                };
-
-                html2pdf().from(element).set(opt).save();
-            }
-
             function formatDate(dateStr) {
                 return moment(dateStr).format('MMMM D, YYYY');
             }
@@ -891,7 +783,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
                         label: 'Workout Sessions',
-                        data: [8, 10, 12, 9, 11, 12, 10, 13, 11, 14, 12, 15],
+                        data: [$(".1").val(), $(".2").val(), $(".3").val(), $(".4").val(), $(".5").val(), $(".6").val(), $(".7").val(), $(".8").val(), $(".9").val(), $(".10").val(), $(".11").val(), $(".12").val()],
                         backgroundColor: 'rgba(74, 107, 255, 0.7)',
                         borderColor: 'rgba(74, 107, 255, 1)',
                         borderWidth: 1
@@ -922,12 +814,6 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                     }
                 }
             });
-
-            // Set default dates for date picker
-            const today = moment().format('YYYY-MM-DD');
-            const firstDayOfMonth = moment().startOf('month').format('YYYY-MM-DD');
-            $('#start-date').val(firstDayOfMonth);
-            $('#end-date').val(today);
         });
     </script>
 </body>

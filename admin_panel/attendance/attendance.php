@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-    <?php include("C:/xampp/htdocs/php/IronForce-Gym/admin_panel/links.php"); ?>
+    <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
     <style>
         :root {
             --primary: #4a6bff;
@@ -50,6 +50,24 @@
 
         .attendance-container {
             padding-top: 200px;
+        }
+
+        .alert {
+            width: fit-content;
+            position: fixed;
+            top: 5%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            font-weight: 700;
+            filter: contrast(130%);
+        }
+
+        .alert-success {
+            background-color: green !important;
+        }
+
+        .alert-danger {
+            background-color: red !important;
         }
 
         .card {
@@ -345,6 +363,12 @@
 </head>
 
 <body class="admin-dashboard" data-bs-theme="light">
+    <?php if (isset($_SESSION["error"])) { ?>
+        <div class="alert alert-danger">
+            <?php echo $_SESSION["error"];
+            unset($_SESSION["error"]); ?>
+        </div>
+    <?php } ?>
     <?php if (isset($_SESSION["success"])) { ?>
         <!-- //! Success Modal -->
         <div class="modal-overlay active" id="successModal">
@@ -359,7 +383,8 @@
                     <h2>Attendance Recorded!</h2>
                     <p><?php echo $_SESSION["success"]; ?></p>
                     <div class="details">
-                        <p><i class="far fa-calendar-alt"></i> <span id="attendance-date">Today <?php date_default_timezone_set("Asia/Kolkata"); echo date("M d, Y", strtotime("today")); ?></span></p>
+                        <p><i class="far fa-calendar-alt"></i> <span id="attendance-date">Today <?php date_default_timezone_set("Asia/Kolkata");
+                                                                                                echo date("M d, Y", strtotime("today")); ?></span></p>
                         <p><i class="far fa-clock"></i> <span id="attendance-time"><?php echo date("H:i A"); ?></span></p>
                     </div>
                 </div>
@@ -368,7 +393,8 @@
                 </div>
             </div>
         </div>
-    <?php unset($_SESSION["success"]); } ?>
+    <?php unset($_SESSION["success"]);
+    } ?>
 
 
 
@@ -421,46 +447,68 @@
 
         <div class="row">
             <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span><i class="fas fa-user-clock me-2"></i>Record Attendance</span>
-                        <button class="btn btn-sm btn-outline-primary" id="quickCheckinBtn">
-                            <i class="fas fa-bolt me-1"></i> Quick Check-in
-                        </button>
+
+                <div class="row">
+                    <!-- //! Check-in Form -->
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-user-clock me-2"></i>Record Attendance</span>
+                            <button class="btn btn-sm btn-outline-primary" id="quickCheckinBtn">
+                                <i class="fas fa-bolt me-1"></i> Quick Check-in
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form action="doAttendance.php" method="post" id="attendanceForm">
+                                <div class="mb-3">
+                                    <label for="memberEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Member Email" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sessionDuration" class="form-label">Session Duration</label>
+                                    <input type="number" class="form-control" name="session_duration" id="sessionDuration" placeholder="0 minutes" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="attendanceStatus" class="form-label">Status</label>
+                                    <select class="form-select" name="attendance_status" id="attendanceStatus" required>
+                                        <option disabled selected>Select Status</option>
+                                        <option value="Present">Present</option>
+                                        <option value="Absent">Absent</option>
+                                        <option value="Late">Late</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select attendance status</div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary" name="submit">
+                                        <i class="fas fa-save me-1"></i> Save Attendance
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" id="resetForm">
+                                        <i class="fas fa-undo me-1"></i> Reset
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <form action="doAttendance.php" method="post" id="attendanceForm">
-                            <div class="mb-3">
-                                <label for="memberEmail" class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Member Email" required />
-                            </div>
-                            <div class="mb-3">
-                                <label for="checkOutTime" class="form-label">Check-out Time</label>
-                                <input type="text" class="form-control" name="check_out_time" id="checkOutTime" placeholder="HH:MM" required />
-                            </div>
-                            <div class="mb-3">
-                                <label for="sessionDuration" class="form-label">Session Duration</label>
-                                <input type="number" class="form-control" name="session_duration" id="sessionDuration" placeholder="0 minutes" required />
-                            </div>
-                            <div class="mb-3">
-                                <label for="attendanceStatus" class="form-label">Status</label>
-                                <select class="form-select" name="attendance_status" id="attendanceStatus" required>
-                                    <option disabled selected>Select Status</option>
-                                    <option value="Present">Present</option>
-                                    <option value="Absent">Absent</option>
-                                    <option value="Late">Late</option>
-                                </select>
-                                <div class="invalid-feedback">Please select attendance status</div>
-                            </div>
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary" name="submit">
-                                    <i class="fas fa-save me-1"></i> Save Attendance
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary" id="resetForm">
-                                    <i class="fas fa-undo me-1"></i> Reset
-                                </button>
-                            </div>
-                        </form>
+                </div>
+
+                <!-- //! Check-Out Form -->
+                <div class="row">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-user-clock me-2"></i>Check Out Here</span>
+                        </div>
+                        <div class="card-body">
+                            <form action="checkOut.php" method="post">
+                                <div class="mb-3">
+                                    <label for="memberEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Member Email" required />
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary" name="submit">
+                                        <i class="fas fa-save me-1"></i> Check Out Now
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -565,7 +613,7 @@
                 e.stopPropagation();
             });
 
-
+            $(".alert").fadeOut(10000);
 
 
             $("body").hover(function() {
@@ -596,63 +644,11 @@
             }
 
             // Initialize date pickers
-            flatpickr("#attendanceDate", {
-                dateFormat: "Y-m-d",
-                defaultDate: "today"
-            });
-
-            flatpickr("#checkInTime", {
-                enableTime: true,
-                noCalendar: true,
-                dateFormat: "H:i",
-                defaultDate: new Date(),
-                time_24hr: true
-            });
-
-            flatpickr("#checkOutTime", {
-                enableTime: true,
-                noCalendar: true,
-                dateFormat: "H:i",
-                time_24hr: true
-            });
-
             flatpickr("#dateRangeFilter", {
                 mode: "range",
                 dateFormat: "Y-m-d",
                 defaultDate: [new Date(), new Date()]
             });
-
-            // Calculate session duration
-            function calculateDuration() {
-                const checkIn = $("#checkInTime").val();
-                const checkOut = $("#checkOutTime").val();
-
-                if (checkIn && checkOut) {
-                    const [inH, inM] = checkIn.split(':').map(Number);
-                    const [outH, outM] = checkOut.split(':').map(Number);
-
-                    const inDate = new Date(0, 0, 0, inH, inM);
-                    const outDate = new Date(0, 0, 0, outH, outM);
-
-                    let diff = outDate - inDate;
-                    if (diff < 0) {
-                        diff += 24 * 60 * 60 * 1000; // Add 24 hours if crossed midnight
-                    }
-
-                    const hours = Math.floor(diff / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-                    let durationText = '';
-                    if (hours > 0) durationText += `${hours} hour${hours > 1 ? 's' : ''} `;
-                    if (minutes > 0) durationText += `${minutes} minute${minutes > 1 ? 's' : ''}`;
-
-                    $("#sessionDuration").val(durationText || '0 minutes');
-                } else {
-                    $("#sessionDuration").val('0 minutes');
-                }
-            }
-
-            $("#checkInTime, #checkOutTime").on('change', calculateDuration);
 
             // Initialize DataTable
             const attendanceTable = $('#attendanceTable').DataTable();
@@ -680,7 +676,6 @@
             $('#quickCheckinBtn').on('click', function() {
                 $('#attendanceStatus').val('Present');
                 let now = new Date();
-                $('#checkOutTime').val(new Date(now.getTime() + 60 * 60000).toTimeString().substring(0, 5));
                 $('#sessionDuration').val(60);
 
                 // Focus on member ID field
@@ -690,7 +685,6 @@
             // Reset form
             $('#resetForm').on('click', function() {
                 $('#email').val("");
-                $('#checkOutTime').val("00:00");
                 $('#attendanceForm').find('.is-invalid').removeClass('is-invalid');
                 $('#sessionDuration').val(0);
                 $("#attendanceStatus").val("Select Status");

@@ -21,14 +21,15 @@
         border-radius: 0.4rem;
         box-shadow: 0px 0px 10px 3px #282a35;
         background-color: white;
-        z-index: 100;
+        z-index: 10000;
         overflow: hidden;
     }
 
     .form-slider .sliding-img {
+        display: grid;
+        place-items: center;
         position: absolute;
         left: 0;
-        width: 50%;
         width: 50%;
         height: 100%;
         background-color: #111111;
@@ -128,6 +129,43 @@
         font-weight: 600;
         text-decoration: none;
     }
+
+    @media (max-width: 1200px) {
+        .form-slider {
+            width: 85%;
+        }
+    }
+    @media (max-width: 950px) {
+        .form-slider {
+            width: 95%;
+        }
+    }
+    @media (max-width: 700px) {
+        .form-slider {
+            width: 80%;
+        }
+        .form-slider .sliding-img {
+            display: none;
+        }
+        .form-slider>form {
+            width: 100%;
+            overflow: auto;
+        }
+    }
+    @media (max-width: 400px) {
+        .form-slider {
+            top: 0;
+            left: 0;
+            transform: translate(0, 0);
+            width: 100%;
+            height: 100%;
+            box-shadow: none;
+            border-radius: 0px;
+        }
+        .form-slider>form {
+            padding: 1rem;
+        }
+    }
 </style>
 
 <script>
@@ -200,9 +238,9 @@
 ?>
 
 <div class="form-slider card">
-    <i class="fa-solid fa-xmark p-2 rounded"></i>
+    <i class="fa-solid fa-xmark p-2 rounded text-dark"></i>
     <div class="sliding-img">
-        <img src="<?php echo HTTP_PATH . "/user_panel/login/slide_img.png"; ?>" alt="">
+        <img src="<?php echo HTTP_PATH . "/user_panel/logo.png"; ?>" alt="">
     </div>
     <form action="<?php echo HTTP_PATH . "/user_panel/login/verify.php"; ?>" id="sign-form" method="post">
         <h1>signUp</h1>
@@ -276,6 +314,9 @@
             <div class="row">
                 <i class="fa-solid fa-lock"></i>
                 <input type="password" class="form-control" name="password" placeholder="Password" required />
+            </div>
+            <div class="row">
+                <a href="<?php echo HTTP_PATH."/user_panel/login/forgot_pass/forgot_pass.php"; ?>" class="text-primary forgot-pass-btn">Forget Password?</a>
             </div>
 
             <div class="row">
