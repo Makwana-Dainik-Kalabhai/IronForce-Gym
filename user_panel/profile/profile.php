@@ -379,7 +379,6 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 
         .form-control {
             width: 100%;
-            padding: 12px 15px;
             border: 1px solid var(--gray-dark);
             border-radius: var(--border-radius);
             font-size: 15px;
@@ -742,24 +741,6 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 
 <?php
 include(DRIVE_PATH . "../database.php");
-
-if (isset($_POST["saveBtn"])) {
-    if (isset($_FILES["img"]["name"]) && $_FILES["img"]["name"] != null) {
-        if (str_contains($_FILES["img"]["name"], "'")) {
-            $_FILES["img"]["name"] = explode("'", $_FILES["img"]["name"]);
-            $_FILES["img"]["name"] = $_FILES["img"]["name"][0] . $_FILES["img"]["name"][1];
-        }
-
-        $up = $conn->prepare("UPDATE `member` SET `img`='" . $_FILES["img"]["name"] . "', `FirstName`='" . $_POST["FirstName"] . "', `LastName`='" . $_POST["LastName"] . "', `phone`='" . $_POST["phone"] . "', `gender`='" . $_POST["gender"] . "', `dob`='" . $_POST["dob"] . "',`address`='" . serialize($address) . "' WHERE `email`='" . $_SESSION["email"] . "'");
-
-        if ($up->execute()) {
-            move_uploaded_file($_FILES["img"]["tmp_name"], DRIVE_PATH . "/img/profile/" . $_FILES["img"]["name"] . "");
-            $_SESSION["success"] = "Profile Details Updated Successfully";
-        }
-    } else {
-        $_SESSION["error"] = "Something Went Wrong";
-    }
-}
 ?>
 
 <body>
@@ -1041,12 +1022,12 @@ if (isset($_POST["saveBtn"])) {
             </div>
 
             <?php
-            $sel = $conn->prepare("SELECT * FROM member WHERE member.email='" . $_SESSION["email"] . "'");
+            $sel = $conn->prepare("SELECT * FROM member WHERE email='" . $_SESSION["email"] . "'");
             $sel->execute();
             $sel = $sel->fetchAll();
 
             foreach ($sel as $r) { ?>
-                <form action="" method="post" enctype="multipart/form-data" class="profile-form">
+                <form action="<?php echo HTTP_PATH . "/user_panel/profile/update.php"; ?>" method="post" enctype="multipart/form-data" class="profile-form">
                     <!-- Personal Information Section -->
                     <div class="form-section">
                         <div class="section-header">
@@ -1069,35 +1050,31 @@ if (isset($_POST["saveBtn"])) {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="firstName">First Name</label>
-                                <input type="text" id="firstName" name="FirstName" class="form-control" value="John" required>
-                                <div class="error-message">First name is required</div>
+                                <input type="text" id="firstName" name="FirstName" class="form-control" value="<?php echo $r["FirstName"]; ?>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="lastName">Last Name</label>
-                                <input type="text" id="lastName" name="LastName" class="form-control" value="Doe" required>
-                                <div class="error-message">Last name is required</div>
+                                <input type="text" id="lastName" name="LastName" class="form-control" value="<?php echo $r["LastName"]; ?>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" id="email" name="email" class="form-control" value="john.doe@example.com" disabled />
-                                <div class="error-message">Please enter a valid email</div>
+                                <input type="email" id="email" name="email" class="form-control" value="<?php echo $r["email"]; ?>" readonly />
                             </div>
 
                             <div class="form-group">
                                 <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" class="form-control" value="(555) 123-4567">
-                                <div class="error-message">Please enter a valid phone number</div>
+                                <input type="tel" id="phone" name="phone" class="form-control" value="<?php echo $r["phone"]; ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="gender">Gender</label>
                                 <div class="select-wrapper">
                                     <select id="gender" name="gender" class="form-control form-select">
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="other">Other</option>
+                                        <option value="male" <?php echo ($r["gender"] == "Male") ? "selected" : ""; ?>>Male</option>
+                                        <option value="female" <?php echo ($r["gender"] == "Female") ? "selected" : ""; ?>>Female</option>
+                                        <option value="other" <?php echo ($r["gender"] == "Other") ? "selected" : ""; ?>>Other</option>
                                         <option value="prefer-not-to-say">Prefer not to say</option>
                                     </select>
                                 </div>
@@ -1105,7 +1082,7 @@ if (isset($_POST["saveBtn"])) {
 
                             <div class="form-group">
                                 <label for="dob">Date of Birth</label>
-                                <input type="text" id="dob" name="dob" class="form-control" value="<?php echo date("d/m/Y", strtotime($r["dob"])); ?>">
+                                <input type="text" id="dob" name="dob" class="form-control" value="<?php echo date("Y-m-d", strtotime($r["dob"])); ?>">
                             </div>
                         </div>
 
@@ -1113,82 +1090,36 @@ if (isset($_POST["saveBtn"])) {
                             <label>Address</label>
                             <div class="row py-2">
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="house-number" placeholder="House Number" value="<?php echo unserialize($r["address"])["house-number"]; ?>" />
+                                    <input type="text" class="form-control" name="house-number" placeholder="House Number" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["house-number"] : ""; ?>" />
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="apartment" placeholder="Street" value="<?php echo unserialize($r["address"])["apartment"]; ?>" />
+                                    <input type="text" class="form-control" name="apartment" placeholder="Street" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["apartment"] : ""; ?>" />
                                 </div>
                             </div>
 
                             <div class="row py-2">
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="suite" placeholder="Suite" value="<?php echo unserialize($r["address"])["suite"]; ?>">
+                                    <input type="text" class="form-control" name="suite" placeholder="Suite" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["suite"] : ""; ?>">
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="city" placeholder="City" value="<?php echo unserialize($r["address"])["city"]; ?>" />
+                                    <input type="text" class="form-control" name="city" placeholder="City" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["city"] : ""; ?>" />
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="number" minlength="6" maxlength="6" class="form-control" name="pincode" placeholder="Pincode" value="<?php echo unserialize($r["address"])["pincode"]; ?>" />
+                                    <input type="number" minlength="6" maxlength="6" class="form-control" name="pincode" placeholder="Pincode" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["pincode"] : ""; ?>" />
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Membership Information Section -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <i class="fas fa-id-card"></i>
-                            <h3>Membership Information</h3>
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="submit" name="save" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
                         </div>
-                        <?php
-                        $ship = $conn->prepare("SELECT * FROM `membership` WHERE `email`='" . $_SESSION["email"] . "'");
-                        $ship->execute();
-                        $ship = $ship->fetchAll();
-
-                        foreach ($ship as $key=>$s) { ?>
-                            <div class="bg-light my-3 p-3 form-grid">
-                                <h4>Membership - <?php echo $key+1; ?> (ID: <?php echo $s["MemberID"]; ?>)</h4>
-                                <div></div>
-                                <div class="form-group">
-                                    <label>Membership Status</label>
-                                    <div>
-                                        <span class="badge badge-<?php echo $s["status"]; ?>"><?php echo $s["status"]; ?></span>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>Membership Plan</label>
-                                    <input type="text" class="form-control" value="<?php echo date("M d, Y", strtotime($s["end_date"])); ?>" readonly>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Join Date</label>
-                                    <input type="text" class="form-control" value="<?php echo date("M d, Y", strtotime($s["start_date"])); ?>" readonly>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label>Expiry Date</label>
-                                    <input type="text" class="form-control" value="<?php echo $s["plan_duration"]; ?>" readonly>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    </div>
-
-                    <!-- Form Actions -->
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-outline" id="discardBtn">
-                            <i class="fas fa-times"></i> Discard Changes
-                        </button>
-                        <button type="submit" class="btn btn-primary" name="saveBtn" disabled>
-                            <i class="fas fa-save"></i> Save Changes
-                        </button>
                     </div>
                 </form>
-            <?php } ?>
         </div>
     </div>
-
+    <?php } ?>
     <?php include(DRIVE_PATH . "/user_panel/footer/footer.php"); ?>
 
     <script>

@@ -113,7 +113,7 @@ function send_email($name, $email, $membership_type, $start_date, $end_date, $ti
     $mail->SMTPSecure = "tls";
     $mail->Port = 587;
 
-    $mail->setFrom("sanketkabariyay8@gmail.com");
+    $mail->setFrom("dainikmakwana31@gmail.com");
     $mail->addAddress($email);
 
     $mail->isHTML(true);

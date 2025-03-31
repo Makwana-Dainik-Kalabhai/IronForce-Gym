@@ -138,7 +138,7 @@ td {
     </header>
     <hr>";
 
-    $address = unserialize($row["address"])["house-number"] . " " . unserialize($row["address"])["apartment"] . " near " . unserialize($row["address"])["suite"] . ", " . unserialize($row["address"])["city"] . " - " . unserialize($row["address"])["pincode"];
+    $address = ($row["address"] != null) ? unserialize($row["address"])["house-number"] . " " . unserialize($row["address"])["apartment"] . " near " . unserialize($row["address"])["suite"] . ", " . unserialize($row["address"])["city"] . " - " . unserialize($row["address"])["pincode"] : "";
 
     $html .= "<header id='header2'>
         <table>

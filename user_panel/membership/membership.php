@@ -543,7 +543,11 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 
                 // Calculate days elapsed from start to now
                 $now = new DateTime();
-                $daysElapsed = $start->diff($now)->days;
+                if ($now < $start) {
+                    $daysElapsed = 0;
+                } else {
+                    $daysElapsed = $start->diff($now)->days;
+                }
 
                 // Ensure we don't exceed the total period
                 if ($daysElapsed > $totalDays) {

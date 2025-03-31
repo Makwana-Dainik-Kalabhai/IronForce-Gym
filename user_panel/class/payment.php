@@ -40,7 +40,7 @@ if (isset($_POST["renew_submit"])) {
     $sel = $sel->fetchAll();
     $sel = $sel[0];
 
-    setValues($sel["membership_type"], $sel["FirstName"] . " " . $sel["LastName"], $sel["phone"], $sel["gender"], $sel["dob"], $sel["start_date"], $sel["end_date"], $sel["membership_fee"], $sel["goal"], $sel["weight"], $sel["height"], $sel["medical_condition"], $sel["experience"], $sel["plan_duration"], $sel["payment_type"], $sel["address"], $sel["timing"]);
+    setValues($sel["membership_type"], $sel["FirstName"] . " " . $sel["LastName"], $sel["phone"], $sel["gender"], $sel["dob"], $_POST["start_date"], $sel["end_date"], $sel["membership_fee"], $sel["goal"], $sel["weight"], $sel["height"], $sel["medical_condition"], $sel["experience"], $sel["plan_duration"], $_POST["payment_type"], $sel["address"], $sel["timing"]);
 
     $_SESSION["renew"] = true;
 }

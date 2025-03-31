@@ -107,7 +107,6 @@ if (isset($_POST["sign"])) {
 
 // This is for Login Form
 if (isset($_POST["login"])) {
-    echo $_POST["email"];
     $login_email = $_POST["email"];
     $login_password = $_POST["password"];
 
@@ -130,15 +129,11 @@ if (isset($_POST["login"])) {
             return;
         }
         //
-        if ($login_email == $row_admin["email"] && $login_password != $row_admin["password"]) {
+        else if ($login_email == $row_admin["email"] && $login_password != $row_admin["password"]) {
             $_SESSION["form_error"] = "Invalid password";
 
             if (isset($_SESSION["form_succ"])) {
                 unset($_SESSION["form_succ"]);
-            }
-
-            if (isset($_SERVER['HTTP_REFERER'])) {
-                header("Location: " . $_SERVER['HTTP_REFERER'] . "");
             }
         }
         //
@@ -148,31 +143,21 @@ if (isset($_POST["login"])) {
             if (isset($_SESSION["form_succ"])) {
                 unset($_SESSION["form_succ"]);
             }
-
-            if (isset($_SERVER['HTTP_REFERER'])) {
-                header("Location: " . $_SERVER['HTTP_REFERER'] . "");
-            }
         }
     }
 
     //! Select user
-    $sel_user = $conn->prepare("SELECT * FROM `member`");
+    $sel_user = $conn->prepare("SELECT * FROM `member` WHERE email='$login_email'");
     $sel_user->execute();
     $sel_user = $sel_user->fetchAll();
 
     foreach ($sel_user as $row_user) {
-
-        if ($login_email == $row_user["email"] && $login_password == $row_user["password"] && $row_user["status"] != "block") {
+        if ($login_email == $row_user["email"] && $login_password == $row_user["password"]) {
             $_SESSION["email"] = $row_user["email"];
             $_SESSION["name"] = $row_user["FirstName"] . " " . $row_user["LastName"];
             $_SESSION["phone"] = $row_user["phone"];
             $_SESSION["gender"] = $row_user["gender"];
             $_SESSION["dob"] = date("d/m/Y", strtotime($row_user["dob"]));
-            $_SESSION["house-number"] = unserialize($row_user["address"])["house-number"];
-            $_SESSION["apartment"] = unserialize($row_user["address"])["apartment"];
-            $_SESSION["suite"] = unserialize($row_user["address"])["suite"];
-            $_SESSION["city"] = unserialize($row_user["address"])["city"];
-            $_SESSION["pincode"] = unserialize($row_user["address"])["pincode"];
 
             $_SESSION["form_succ"] = "Login Successfully";
 
@@ -185,7 +170,7 @@ if (isset($_POST["login"])) {
             return;
         }
         //
-        if ($login_email == $row_user["email"] && $login_password != $row_user["password"]) {
+        else if ($login_email == $row_user["email"] && $login_password != $row_user["password"]) {
             $_SESSION["form_error"] = "Invalid password";
 
             if (isset($_SESSION["form_succ"])) {
