@@ -34,6 +34,9 @@
 <?php
 define('DRIVE_PATH', "C:/xampp/htdocs/php/IFS");
 define('HTTP_PATH', "http://localhost/php/IFS");
+
+include(DRIVE_PATH . "/database.php");
+
 ?>
 
 <!-- Favicon -->

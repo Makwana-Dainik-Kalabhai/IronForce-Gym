@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2025 at 01:43 PM
+-- Generation Time: Apr 01, 2025 at 07:22 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -81,7 +81,8 @@ INSERT INTO `attendance` (`attendance_id`, `email`, `date`, `check_in_time`, `ch
 (16, 'dainikmakwana31@gmail.com', '2025-03-30', '2025-03-30 21:12:12', '2025-03-31 08:38:50', 60, 'Present'),
 (20, 'dainikmakwana31@gmail.com', '2025-03-31', '2025-03-31 08:42:09', '0000-00-00 00:00:00', 60, 'Present'),
 (21, 'dainikmakwana31@gmail.com', '2025-02-01', '2025-02-01 15:15:00', '2025-02-01 15:15:00', 60, 'Present'),
-(22, 'dainikmakwana31@gmail.com', '2025-02-12', '2025-02-12 16:03:48', '2025-03-12 16:03:48', 0, 'Absent');
+(22, 'dainikmakwana31@gmail.com', '2025-02-12', '2025-02-12 16:03:48', '2025-03-12 16:03:48', 0, 'Absent'),
+(23, 'dainikmakwana31@gmail.com', '2025-04-01', '2025-04-01 21:34:56', '2025-04-01 22:27:22', 53, 'Present');
 
 -- --------------------------------------------------------
 
@@ -111,7 +112,9 @@ INSERT INTO `feedback` (`feedback_id`, `email`, `service_id`, `feedback_type`, `
 (5, 'david.brown@example.com', 5, 'Complaint', 3, 'The pool itself is great but the water temperature fluctuates too much. Also, please enforce the lane etiquette rules more strictly - too many people swimming in wrong lanes.', '2025-03-27 15:52:53'),
 (6, 'emily.garcia@example.com', 6, 'Suggestion', 4, 'The yoga instructors are excellent! Would love to see more evening yoga classes added to the schedule, especially restorative yoga options after work hours.', '2025-03-27 15:53:38'),
 (7, 'robert.lee@example.com', 7, 'General', 5, 'Best weightlifting setup in town! Plenty of racks, platforms, and quality equipment. Never have to wait long even during peak hours. The staff keeps everything well-maintained.', '2025-03-27 15:54:15'),
-(11, 'dainikmakwana31@gmail.com', 1, 'General', 5, 'bbbbbbbbbbbbbb', '2025-03-29 23:03:11');
+(11, 'dainikmakwana31@gmail.com', 1, 'General', 5, 'bbbbbbbbbbbbbb', '2025-03-29 23:03:11'),
+(13, 'dainikmakwana31@gmail.com', 2, 'General', 4, 'This is My Feedback', '2025-04-01 17:14:23'),
+(14, 'dainikmakwana31@gmail.com', 2, 'General', 5, 'This is My Feedback', '2025-04-01 17:17:21');
 
 -- --------------------------------------------------------
 
@@ -128,7 +131,7 @@ CREATE TABLE `member` (
   `phone` bigint(10) NOT NULL,
   `gender` varchar(10) DEFAULT NULL,
   `dob` date DEFAULT NULL,
-  `address` varchar(200) NOT NULL,
+  `address` varchar(400) NOT NULL,
   `MembershipStatus` enum('Active','Expired','Suspended','') NOT NULL DEFAULT 'Active',
   `JoinDate` date DEFAULT NULL,
   `status` enum('Active','Block','','') NOT NULL DEFAULT 'Active'
@@ -139,15 +142,15 @@ CREATE TABLE `member` (
 --
 
 INSERT INTO `member` (`img`, `FirstName`, `LastName`, `email`, `password`, `phone`, `gender`, `dob`, `address`, `MembershipStatus`, `JoinDate`, `status`) VALUES
-('', 'Makwana', 'Arun', 'arun123@gmail.com', '12345678', 1234567890, 'male', '2025-04-01', 'a:5:{s:12:\"house-number\";s:2:\"29\";s:9:\"apartment\";s:12:\"Hanumannagar\";s:5:\"suite\";s:12:\"Central Jail\";s:4:\"city\";s:9:\"Ahmedabad\";s:7:\"pincode\";s:6:\"382480\";}', '', '0000-00-00', ''),
-('', 'Makwana', 'Dainik', 'dainikmakwana31@gmail.com', '12345678', 1234567890, 'male', '2004-08-31', 's:163:\"a:5:{s:12:\"house-number\";s:5:\"D/302\";s:9:\"apartment\";s:19:\"Mangalmurti Heights\";s:5:\"suite\";s:9:\"Dev Prime\";s:4:\"city\";s:9:\"Ahmedabad\";s:7:\"pincode\";s:6:\"382424\";}\";', 'Active', '2025-03-30', ''),
-('', 'David', 'Brown', 'david.brown@example.com', '123450', 1234567890, 'Male', '0000-00-00', '', 'Active', NULL, 'Active'),
-('', 'Emily', 'Garcia', 'emily.garcia@example.com', '1234567890', 1234567890, 'Female', '0000-00-00', '', 'Active', NULL, 'Active'),
-('', 'John', 'Doe', 'john.doe@example.com', '12345', 1234567890, 'Male', '0000-00-00', '', 'Active', NULL, 'Active'),
-('', 'Lisa', 'Wang', 'lisa.wang@example.com', '654321', 987654321, 'Male', '0000-00-00', '', 'Active', NULL, 'Active'),
-('', 'Mike', 'Johnson', 'mike.johnson@example.com', '654321', 5432167890, 'Male', '0000-00-00', '', 'Active', NULL, 'Active'),
-('', 'Robert', 'Lee', 'robert.lee@example.com', '1234567890', 1234567890, 'Female', '0000-00-00', '', 'Active', NULL, 'Active'),
-('', 'Sarah', 'Smith', 'sarah.smith@example.com', '123456', 987654321, 'Male', '0000-00-00', '', 'Active', NULL, 'Active');
+('', 'Makwana', 'Arun', 'arun123@gmail.com', '12345678', 1234567890, 'male', '2004-08-31', 'a:5:{i:0;s:5:\"D/302\";i:1;s:19:\"Mangalmurti Heights\";i:2;s:9:\"Dev Prime\";i:3;s:9:\"Ahmedabad\";i:4;s:6:\"382424\";}', 'Active', '0000-00-00', 'Active'),
+('', 'Makwana', 'Dainik', 'dainikmakwana31@gmail.com', '12345678', 1234567890, 'male', '2004-08-31', 'a:5:{i:0;s:2:\"29\";i:1;s:12:\"Hanumannagar\";i:2;s:12:\"Central Jail\";i:3;s:9:\"Ahmedabad\";i:4;s:6:\"382480\";}', 'Active', '2025-05-01', 'Active'),
+('', 'David', 'Brown', 'david.brown@example.com', '123450', 1234567890, 'male', '2004-08-31', 'a:5:{i:0;s:5:\"D/302\";i:1;s:19:\"Mangalmurti Heights\";i:2;s:9:\"Dev Prime\";i:3;s:9:\"Ahmedabad\";i:4;s:6:\"382424\";}', 'Active', NULL, 'Active'),
+('', 'Emily', 'Garcia', 'emily.garcia@example.com', '1234567890', 1234567890, 'male', '2004-08-31', 'a:5:{i:0;s:5:\"D/302\";i:1;s:19:\"Mangalmurti Heights\";i:2;s:9:\"Dev Prime\";i:3;s:9:\"Ahmedabad\";i:4;s:6:\"382424\";}', 'Active', NULL, 'Active'),
+('', 'John', 'Doe', 'john.doe@example.com', '12345', 1234567890, 'male', '2004-08-31', 'a:5:{i:0;s:5:\"D/302\";i:1;s:19:\"Mangalmurti Heights\";i:2;s:9:\"Dev Prime\";i:3;s:9:\"Ahmedabad\";i:4;s:6:\"382424\";}', 'Active', NULL, 'Active'),
+('', 'Lisa', 'Wang', 'lisa.wang@example.com', '654321', 1234567890, 'male', '2004-08-31', 'a:5:{i:0;s:5:\"D/302\";i:1;s:19:\"Mangalmurti Heights\";i:2;s:9:\"Dev Prime\";i:3;s:9:\"Ahmedabad\";i:4;s:6:\"382424\";}', 'Active', NULL, 'Active'),
+('', 'Mike', 'Johnson', 'mike.johnson@example.com', '654321', 1234567890, 'male', '2004-08-31', 'a:5:{i:0;s:5:\"D/302\";i:1;s:19:\"Mangalmurti Heights\";i:2;s:9:\"Dev Prime\";i:3;s:9:\"Ahmedabad\";i:4;s:6:\"382424\";}', 'Active', NULL, 'Active'),
+('', 'Robert', 'Lee', 'robert.lee@example.com', '1234567890', 1234567890, 'male', '2004-08-31', 'a:5:{i:0;s:5:\"D/302\";i:1;s:19:\"Mangalmurti Heights\";i:2;s:9:\"Dev Prime\";i:3;s:9:\"Ahmedabad\";i:4;s:6:\"382424\";}', 'Active', NULL, 'Active'),
+('', 'Sarah', 'Smith', 'sarah.smith@example.com', '123456', 1234567890, 'male', '2004-08-31', 'a:5:{i:0;s:5:\"D/302\";i:1;s:19:\"Mangalmurti Heights\";i:2;s:9:\"Dev Prime\";i:3;s:9:\"Ahmedabad\";i:4;s:6:\"382424\";}', 'Active', NULL, 'Active');
 
 -- --------------------------------------------------------
 
@@ -184,7 +187,12 @@ INSERT INTO `membership` (`MemberID`, `email`, `membership_type`, `start_date`, 
 (1005, 'dainikmakwana31@gmail.com', 'Class drop-in', '2025-03-30', '2025-03-30', 'Active', 8500.00, '2025-03-29 17:30:46', '2025-03-29 17:30:46', 'weight-loss', 70, 168, '', 'beginner', '1 Day', 'Razorpay', 'Paid', 'Morning (6AM-12PM)'),
 (1006, 'dainikmakwana31@gmail.com', '12 Month unlimited', '2025-03-30', '2026-03-29', 'Active', 8500.00, '2025-03-29 17:35:51', '2025-03-29 17:35:51', 'rehabilitation', 70, 174, '', 'intermediate', '12 Months', 'Razorpay', 'Paid', 'Morning (6AM-12PM)'),
 (1007, 'dainikmakwana31@gmail.com', '6 Month unlimited', '2025-03-30', '2025-09-29', 'Active', 5000.00, '2025-03-29 17:52:17', '2025-03-29 17:52:17', 'muscle-gain', 70, 159, '', 'beginner', '6 Months', 'Cash', 'Pending', 'Morning (6AM-12PM)'),
-(1008, 'dainikmakwana31@gmail.com', '6 Month unlimited', '2025-03-30', '2025-09-29', 'Active', 5000.00, '2025-03-31 14:50:28', '2025-03-31 14:50:28', 'muscle-gain', 70, 159, '', 'beginner', '1 Day', 'Cash', 'Paid', 'Morning (6AM-12PM)');
+(1008, 'dainikmakwana31@gmail.com', '6 Month unlimited', '2025-03-30', '2025-09-29', 'Active', 5000.00, '2025-03-31 14:50:28', '2025-03-31 14:50:28', 'muscle-gain', 70, 159, '', 'beginner', '1 Day', 'Cash', 'Paid', 'Morning (6AM-12PM)'),
+(1009, 'dainikmakwana31@gmail.com', '12 Month unlimited', '2025-03-30', '2026-03-29', 'Active', 8500.00, '2025-03-31 22:40:48', '2025-03-31 22:40:48', 'rehabilitation', 70, 174, '', 'intermediate', '1 Day', 'Razorpay', 'Paid', 'Morning (6AM-12PM)'),
+(1010, 'dainikmakwana31@gmail.com', '12 Month unlimited', '2025-03-30', '2026-03-29', 'Active', 8500.00, '2025-03-31 22:41:32', '2025-03-31 22:41:32', 'rehabilitation', 70, 174, '', 'intermediate', '1 Day', 'Razorpay', 'Paid', 'Morning (6AM-12PM)'),
+(1011, 'dainikmakwana31@gmail.com', '12 Month unlimited', '2025-03-30', '2026-03-29', 'Active', 8500.00, '2025-03-31 22:42:57', '2025-03-31 22:42:57', 'rehabilitation', 70, 174, '', 'intermediate', '1 Day', 'Razorpay', 'Paid', 'Morning (6AM-12PM)'),
+(1013, 'dainikmakwana31@gmail.com', '6 Month unlimited', '2025-04-05', '2025-09-29', 'Active', 5000.00, '2025-03-31 23:31:17', '2025-03-31 23:31:17', 'muscle-gain', 70, 159, '', 'beginner', '1 Day', 'Cash', 'Paid', 'Morning (6AM-12PM)'),
+(1014, 'dainikmakwana31@gmail.com', '12 Month unlimited', '2025-05-01', '2026-03-29', 'Active', 8500.00, '2025-04-01 15:31:54', '2025-04-01 15:31:54', 'rehabilitation', 70, 174, '', 'intermediate', '1 Day', 'Razorpay', 'Paid', 'Morning (6AM-12PM)');
 
 -- --------------------------------------------------------
 
@@ -195,6 +203,7 @@ INSERT INTO `membership` (`MemberID`, `email`, `membership_type`, `start_date`, 
 CREATE TABLE `notification` (
   `NotificationID` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
+  `type` enum('membership','attendance','feedback','contact','profile') NOT NULL,
   `Message` text NOT NULL,
   `NotificationDate` datetime NOT NULL,
   `status` enum('Read','Unread','','') NOT NULL DEFAULT 'Unread'
@@ -204,17 +213,24 @@ CREATE TABLE `notification` (
 -- Dumping data for table `notification`
 --
 
-INSERT INTO `notification` (`NotificationID`, `email`, `Message`, `NotificationDate`, `status`) VALUES
-(1001, '1000', 'Your membership renewal is due in 7 days. Visit the front desk to renew.', '2023-12-15 09:30:00', 'Unread'),
-(1002, '1000', 'Congratulations! You have achieved your 50th workout this month. Keep up the great work!', '2023-12-14 18:15:00', 'Read'),
-(1003, '1000', 'New yoga classes added to the schedule. Check the app to book your spot.', '2023-12-14 10:00:00', 'Unread'),
-(1004, '1000', 'Your personal training session with Coach Mike is confirmed for tomorrow at 5:30 PM.', '2023-12-13 16:45:00', 'Unread'),
-(1005, '1000', 'Gym will be closed on December 25th for Christmas. Plan your workouts accordingly.', '2023-12-12 11:20:00', 'Unread'),
-(1006, '1000', 'Your body composition scan results are ready. View them in your member portal.', '2023-12-11 14:10:00', 'Unread'),
-(1007, '1000', 'You have 3 unused personal training sessions expiring at the end of the month.', '2023-12-10 08:00:00', 'Unread'),
-(1008, '1000', '1277', '0000-00-00 00:00:00', 'Unread'),
-(1009, '1000', 'Happy Birthday! Enjoy a free smoothie at the juice bar today.', '2023-12-08 00:01:00', 'Unread'),
-(1010, '1000', 'Your check-in at 7:15 AM has earned you 50 loyalty points. Current total: 1,250 points.', '2023-12-07 07:30:00', 'Unread');
+INSERT INTO `notification` (`NotificationID`, `email`, `type`, `Message`, `NotificationDate`, `status`) VALUES
+(1001, 'dainikmakwana31@gmail.com', 'membership', 'Your membership renewal is due in 7 days. Visit the front desk to renew.', '2023-12-15 09:30:00', 'Unread'),
+(1002, 'dainikmakwana31@gmail.com', 'membership', 'Congratulations! You have achieved your 50th workout this month. Keep up the great work!', '2023-12-14 18:15:00', 'Unread'),
+(1003, 'dainikmakwana31@gmail.com', 'membership', 'New yoga classes added to the schedule. Check the app to book your spot.', '2023-12-14 10:00:00', 'Unread'),
+(1004, 'dainikmakwana31@gmail.com', 'membership', 'Your personal training session with Coach Mike is confirmed for tomorrow at 5:30 PM.', '2023-12-13 16:45:00', 'Unread'),
+(1005, 'dainikmakwana31@gmail.com', 'membership', 'Gym will be closed on December 25th for Christmas. Plan your workouts accordingly.', '2023-12-12 11:20:00', 'Unread'),
+(1006, 'dainikmakwana31@gmail.com', 'membership', 'Your body composition scan results are ready. View them in your member portal.', '2023-12-11 14:10:00', 'Unread'),
+(1007, 'dainikmakwana31@gmail.com', 'membership', 'You have 3 unused personal training sessions expiring at the end of the month.', '2023-12-10 08:00:00', 'Unread'),
+(1008, 'dainikmakwana31@gmail.com', 'membership', '1277', '0000-00-00 00:00:00', 'Unread'),
+(1009, 'dainikmakwana31@gmail.com', 'membership', 'Happy Birthday! Enjoy a free smoothie at the juice bar today.', '2023-12-08 00:01:00', 'Unread'),
+(1010, 'dainikmakwana31@gmail.com', 'membership', 'Your check-in at 7:15 AM has earned you 50 loyalty points. Current total: 1,250 points.', '2023-12-07 07:30:00', 'Unread'),
+(1011, 'dainikmakwana31@gmail.com', 'membership', 'Congratulations! Your Membership has been Renewd Successfully.<br/><br/>Membership Details:<br/>\r\n    Plan: 12 Month unlimited<br/>\r\n    Start Date: 2025-05-01<br/>\r\n    End Date: 2026-03-29<br/>\r\n    Access Hours: Morning (6AM-12PM)<br/>\r\n    Payment Type: Razorpay<br/>\r\n    Payment Type: Paid', '2025-04-01 15:31:54', 'Unread'),
+(1013, 'dainikmakwana31@gmail.com', 'contact', 'Congratulations! Your Message has been Sended Successfully.\r\n            <br/><br/>Your Details:<br/>\r\n            <b>Name: </b>Makwana Dainik Kalabhai<br/>\r\n            <b>Email: </b>dainikmakwana31@gmail.com<br/>\r\n            <b>Phone: </b>9664580110<br/>\r\n            <b>Message: </b>This is my Message.<br/>', '2025-04-01 16:17:27', 'Unread'),
+(1014, 'dainikmakwana31@gmail.com', 'feedback', 'Congratulations! Your Message has been Sended Successfully.\r\n            <br/><br/>Feedback Details:<br/>\r\n            <b>Name: </b><br/>\r\n            <b>Email: </b><br/>\r\n            <b>Phone: </b><br/>\r\n            <b>Message: </b><br/>', '2025-04-01 17:14:23', 'Unread'),
+(1015, 'dainikmakwana31@gmail.com', 'feedback', 'Congratulations! Your Message has been Sended Successfully.\r\n            <br/><br/>Feedback Details:<br/>\r\n            <b>Feedback Type: </b>General<br/>\r\n            <b>Rating: </b>5<br/>\r\n            <b>Message: </b>This is My Feedback<br/>', '2025-04-01 17:17:21', 'Unread'),
+(1016, 'dainikmakwana31@gmail.com', 'feedback', 'Your Profile has been Updated Successfully.\r\n            <br/><br/>Feedback Details:<br/>\r\n            <b>Feedback Type: </b><br/>\r\n            <b>Rating: </b><br/>\r\n            <b>Message: </b><br/>', '2025-04-01 20:13:26', 'Unread'),
+(1017, 'dainikmakwana31@gmail.com', 'profile', 'Your Profile has been Updated Successfully.', '2025-04-01 20:16:17', 'Unread'),
+(1022, 'dainikmakwana31@gmail.com', 'attendance', 'Your Check-Out at <strong>INVIGOR FITNESS STUDIO</strong> has been Successfully Recorded. Thank You for your valuable Time.\r\n            <br/><br/>Your Attendance Details:<br/>\r\n            <b>Attendance ID: </b>23<br/>\r\n            <b>Date: </b>04 01, 2025<br/>\r\n            <b>Check In Time: </b>21:34 PM<br/>\r\n            <b>Check Out Time: </b>22:27 PM<br/>\r\n            <b>Session Duration: </b>53min<br/>', '2025-04-01 22:27:22', 'Unread');
 
 -- --------------------------------------------------------
 
@@ -303,12 +319,14 @@ CREATE TABLE `trainer` (
 --
 
 INSERT INTO `trainer` (`TrainerID`, `FirstName`, `LastName`, `Specialization`, `Phone`, `img`) VALUES
+(1, 'ABCD', 'EFGH', '', 0, ''),
 (1000, 'John', 'Carter', 'Strength Training, Powerlifting', NULL, 'trainer-1.jpeg'),
 (1001, 'Sarah', 'Mitchell', 'HIIT, Functional Fitness', NULL, 'trainer2.jpeg'),
 (1002, 'Mike', 'Rodriguez', 'Bodybuilding, Aesthetics', NULL, 'trainer3.jpeg'),
 (1003, 'Emily', 'Davis', 'Yoga & Mobility', NULL, 'trainer4.jpeg'),
 (1004, 'David', 'Park', 'MMA & Combat Fitness', NULL, 'trainer5.jpeg'),
-(1005, 'Jessica', 'Lopez', 'Weight Loss & Nutrition Coaching', NULL, 'trainer6.jpeg');
+(1005, 'Jessica', 'Lopez', 'Weight Loss & Nutrition Coaching', NULL, 'trainer6.jpeg'),
+(1006, 'ABCD', 'EFGH', 'adsfdghdgf', 1234567890, 'dhrupat3D.png');
 
 --
 -- Indexes for dumped tables
@@ -381,25 +399,25 @@ ALTER TABLE `trainer`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `membership`
 --
 ALTER TABLE `membership`
-  MODIFY `MemberID` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1009;
+  MODIFY `MemberID` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1015;
 
 --
 -- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `NotificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1011;
+  MODIFY `NotificationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1023;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -412,6 +430,12 @@ ALTER TABLE `products`
 --
 ALTER TABLE `service`
   MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+
+--
+-- AUTO_INCREMENT for table `trainer`
+--
+ALTER TABLE `trainer`
+  MODIFY `TrainerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1007;
 
 --
 -- Constraints for dumped tables
@@ -440,7 +464,8 @@ ALTER TABLE `membership`
 -- Constraints for table `notification`
 --
 ALTER TABLE `notification`
-  ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`email`) REFERENCES `member` (`email`);
+  ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`email`) REFERENCES `member` (`email`),
+  ADD CONSTRAINT `notification_ibfk_2` FOREIGN KEY (`email`) REFERENCES `member` (`email`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

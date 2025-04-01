@@ -11,6 +11,16 @@
     <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
 </head>
 
+<style>
+    .products i {
+    color: green !important;
+  }
+
+  .products h5 {
+    color: green !important;
+  }
+</style>
+
 <?php
 if (isset($_SESSION["product_id"])) {
     unset($_SESSION["product_id"]);

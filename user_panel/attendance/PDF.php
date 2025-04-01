@@ -1,22 +1,20 @@
 <?php
 session_start();
 require("C:/xampp/htdocs/php/IFS/path.php");
-include(DRIVE_PATH . "../database.php");
 
-if (isset($_POST["month"])) {
-    $month = $_POST["month"];
-}
-if (isset($_POST["year"])) {
-    $year = $_POST["year"];
-}
-if (isset($_POST["month"]) && isset($_POST["year"])) {
-    $month = $_POST["month"];
-    $year = $_POST["year"];
-}
-
-$sel = $conn->prepare("SELECT * FROM attendance JOIN member ON member.email=attendance.email ORDER BY attendance.attendance_id");
+$sel = $conn->prepare("SELECT * FROM attendance JOIN member ON member.email=attendance.email WHERE member.email='" . $_SESSION["email"] . "' ORDER BY attendance_id");
 $sel->execute();
 $sel = $sel->fetchAll();
+
+$currentDate = new DateTime();
+$yesterday = new DateTime();
+$lastDate = date("Y-m-d");
+foreach ($sel as $r) {
+    if ((new DateTime($r["date"]))->format('Y-m-d') === $yesterday->format('Y-m-d')) {
+        $lastDate = date("Y-m-d", strtotime($r["date"]));
+    }
+    $yesterday = (new DateTime($r["date"]))->modify('-1 day');
+}
 
 $html = "";
 foreach ($sel as $r) {
@@ -98,18 +96,18 @@ td {
             </tr>
         </table>
     </header>
-    <hr>";
-
-    $html .= "<main>
-        <h4 class='text-danger my-5 text-center'>Attendance of ";
-    if (isset($month) && (isset($year))) {
-        $html .= " $month/$year";
-    } else if (isset($year)) {
-        $html .= "Year ($year)";
-    } else if (isset($month)) {
-        $html .= "Month - ".$month;
+    <hr>
+    
+    <main>
+        <h4 class='text-danger my-5 text-center'>Attendance ";
+    if (isset($_POST["start_date"]) && $_POST["start_date"] != null && (isset($_POST["end_date"])) && $_POST["end_date"] != null) {
+        $html .= "(" . $_POST["start_date"] . " - " . $_POST["end_date"] . ")";
+    } else if (isset($_POST["start_date"]) && $_POST["start_date"] != null) {
+        $html .= "(" . $_POST["start_date"] . " - " . date("Y-m-d") . ")";
+    } else if (isset($_POST["end_date"]) && $_POST["end_date"] != null) {
+        $html .= "($lastDate - " . $_POST["end_date"] . ")";
     } else {
-        $html .= "All Years";
+        $html .= "($lastDate - " . date("Y-m-d") . ")";
     }
 
     $html .= "</h4>
@@ -128,9 +126,18 @@ td {
             </thead>
             <tbody>";
 
-    if (isset($month) && (isset($year))) {
+    $startDate = new DateTime($_POST["start_date"]);
+    $endDate = new DateTime($_POST["end_date"]);
+    $interval = new DateInterval('P1D');
+
+    if (isset($_POST["start_date"]) && $_POST["start_date"] != null && (isset($_POST["end_date"])) && $_POST["end_date"] != null) {
+        $period = new DatePeriod($startDate, $interval, $endDate->modify('+1 day'));
+        foreach ($period as $date) {
+            $datesArray[] = $date->format('Y-m-d');
+        }
+
         foreach ($sel as $r) {
-            if (((int)date("m", strtotime($r["date"]))) == $month && ((int)date("Y", strtotime($r["date"]))) == $year) {
+            if (in_array(date("Y-m-d", strtotime($r["date"])), $datesArray)) {
                 $html .= "<tr>
                         <td class='border py-2 px-3 fs'>" . $r['attendance_id'] . "</td>
                         <td class='border py-2 px-3 fs'>" . $r['FirstName'] . ' ' . $r['LastName'] . "</td>
@@ -145,9 +152,14 @@ td {
                     </tr>";
             }
         }
-    } else if (isset($month)) {
+    } else if (isset($_POST["start_date"]) && $_POST["start_date"] != null) {
+        $period = new DatePeriod($startDate, $interval, date("Y-m-d"));
+        foreach ($period as $date) {
+            $datesArray[] = $date->format('Y-m-d');
+        }
+
         foreach ($sel as $r) {
-            if (((int)date("m", strtotime($r["date"]))) == $month) {
+            if (in_array(date("Y-m-d", strtotime($r["date"])), $datesArray)) {
                 $html .= "<tr>
                         <td class='border py-2 px-3 fs'>" . $r['attendance_id'] . "</td>
                         <td class='border py-2 px-3 fs'>" . $r['FirstName'] . ' ' . $r['LastName'] . "</td>
@@ -162,9 +174,14 @@ td {
                     </tr>";
             }
         }
-    } else if (isset($year)) {
+    } else if (isset($_POST["end_date"]) && $_POST["end_date"] != null) {
+        $period = new DatePeriod($lastDate, $interval, $endDate->modify('+1 day'));
+        foreach ($period as $date) {
+            $datesArray[] = $date->format('Y-m-d');
+        }
+
         foreach ($sel as $r) {
-            if (((int)date("m", strtotime($r["date"]))) == $year) {
+            if (in_array(date("Y-m-d", strtotime($r["date"])), $datesArray)) {
                 $html .= "<tr>
                         <td class='border py-2 px-3 fs'>" . $r['attendance_id'] . "</td>
                         <td class='border py-2 px-3 fs'>" . $r['FirstName'] . ' ' . $r['LastName'] . "</td>

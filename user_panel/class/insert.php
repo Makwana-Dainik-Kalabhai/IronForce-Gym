@@ -6,8 +6,6 @@ use PHPMailer\PHPMailer\Exception;
 
 require("C:/xampp/htdocs/php/IFS/path.php");
 
-include(DRIVE_PATH . "../database.php");
-
 class Membership
 {
     public $name;
@@ -65,12 +63,30 @@ class Membership
 
         if (isset($_SESSION["renew"])) {
             $insert = $conn->prepare("INSERT INTO `membership` VALUES('', '" . $this->email . "','" . $this->membership_type . "', '" . $this->start_date . "', '" . $this->end_date . "', '" . $this->status . "', '" . $this->membership_fee . "', NOW(), NOW(), '" . $this->goal . "', '" . $this->weight . "', '" . $this->height . "', '" . $this->medical_condition . "', '" . $this->experience . "', '" . $this->plan_duration . "', '" . $this->payment_type . "', '" . $this->payment_status . "','" . $this->timing . "')");
-        } //
+
+            $notification = $conn->prepare("INSERT INTO notification VALUES ('','" . $_SESSION["email"] . "', '1', 'Congratulations! Your Membership has been Renewed Successfully.
+            <br/><br/>Membership Details:<br/>
+    <b>Plan: </b>" . $this->membership_type . "<br/>
+    <b>Start Date: </b>" . $this->start_date . "<br/>
+    <b>End Date: </b>" . $this->end_date . "<br/>
+    <b>Access Hours: </b>" . $this->timing . "<br/>
+    <b>Payment Type: </b>" . $this->payment_type . "<br/>
+    <b>Payment Type: </b>" . $this->payment_status . "', NOW(), 'Unread')");
+        }
+        //
         else {
             $insert = $conn->prepare("INSERT INTO `membership` VALUES('', '" . $this->email . "','" . $this->membership_type . "', '" . $this->start_date . "', '" . $this->end_date . "', '" . $this->status . "', '" . $this->membership_fee . "', NOW(), '0000-00-00 00:00:00', '" . $this->goal . "', '" . $this->weight . "', '" . $this->height . "', '" . $this->medical_condition . "', '" . $this->experience . "', '" . $this->plan_duration . "', '" . $this->payment_type . "', '" . $this->payment_status . "','" . $this->timing . "')");
+
+            $notification = $conn->prepare("INSERT INTO notification VALUES ('','" . $_SESSION["email"] . "', '1', 'Congratulations on taking the first step toward a stronger, healthier you! We're thrilled to welcome you to the INVIGOR FITNESS STUDIO family. Your membership is now active, and we can't wait to help you achieve your fitness goals.<br/><br/><b>Membership Details:</b><br/>
+    <b>Plan: </b>" . $this->membership_type . "<br/>
+    <b>Start Date: </b>" . $this->start_date . "<br/>
+    <b>End Date: </b>" . $this->end_date . "<br/>
+    <b>Access Hours: </b>" . $this->timing . "<br/>
+    <b>Payment Type: </b>" . $this->payment_type . "<br/>
+    <b>Payment Type: </b>" . $this->payment_status . "', NOW(), 'Unread')");
         }
 
-        if ($insert->execute()) {
+        if ($insert->execute() && $notification->execute()) {
             $this->name = explode(" ", $this->name);
 
             $up = $conn->prepare("UPDATE `member` SET `FirstName`='" . $this->name[0] . "',`LastName`='" . $this->name[1] . "',`phone`='" . $this->phone . "',`gender`='" . $this->gender . "',`dob`='" . $this->dob . "',`address`='" . serialize($this->address) . "',`MembershipStatus`='Active',`JoinDate`='" . $this->start_date . "' WHERE `email`='" . $_SESSION["email"] . "'");
@@ -81,11 +97,10 @@ class Membership
 
             $_SESSION["mem_succ"] = "Congratulations! " . $this->name[0] . " " . $this->name[1] . ", Your Membership has been activated for " . $this->plan_duration;
 
-            if(isset($_SESSION["renew"])) {
-                header("Refresh:0, url=".HTTP_PATH."/user_panel/membership/membership.php");
-            }
-            else {
-                header("Refresh:0, url=".HTTP_PATH."/user_panel/class/class-details.php");
+            if (isset($_SESSION["renew"])) {
+                header("Refresh:0, url=" . HTTP_PATH . "/user_panel/membership/membership.php");
+            } else {
+                header("Refresh:0, url=" . HTTP_PATH . "/user_panel/class/class-details.php");
             }
         }
     }

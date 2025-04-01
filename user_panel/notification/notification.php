@@ -22,6 +22,14 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
             transition: background 0.3s ease;
         }
 
+        a {
+            color: black;
+        }
+
+        a:hover {
+            color: black;
+        }
+
         .notifications.container {
             margin: 10rem auto 2rem auto;
             padding: 2rem;
@@ -125,34 +133,35 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
     <div class="notifications container">
         <div class="notifications-list">
             <?php
-            include(DRIVE_PATH . "../database.php");
 
-            $sel = $conn->prepare("SELECT * FROM `notification` WHERE `email`='".$_SESSION["email"]."'");
+            $sel = $conn->prepare("SELECT * FROM `notification` WHERE `email`='" . $_SESSION["email"] . "' ORDER BY `NotificationID` DESC");
             $sel->execute();
             $sel = $sel->fetchAll();
 
             foreach ($sel as $key => $r) { ?>
-                <!-- Notification 1 (Unread) -->
-                <div class="notification-card <?php echo ($r["status"] == "Unread") ? "unread" : ""; ?>">
-                    <?php if ($r["status"] == "Unread") { ?>
-                        <b class="unread-dot"></b>
-                    <?php } ?>
-                    <div class="notification-header">
-                        <span class="member-id">Member ID: <?php echo $r["MemberID"]; ?></span>
-                        <span class="notification-date"><?php echo date("d/m/Y h:ia", strtotime($r["NotificationDate"])); ?></span>
-                    </div>
-                    <div class="notification-message">
-                        Your membership expires in 7 days. Renew now to avoid interruption!
-                    </div>
-                    <div class="notification-actions">
-                        <?php
-                        if ($r["status"] == "Unread") { ?>
-                            <button class="mark-as-read" value="<?php echo $r["NotificationID"]; ?>">Mark as Read</button>
-                        <?php } else { ?>
-                            <button style="background-color: #4CAF50;">✓ Read</button>
+                <a href="<?php echo HTTP_PATH . "/user_panel/" . $r["type"] . "/" . $r["type"] . ".php"; ?>">
+                    <!-- Notification 1 (Unread) -->
+                    <div class="notification-card <?php echo ($r["status"] == "Unread") ? "unread" : ""; ?>">
+                        <?php if ($r["status"] == "Unread") { ?>
+                            <b class="unread-dot"></b>
                         <?php } ?>
+                        <div class="notification-header">
+                            <span class="member-id">Notification ID: <?php echo $r["NotificationID"]; ?></span>
+                            <span class="notification-date"><?php echo date("d M, Y h:i A", strtotime($r["NotificationDate"])); ?></span>
+                        </div>
+                        <div class="notification-message">
+                            <?php echo $r["Message"]; ?>
+                        </div>
+                        <div class="notification-actions">
+                            <?php
+                            if ($r["status"] == "Unread") { ?>
+                                <button class="mark-as-read" value="<?php echo $r["NotificationID"]; ?>">Mark as Read</button>
+                            <?php } else { ?>
+                                <button style="background-color: #4CAF50;">✓ Read</button>
+                            <?php } ?>
+                        </div>
                     </div>
-                </div>
+                </a>
             <?php } ?>
         </div>
     </div>
@@ -166,7 +175,6 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
             // Mark as Read
             $(".mark-as-read").click(function() {
                 let NotificationID = $(this).val();
-                alert(NotificationID);
 
                 $.ajax({
                     type: "POST",

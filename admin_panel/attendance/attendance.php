@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INVIGOR FITNESS STUDIO - Attendance Management</title>
+    <title>IFS - Attendance Management</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -229,136 +229,6 @@
                 margin-bottom: 15px;
             }
         }
-
-
-
-        /* //! Success Modal Properties */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 5000;
-            transition: all 0.3s ease;
-        }
-
-        .modal-container {
-            background: white;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-            overflow: hidden;
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ffc107 100%);
-            padding: 25px;
-            position: relative;
-            text-align: center;
-        }
-
-        .icon-circle {
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .icon-circle i {
-            color: #ff6b6b;
-            font-size: 36px;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .close-modal:hover {
-            transform: scale(1.2);
-        }
-
-        .modal-body {
-            padding: 30px;
-            text-align: center;
-        }
-
-        .modal-body h2 {
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .modal-body p {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .details {
-            background: #f9f9f9;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        .details p {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-            color: #555;
-        }
-
-        .details i {
-            margin-right: 10px;
-            color: #ff6b6b;
-            width: 20px;
-            text-align: center;
-        }
-
-        .modal-footer {
-            padding: 0 30px 30px;
-            text-align: center;
-        }
-
-        .btn-confirm {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ffc107 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(110, 72, 170, 0.3);
-        }
-
-        .btn-confirm:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(110, 72, 170, 0.4);
-        }
     </style>
 </head>
 
@@ -370,35 +240,11 @@
         </div>
     <?php } ?>
     <?php if (isset($_SESSION["success"])) { ?>
-        <!-- //! Success Modal -->
-        <div class="modal-overlay active" id="successModal">
-            <div class="modal-container">
-                <div class="modal-header">
-                    <div class="icon-circle">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <h2>Attendance Recorded!</h2>
-                    <p><?php echo $_SESSION["success"]; ?></p>
-                    <div class="details">
-                        <p><i class="far fa-calendar-alt"></i> <span id="attendance-date">Today <?php date_default_timezone_set("Asia/Kolkata");
-                                                                                                echo date("M d, Y", strtotime("today")); ?></span></p>
-                        <p><i class="far fa-clock"></i> <span id="attendance-time"><?php echo date("H:i A"); ?></span></p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn-confirm">Got It!</button>
-                </div>
-            </div>
-        </div>
+        <div class="alert alert-success"><?php echo $_SESSION["success"]; ?></div>
     <?php unset($_SESSION["success"]);
     } ?>
 
 
-
-    <?php include(DRIVE_PATH . "/admin_panel/sidenav.php"); ?>
     <?php include(DRIVE_PATH . "/admin_panel/header/header.php"); ?>
 
     <main class="container-fluid attendance-container">
@@ -464,10 +310,6 @@
                                     <input type="email" class="form-control" name="email" id="email" placeholder="Member Email" required />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="sessionDuration" class="form-label">Session Duration</label>
-                                    <input type="number" class="form-control" name="session_duration" id="sessionDuration" placeholder="0 minutes" required />
-                                </div>
-                                <div class="mb-3">
                                     <label for="attendanceStatus" class="form-label">Status</label>
                                     <select class="form-select" name="attendance_status" id="attendanceStatus" required>
                                         <option disabled selected>Select Status</option>
@@ -519,7 +361,7 @@
                         <div class="col-md-6">
                             <span><i class="fas fa-history me-2"></i>Attendance Records</span>
                         </div>
-                        <form action="<?php echo HTTP_PATH . "/user_panel/membership/PDF/genAdAttendance.php"; ?>" method="post" class="col-md-6">
+                        <form action="<?php echo HTTP_PATH . "/admin_panel/attendance/genPDF.php"; ?>" method="post" class="col-md-6">
                             <select name="year" class="form-select my-2">
                                 <option disabled selected>Select Year</option>
                                 <?php for ($i = ((int)date("Y", strtotime("today"))); $i >= $lastYear; $i--) { ?>
@@ -603,16 +445,6 @@
 
     <script>
         $(document).ready(function() {
-            // Close modal when clicking X, overlay, or confirm button
-            $('.close-modal, .modal-overlay, .btn-confirm').click(function() {
-                $('#successModal').fadeOut(100);
-            });
-
-            // Prevent modal from closing when clicking inside the container
-            $('.modal-container').click(function(e) {
-                e.stopPropagation();
-            });
-
             $(".alert").fadeOut(10000);
 
 

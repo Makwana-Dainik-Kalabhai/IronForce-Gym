@@ -816,7 +816,7 @@ include(DRIVE_PATH . "../database.php");
                     </div>
                     <div class="info-group">
                         <div class="info-label">Address</div>
-                        <div class="info-value"><?php echo ($r["address"] != null) ? unserialize($r["address"])["house-number"] . " " . unserialize($r["address"])["apartment"] . " near " . unserialize($r["address"])["suite"] . ", " . unserialize($r["address"])["city"] . " - " . unserialize($r["address"])["pincode"] : ""; ?></div>
+                        <div class="info-value"><?php echo unserialize($r["address"])[0] . " " . unserialize($r["address"])[1] . " near " . unserialize($r["address"])[2] . ", " . unserialize($r["address"])[3] . " - " . unserialize($r["address"])[4]; ?></div>
                     </div>
                 </div>
 
@@ -1090,22 +1090,22 @@ include(DRIVE_PATH . "../database.php");
                             <label>Address</label>
                             <div class="row py-2">
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="house-number" placeholder="House Number" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["house-number"] : ""; ?>" />
+                                    <input type="text" class="form-control" name="house-number" placeholder="House Number" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[0]:""; ?>" />
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="apartment" placeholder="Street" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["apartment"] : ""; ?>" />
+                                    <input type="text" class="form-control" name="apartment" placeholder="Street" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[1]:""; ?>" />
                                 </div>
                             </div>
 
                             <div class="row py-2">
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="suite" placeholder="Suite" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["suite"] : ""; ?>">
+                                    <input type="text" class="form-control" name="suite" placeholder="Suite" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[2]:""; ?>">
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="city" placeholder="City" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["city"] : ""; ?>" />
+                                    <input type="text" class="form-control" name="city" placeholder="City" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[3]:""; ?>" />
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="number" minlength="6" maxlength="6" class="form-control" name="pincode" placeholder="Pincode" value="<?php echo ($r["address"] != null) ? unserialize($r["address"])["pincode"] : ""; ?>" />
+                                    <input type="number" minlength="6" maxlength="6" class="form-control" name="pincode" placeholder="Pincode" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[4]:""; ?>" />
                                 </div>
                             </div>
                         </div>
@@ -1119,18 +1119,18 @@ include(DRIVE_PATH . "../database.php");
                 </form>
         </div>
     </div>
-    <?php } ?>
-    <?php include(DRIVE_PATH . "/user_panel/footer/footer.php"); ?>
+<?php } ?>
+<?php include(DRIVE_PATH . "/user_panel/footer/footer.php"); ?>
 
-    <script>
-        $(document).ready(function() {
-            $(".btn-edit").click(function() {
-                $(".profile-content").prev("h3").toggle();
-                $(".profile-content").toggle();
-                $(".edit-profile-container").toggle();
-            });
+<script>
+    $(document).ready(function() {
+        $(".btn-edit").click(function() {
+            $(".profile-content").prev("h3").toggle();
+            $(".profile-content").toggle();
+            $(".edit-profile-container").toggle();
         });
-    </script>
+    });
+</script>
 </body>
 
 </html>

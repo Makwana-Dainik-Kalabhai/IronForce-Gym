@@ -8,7 +8,7 @@
             <div class="col-md-4">
                 <div class="gt-text">
                     <i class="fa fa-map-marker"></i>
-                    <p>123 Fitness Plaza, Near Shivranjani Crossroads Opposite Skyline Tower, Bodakdev Ahmedabad, Gujarat – 380054</p>
+                    <p>Nr.Shell petrol pump, f.f 109m Fortune Business hub, science city road, Ahmedabad, Gujarat - 380060</p>
                 </div>
             </div>
             <div class="col-md-4">
@@ -39,7 +39,7 @@
                     <div class="fa-logo">
                         <a href="#"><img src="<?php echo HTTP_PATH . "/user_panel/logo.png"; ?>" alt="" /></a>
                     </div>
-                    <p>IronForce Gym is a fitness-focused website offering information about gym facilities, membership plans, training programs, and expert coaching.</p>
+                    <p>INVIGOR FITNESS STUDIO Gym is a fitness-focused website offering information about gym facilities, membership plans, training programs, and expert coaching.</p>
                 </div>
             </div>
             <div class="col-lg-2 col-md-3 col-sm-6">

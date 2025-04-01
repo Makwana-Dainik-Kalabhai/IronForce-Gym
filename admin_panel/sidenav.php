@@ -65,37 +65,37 @@
     <div class="sidebar-wrapper">
         <ul class="nav">
             <li>
-                <a href="<?php echo HTTP_PATH . "/admin_panel/index.php"; ?>">
+                <a href="<?php echo HTTP_PATH . "/admin_panel/index.php"; ?>" class="members">
                     <i class="fa-solid fa-user text-danger"></i>
                     <h5 class="text-danger">Members</h5>
                 </a>
             </li>
             <li>
-                <a href="<?php echo HTTP_PATH . "/admin_panel/trainer/trainer.php"; ?>">
+                <a href="<?php echo HTTP_PATH . "/admin_panel/trainer/trainer.php"; ?>" class="trainers">
                     <i class="fa-solid fa-user text-danger"></i>
                     <h5 class="text-danger">Trainers</h5>
                 </a>
             </li>
             <li>
-                <a href="<?php echo HTTP_PATH . "/admin_panel/membership/membership.php"; ?>">
+                <a href="<?php echo HTTP_PATH . "/admin_panel/membership/membership.php"; ?>" class="memberships">
                     <i class="fa-solid fa-id-card text-danger"></i>
                     <h5 class="text-danger">Memberships</h5>
                 </a>
             </li>
             <li>
-                <a href="<?php echo HTTP_PATH . "/admin_panel/services/service.php"; ?>">
+                <a href="<?php echo HTTP_PATH . "/admin_panel/services/service.php"; ?>" class="services">
                     <i class="fa-solid fa-robot text-danger"></i>
                     <h5 class="text-danger">Services</h5>
                 </a>
             </li>
             <li>
-                <a href="<?php echo HTTP_PATH . "/admin_panel/products/products.php"; ?>" class="text-danger">
+                <a href="<?php echo HTTP_PATH . "/admin_panel/products/products.php"; ?>" class="text-danger products">
                     <i class="fa-solid fa-list text-danger"></i>
                     <h5 class="text-danger">Products</h5>
                 </a>
             </li>
             <li>
-                <a href="<?php echo HTTP_PATH . "/admin_panel/feedback/feedback.php"; ?>">
+                <a href="<?php echo HTTP_PATH . "/admin_panel/feedback/feedback.php"; ?>" class="reviews">
                     <i class="fa-solid fa-star text-danger"></i>
                     <h5 class="text-danger">Reviews</h5>
                 </a>

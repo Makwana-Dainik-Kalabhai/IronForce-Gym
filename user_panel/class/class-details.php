@@ -445,179 +445,186 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                 <p>Start your fitness journey with us today!</p>
             </div>
 
-            <form action="<?php echo HTTP_PATH . "/user_panel/class/payment.php"; ?>" method="post" id="gymForm" class="form-body">
-                <!-- Personal Information Section -->
-                <div class="form-section">
-                    <h2 class="section-title">Personal Information</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name" class="required">Full Name</label>
-                            <input type="text" id="name" name="name" value="<?php echo (isset($_SESSION["name"])) ? $_SESSION["name"] : ""; ?>" required placeholder="John Doe">
+            <?php
+            $sel = $conn->prepare("SELECT * FROM member WHERE `email`='" . $_SESSION["email"] . "'");
+            $sel->execute();
+            $sel = $sel->fetchAll();
+
+            foreach ($sel as $r) { ?>
+                <form action="<?php echo HTTP_PATH . "/user_panel/class/payment.php"; ?>" method="post" id="gymForm" class="form-body">
+                    <!-- Personal Information Section -->
+                    <div class="form-section">
+                        <h2 class="section-title">Personal Information</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name" class="required">Full Name</label>
+                                <input type="text" id="name" name="name" value="<?php echo $r["FirstName"] . " " . $r["LastName"]; ?>" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="required">Email ID</label>
+                                <input type="email" id="email" name="email" value="<?php echo $r["email"]; ?>" disabled required placeholder="john@example.com">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="email" class="required">Email ID</label>
-                            <input type="email" id="email" name="email" value="<?php echo (isset($_SESSION["email"])) ? $_SESSION["email"] : ""; ?>" disabled required placeholder="john@example.com">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="phone" class="required">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" value="<?php echo (isset($_SESSION["phone"])) ? $_SESSION["phone"] : ""; ?>" minlength="10" maxlength="10" required placeholder="+91 98989 89898">
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Gender</label>
-                            <div class="radio-group">
-                                <div class="radio-option">
-                                    <input type="radio" id="male" name="gender" value="male" checked>
-                                    <label for="male">Male</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="female" name="gender" <?php echo (isset($_SESSION["gender"]) && $_SESSION["gender"] == "Female") ? "checked" : ""; ?> value="female">
-                                    <label for="female">Female</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="other" name="gender" <?php echo (isset($_SESSION["gender"]) && $_SESSION["gender"] == "Other") ? "checked" : ""; ?> value="other">
-                                    <label for="other">Other</label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone" class="required">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" value="<?php echo $r["phone"]; ?>" minlength="10" maxlength="10" required placeholder="+91 98989 89898">
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Gender</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="male" name="gender" value="male" <?php echo ($r["gender"] == "Male") ? "checked" : ""; ?>>
+                                        <label for="male">Male</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="female" name="gender" <?php echo ($r["gender"] == "Female") ? "checked" : ""; ?>value="female">
+                                        <label for="female">Female</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="other" name="gender" <?php echo ($r["gender"] == "Other") ? "checked" : ""; ?> value="other">
+                                        <label for="other">Other</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="dob" class="required">Date of Birth</label>
-                            <?php if (isset($_SESSION["dob"]) && $_SESSION["dob"] != "30/11/-0001") { ?>
-                                <input type="text" id="dob" value="<?php echo $_SESSION["dob"]; ?>" name="dob" />
-                            <?php } else { ?>
-                                <input type="date" id="dob" name="dob" required>
-                            <?php } ?>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dob" class="required">Date of Birth</label>
+                                <?php if (isset($_SESSION["dob"]) && $_SESSION["dob"] != "30/11/-0001") { ?>
+                                    <input type="text" id="dob" value="<?php echo date("d/m/Y", strtotime($r["dob"])); ?>" name="dob" />
+                                <?php } else { ?>
+                                    <input type="date" id="dob" name="dob" required>
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Fitness Goals Section -->
-                <div class="form-section">
-                    <h2 class="section-title">Fitness Information</h2>
+                    <!-- Fitness Goals Section -->
+                    <div class="form-section">
+                        <h2 class="section-title">Fitness Information</h2>
+                        <?php
+                        if (isset($_GET["type"])) {
+                            $_SESSION["membership_type"] = $_GET["type"];
+                        }
+                        if (isset($_GET["fee"])) {
+                            $_SESSION["membership_fee"] = $_GET["fee"];
+                        }
+                        ?>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="goal" class="required">Primary Fitness Goal</label>
+                                <select id="goal" name="goal" required>
+                                    <option value="" disabled selected>Select your goal</option>
+                                    <option value="weight-loss">Weight Loss</option>
+                                    <option value="muscle-gain">Muscle Gain</option>
+                                    <option value="endurance">Endurance Training</option>
+                                    <option value="toning">Body Toning</option>
+                                    <option value="flexibility">Flexibility</option>
+                                    <option value="rehabilitation">Rehabilitation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="experience">Gym Experience</label>
+                                <select id="experience" name="experience" required>
+                                    <option value="" disabled selected>Select your experience level</option>
+                                    <option value="beginner">Beginner (0-6 months)</option>
+                                    <option value="intermediate">Intermediate (6 months - 2 years)</option>
+                                    <option value="advanced">Advanced (2+ years)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="weight" class="required">Weight (kg)</label>
+                                <input type="number" id="weight" name="weight" min="30" max="200" placeholder="e.g. 75" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="height" class="required">Height (cm)</label>
+                                <input type="number" id="height" name="height" min="100" max="250" placeholder="e.g. 175" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="medical">Medical Conditions (if any)</label>
+                                <textarea id="medical" name="medical_condition" rows="3" placeholder="Please list any medical conditions, injuries, or allergies we should be aware of..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Membership Details Section -->
+                    <div class="form-section">
+                        <h2 class="section-title">Membership Details</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="payment" class="required">Start Date</label>
+                                <input type="date" name="start_date" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Preferred Timing</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="morning" name="timing" value="1" checked required>
+                                        <label for="morning">Morning (6AM-12PM)</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="evening" name="timing" value="2">
+                                        <label for="evening">Evening (4PM-10PM)</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="anytime" name="timing" value="3">
+                                        <label for="anytime">Anytime</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="payment" class="required">Payment Type</label>
+                                <select id="payment" name="payment_type" required>
+                                    <option value="" disabled selected>Select payment method</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Razorpay">Razorpay</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Address Section -->
+                    <div class="form-section">
+                        <h2 class="section-title">Address Information</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="house-number" class="required">House Number</label>
+                                <input type="text" id="house-number" name="house-number" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[0]:""; ?>" placeholder="D/302" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="apartment" class="required">Apartment Name</label>
+                                <input type="text" id="apartment" name="apartment" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[1]:""; ?>" placeholder="Amrakunj" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="suite">Suite/Apt Number</label>
+                                <input type="text" id="suite" name="suite" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[2]:""; ?>" placeholder="KB Royal" />
+                            </div>
+                            <div class="form-group">
+                                <label for="city" class="required">City</label>
+                                <input type="text" id="city" name="city" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[3]:""; ?>" required placeholder="Ahmedabad">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pincode" class="required">Postal/Zip Code</label>
+                                <input type="text" id="pincode" name="pincode" value="<?php echo ($r["address"]!=null)?unserialize($r["address"])[4]:""; ?>" required placeholder="382424">
+                            </div>
+                        </div>
+                    </div>
                     <?php
-                    if (isset($_GET["type"])) {
-                        $_SESSION["membership_type"] = $_GET["type"];
-                    }
-                    if (isset($_GET["fee"])) {
-                        $_SESSION["membership_fee"] = $_GET["fee"];
-                    }
-                    ?>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="goal" class="required">Primary Fitness Goal</label>
-                            <select id="goal" name="goal" required>
-                                <option value="" disabled selected>Select your goal</option>
-                                <option value="weight-loss">Weight Loss</option>
-                                <option value="muscle-gain">Muscle Gain</option>
-                                <option value="endurance">Endurance Training</option>
-                                <option value="toning">Body Toning</option>
-                                <option value="flexibility">Flexibility</option>
-                                <option value="rehabilitation">Rehabilitation</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="experience">Gym Experience</label>
-                            <select id="experience" name="experience" required>
-                                <option value="" disabled selected>Select your experience level</option>
-                                <option value="beginner">Beginner (0-6 months)</option>
-                                <option value="intermediate">Intermediate (6 months - 2 years)</option>
-                                <option value="advanced">Advanced (2+ years)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="weight" class="required">Weight (kg)</label>
-                            <input type="number" id="weight" name="weight" min="30" max="200" placeholder="e.g. 75" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="height" class="required">Height (cm)</label>
-                            <input type="number" id="height" name="height" min="100" max="250" placeholder="e.g. 175" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label for="medical">Medical Conditions (if any)</label>
-                            <textarea id="medical" name="medical_condition" rows="3" placeholder="Please list any medical conditions, injuries, or allergies we should be aware of..."></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Membership Details Section -->
-                <div class="form-section">
-                    <h2 class="section-title">Membership Details</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="payment" class="required">Start Date</label>
-                            <input type="date" name="start_date" required />
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Preferred Timing</label>
-                            <div class="radio-group">
-                                <div class="radio-option">
-                                    <input type="radio" id="morning" name="timing" value="1" checked required>
-                                    <label for="morning">Morning (6AM-12PM)</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="evening" name="timing" value="2">
-                                    <label for="evening">Evening (4PM-10PM)</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="anytime" name="timing" value="3">
-                                    <label for="anytime">Anytime</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="payment" class="required">Payment Type</label>
-                            <select id="payment" name="payment_type" required>
-                                <option value="" disabled selected>Select payment method</option>
-                                <option value="Cash">Cash</option>
-                                <option value="Razorpay">Razorpay</option>
-                            </select>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Address Section -->
-                <div class="form-section">
-                    <h2 class="section-title">Address Information</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="house-number" class="required">House Number</label>
-                            <input type="text" id="house-number" name="house-number" value="<?php echo (isset($_SESSION["house-number"])) ? $_SESSION["house-number"] : ""; ?>" placeholder="D/302" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="apartment" class="required">Apartment Name</label>
-                            <input type="text" id="apartment" name="apartment" value="<?php echo (isset($_SESSION["apartment"])) ? $_SESSION["apartment"] : ""; ?>" placeholder="Amrakunj" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="suite">Suite/Apt Number</label>
-                            <input type="text" id="suite" name="suite" value="<?php echo (isset($_SESSION["suite"])) ? $_SESSION["suite"] : ""; ?>" placeholder="KB Royal" />
-                        </div>
-                        <div class="form-group">
-                            <label for="city" class="required">City</label>
-                            <input type="text" id="city" name="city" value="<?php echo (isset($_SESSION["city"])) ? $_SESSION["city"] : ""; ?>" required placeholder="Ahmedabad">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="pincode" class="required">Postal/Zip Code</label>
-                            <input type="text" id="pincode" name="pincode" value="<?php echo (isset($_SESSION["pincode"])) ? $_SESSION["pincode"] : ""; ?>" required placeholder="382424">
-                        </div>
-                    </div>
-                </div>
-                <?php
-                if (isset($_SESSION["email"])) { ?>
-                    <button type="submit" name="fresh_submit" class="btn btn-block">Submit Application</button>
-                <?php } ?>
-            </form>
+                    if (isset($_SESSION["email"])) { ?>
+                        <button type="submit" name="fresh_submit" class="btn btn-block">Submit Application</button>
+                    <?php } ?>
+                </form>
+            <?php } ?>
             <div class="px-4 pb-3">
                 <?php
                 if (!isset($_SESSION["email"])) { ?>

@@ -8,16 +8,33 @@ if (isset($_SESSION["logout"])) {
     body {
         background-color: #111111;
     }
+
+    .fa-bell {
+        font-size: 20px;
+    }
+
+    .dot {
+        position: absolute;
+        top: 25%;
+        right: 0;
+        width: 8px;
+        height: 8px;
+        background-color: red;
+        border-radius: 50%;
+    }
+
     @media (max-width: 990px) {
         .logo {
             width: 30%;
         }
     }
+
     @media (max-width: 580px) {
         .logo {
             width: 35%;
         }
     }
+
     @media (max-width: 450px) {
         .logo {
             width: 50%;
@@ -45,6 +62,13 @@ if (isset($_SESSION["logout"])) {
         });
     </script>
 <?php }
+
+if (isset($_SESSION["email"])) {
+    $sel = $conn->prepare("SELECT COUNT(email) AS total_notification FROM notification WHERE `email`='" . $_SESSION["email"] . "' AND `status`='Unread'");
+    $sel->execute();
+    $sel = $sel->fetchAll();
+    $sel = $sel[0];
+}
 ?>
 
 <!-- Page Preloder -->
@@ -154,9 +178,6 @@ if (isset($_SESSION["logout"])) {
                     <nav class="nav-menu">
                         <ul>
                             <li><button class="btn login-btn primary-btn">Login</button></li>
-                            <?php if (isset($_SESSION["email"])) { ?>
-                                <li><a href="<?php echo HTTP_PATH . "/user_panel/notification/notification.php"; ?>"><i class="fa-solid fa-bell text-light" style="cursor: pointer;"></i></a></li>
-                            <?php } ?>
                         </ul>
                     </nav>
                 </div>
@@ -165,7 +186,15 @@ if (isset($_SESSION["logout"])) {
                 <div class="col-lg-2">
                     <nav class="nav-menu">
                         <ul>
-                            <li><a href="<?php echo HTTP_PATH . "/user_panel/login/logout.php"; ?>" class="btn logout-btn primary-btn px-3">Logout</a></li>
+                            <li><a href="<?php echo HTTP_PATH . "/user_panel/login/logout.php"; ?>" class="btn logout-btn primary-btn px-3 text-light">Logout</a></li>
+                            <?php if (isset($_SESSION["email"])) { ?>
+                                <li>
+                                    <a href="<?php echo HTTP_PATH . "/user_panel/notification/notification.php"; ?>">
+                                        <?php echo ($sel["total_notification"] > 0) ? "<div class='dot'></div>" : ""; ?>
+                                        <i class="fa-solid fa-bell text-light" style="cursor: pointer;"></i>
+                                    </a>
+                                </li>
+                            <?php } ?>
                         </ul>
                     </nav>
                 </div>

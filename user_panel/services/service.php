@@ -11,7 +11,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IronForce Gym - Unleash Your Potential</title>
+    <title>IFS Gym - Unleash Your Potential</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
@@ -314,7 +314,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
             gap: 10px;
         }
 
-        .dot {
+        .testimonial-dots .dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
@@ -323,44 +323,9 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
             transition: all 0.3s ease;
         }
 
-        .dot.active {
+        .testimonial-dots .dot.active {
             background: var(--primary);
             transform: scale(1.2);
-        }
-
-        /* Membership Section */
-        .membership {
-            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1975&q=80') no-repeat center center/cover;
-        }
-
-        .membership-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .membership-table th,
-        .membership-table td {
-            padding: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .membership-table th {
-            background: var(--primary);
-            font-size: 1.2rem;
-        }
-
-        .membership-table tr:nth-child(even) {
-            background: rgba(139, 0, 0, 0.1);
-        }
-
-        .membership-table .highlight {
-            background: rgba(139, 0, 0, 0.3);
-            font-weight: 700;
         }
 
         /* Contact Section */
@@ -428,7 +393,6 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 
         /* Modal */
         .modal {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -671,13 +635,19 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
     </style>
 </head>
 
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
 <body>
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content" data-aos="fade-up">
                 <h1>Unleash Your Potential</h1>
-                <p>Join IronForce Gym and transform your body with our state-of-the-art facilities, expert trainers, and personalized workout programs designed to help you achieve your fitness goals.</p>
+                <p>Join INVIGOR FITNESS STUDIO Gym and transform your body with our state-of-the-art facilities, expert trainers, and personalized workout programs designed to help you achieve your fitness goals.</p>
                 <div class="hero-btns">
                     <a href="<?php echo HTTP_PATH . "/index.php"; ?>" class="btn">Start Your Journey Today</a>
                     <a href="#services" class="btn btn-secondary">Explore Services</a>
@@ -694,18 +664,15 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
         <div class="container">
             <h2 data-aos="fade-up">Our Services</h2>
             <div class="services-grid">
-
                 <?php
-                include(DRIVE_PATH . "../database.php");
                 $sel = $conn->prepare("SELECT * FROM `service`");
                 $sel->execute();
                 $sel = $sel->fetchAll();
 
                 foreach ($sel as $r) { ?>
-                    <!-- Service 1 -->
-                    <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-card" data-id="<?php echo $r["service_id"]; ?>" data-aos="fade-up" data-aos-delay="100">
                         <div class="service-img">
-                            <img src="<?php echo HTTP_PATH . "/img/services/" . $r["img"] . ""; ?>" alt="Personal Training" loading="lazy">
+                            <img src="<?php echo HTTP_PATH . "/img/services/" . $r["img"]; ?>" alt="<?php echo $r["img"]; ?>">
                         </div>
                         <div class="service-content">
                             <span class="service-category"><?php echo $r["category"]; ?></span>
@@ -715,7 +682,9 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                                 <span><i class="far fa-clock"></i> <?php echo $r["duration"]; ?></span>
                                 <span><i class="far fa-calendar-alt"></i> Mon-Fri</span>
                             </div>
-                            <div class="service-price">&#8377; <?php echo $r["price"]; ?></div>
+                            <div class="service-price ">
+                                &#8377; <?php echo $r["price"]; ?>
+                            </div>
                         </div>
                     </div>
                 <?php } ?>
@@ -726,7 +695,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
     <!-- Features Section -->
     <section class="features" id="features">
         <div class="container">
-            <h2 data-aos="fade-up">Why Choose IronForce</h2>
+            <h2 data-aos="fade-up">Why Choose INVIGOR FITNESS STUDIO</h2>
             <div class="features-grid">
                 <div class="feature-item" data-aos="fade-up" data-aos-delay="100">
                     <div class="feature-icon">
@@ -800,7 +769,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                         </div>
                         <div>
                             <h4>Address</h4>
-                            <p>123 Fitness Street, Iron City, IC 12345</p>
+                            <p>Nr.Shell petrol pump, f.f 109m Fortune Business hub, science city road, Ahmedabad, Gujarat - 380060</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -809,7 +778,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                         </div>
                         <div>
                             <h4>Phone</h4>
-                            <p>(555) 123-4567</p>
+                            <p>+91 98765 43210</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -818,7 +787,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                         </div>
                         <div>
                             <h4>Email</h4>
-                            <p>info@ironforcegym.com</p>
+                            <p>Support.gymcenter@gmail.com</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -859,268 +828,48 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
 
 
     <!-- Service Modals -->
-    <!-- Modal 1 -->
-    <div class="modal" id="serviceModal1">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>Personal Training</h2>
-            </div>
-            <div class="modal-body">
-                <div class="modal-img">
-                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Personal Training" loading="lazy">
-                </div>
-                <div class="modal-details">
-                    <p>Our one-on-one personal training sessions are designed to help you achieve your specific fitness goals, whether it's weight loss, muscle gain, improved athletic performance, or overall health and wellness.</p>
-                    <div class="modal-price">$75 <span>per session</span></div>
-                    <div class="modal-meta">
-                        <div class="modal-meta-item">
-                            <i class="far fa-clock"></i>
-                            <span>60 min session</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Mon-Fri</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-tag"></i>
-                            <span>Strength</span>
-                        </div>
-                    </div>
-                    <p><strong>What's included:</strong></p>
-                    <ul>
-                        <li>Customized workout plan</li>
-                        <li>Personalized attention</li>
-                        <li>Form correction</li>
-                        <li>Progress tracking</li>
-                        <li>Nutrition guidance</li>
-                    </ul>
-                    <p><strong>Member discount:</strong> $60 per session</p>
-                    <a href="#contact" class="btn">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php
+    $sel = $conn->prepare("SELECT * FROM `service`");
+    $sel->execute();
+    $sel = $sel->fetchAll();
 
-    <!-- Modal 2 -->
-    <div class="modal" id="serviceModal2">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>Group Classes</h2>
-            </div>
-            <div class="modal-body">
-                <div class="modal-img">
-                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Group Classes" loading="lazy">
+    foreach ($sel as $r) { ?>
+        <div class="modal <?php echo $r["service_id"]; ?>">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div class="modal-header">
+                    <h2><?php echo $r["name"]; ?></h2>
                 </div>
-                <div class="modal-details">
-                    <p>Our high-energy group classes are perfect for those who thrive in a community environment. Choose from a variety of classes including HIIT, cycling, yoga, Zumba, and more.</p>
-                    <div class="modal-price">$20 <span>per class</span></div>
-                    <div class="modal-meta">
-                        <div class="modal-meta-item">
-                            <i class="far fa-clock"></i>
-                            <span>45 min session</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Daily</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-tag"></i>
-                            <span>Cardio</span>
+                <div class="modal-body">
+                    <div class="modal-img">
+                        <img src="<?php echo HTTP_PATH . "/img/services/" . $r["img"]; ?>" alt="<?php echo $r["name"]; ?>">
+                    </div>
+                    <div class="modal-details">
+                        <p><?php echo $r["description"]; ?></p>
+                        <div class="modal-price">&#8377;<?php echo $r["price"]; ?> <span>per session</span></div>
+                        <div class="modal-meta">
+                            <div class="modal-meta-item">
+                                <i class="far fa-clock"></i>
+                                <span><?php echo $r["duration"]; ?></span>
+                            </div>
+                            <div class="modal-meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>Mon-Fri</span>
+                            </div>
+                            <div class="modal-meta-item">
+                                <i class="fas fa-tag"></i>
+                                <span><?php echo ($r["availability"]) ? "Available" : "Not Available"; ?></span>
+                            </div>
                         </div>
                     </div>
-                    <p><strong>Class types:</strong></p>
-                    <ul>
-                        <li>HIIT (High Intensity Interval Training)</li>
-                        <li>Spin Cycling</li>
-                        <li>Power Yoga</li>
-                        <li>Zumba Dance</li>
-                        <li>Bootcamp</li>
-                        <li>Pilates</li>
-                    </ul>
-                    <p><strong>Member discount:</strong> $15 per class</p>
-                    <a href="#contact" class="btn">Book Now</a>
                 </div>
             </div>
         </div>
-    </div>
+    <?php } ?>
 
-    <!-- Modal 3 -->
-    <div class="modal" id="serviceModal3">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>Nutrition Coaching</h2>
-            </div>
-            <div class="modal-body">
-                <div class="modal-img">
-                    <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Nutrition Coaching" loading="lazy">
-                </div>
-                <div class="modal-details">
-                    <p>Our comprehensive 12-week nutrition coaching program is designed to help you develop healthy eating habits that complement your fitness routine and support your goals.</p>
-                    <div class="modal-price">$300 <span>for 12 weeks</span></div>
-                    <div class="modal-meta">
-                        <div class="modal-meta-item">
-                            <i class="far fa-clock"></i>
-                            <span>Weekly check-ins</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Flexible</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-tag"></i>
-                            <span>Wellness</span>
-                        </div>
-                    </div>
-                    <p><strong>Program includes:</strong></p>
-                    <ul>
-                        <li>Initial assessment and goal setting</li>
-                        <li>Personalized meal plans</li>
-                        <li>Weekly check-ins and adjustments</li>
-                        <li>Grocery shopping guide</li>
-                        <li>Recipe book</li>
-                        <li>Nutrition education</li>
-                    </ul>
-                    <p><strong>Member discount:</strong> $250 for 12 weeks</p>
-                    <a href="#contact" class="btn">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal 4 -->
-    <div class="modal" id="serviceModal4">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>Strength Training</h2>
-            </div>
-            <div class="modal-body">
-                <div class="modal-img">
-                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Strength Training" loading="lazy">
-                </div>
-                <div class="modal-details">
-                    <p>Build muscle and increase strength with our comprehensive strength training programs. Our expert trainers will guide you through proper form and technique to maximize results.</p>
-                    <div class="modal-price">$65 <span>per session</span></div>
-                    <div class="modal-meta">
-                        <div class="modal-meta-item">
-                            <i class="far fa-clock"></i>
-                            <span>60 min session</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Mon-Sat</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-tag"></i>
-                            <span>Strength</span>
-                        </div>
-                    </div>
-                    <p><strong>Focus areas:</strong></p>
-                    <ul>
-                        <li>Compound lifts (squat, bench, deadlift)</li>
-                        <li>Accessory work for muscle balance</li>
-                        <li>Progressive overload techniques</li>
-                        <li>Recovery strategies</li>
-                        <li>Periodization planning</li>
-                    </ul>
-                    <p><strong>Member discount:</strong> $50 per session</p>
-                    <a href="#contact" class="btn">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal 5 -->
-    <div class="modal" id="serviceModal5">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>Yoga Classes</h2>
-            </div>
-            <div class="modal-body">
-                <div class="modal-img">
-                    <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Yoga Classes" loading="lazy">
-                </div>
-                <div class="modal-details">
-                    <p>Improve flexibility, balance, and mental clarity with our yoga classes. Suitable for all levels, from beginners to advanced practitioners.</p>
-                    <div class="modal-price">$25 <span>per class</span></div>
-                    <div class="modal-meta">
-                        <div class="modal-meta-item">
-                            <i class="far fa-clock"></i>
-                            <span>60 min session</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Tue, Thu, Sun</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-tag"></i>
-                            <span>Flexibility</span>
-                        </div>
-                    </div>
-                    <p><strong>Class types:</strong></p>
-                    <ul>
-                        <li>Hatha Yoga (Foundational)</li>
-                        <li>Vinyasa Flow</li>
-                        <li>Yin Yoga (Deep Stretch)</li>
-                        <li>Power Yoga</li>
-                        <li>Restorative Yoga</li>
-                    </ul>
-                    <p><strong>Member discount:</strong> $20 per class</p>
-                    <a href="#contact" class="btn">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal 6 -->
-    <div class="modal" id="serviceModal6">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>CrossFit Training</h2>
-            </div>
-            <div class="modal-body">
-                <div class="modal-img">
-                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="CrossFit Training" loading="lazy">
-                </div>
-                <div class="modal-details">
-                    <p>High-intensity functional training that combines elements from several sports and types of exercise. Our CrossFit program is scalable for all fitness levels.</p>
-                    <div class="modal-price">$35 <span>per class</span></div>
-                    <div class="modal-meta">
-                        <div class="modal-meta-item">
-                            <i class="far fa-clock"></i>
-                            <span>60 min session</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Mon-Fri</span>
-                        </div>
-                        <div class="modal-meta-item">
-                            <i class="fas fa-tag"></i>
-                            <span>CrossFit</span>
-                        </div>
-                    </div>
-                    <p><strong>Training includes:</strong></p>
-                    <ul>
-                        <li>Constantly varied functional movements</li>
-                        <li>High intensity workouts</li>
-                        <li>Olympic weightlifting</li>
-                        <li>Gymnastics elements</li>
-                        <li>Cardiovascular exercise</li>
-                    </ul>
-                    <p><strong>Member discount:</strong> $30 per class</p>
-                    <a href="#contact" class="btn">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php include(DRIVE_PATH . "/user_panel/footer/footer.php"); ?>
 
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         $(document).ready(function() {
@@ -1153,7 +902,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
             // Testimonial slider
             let currentSlide = 0;
             const testimonials = $('.testimonial');
-            const dots = $('.dot');
+            const dots = $('.testimonial-dots .dot');
 
             function showSlide(index) {
                 testimonials.removeClass('active');
@@ -1195,27 +944,11 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                 }
             });
 
-            // Lazy loading for images
-            const lazyImages = $('img[loading="lazy"]');
-
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const image = entry.target;
-                            image.src = image.dataset.src;
-                            imageObserver.unobserve(image);
-                        }
-                    });
-                });
-
-                lazyImages.each(function() {
-                    imageObserver.observe(this);
-                });
-            }
+            $(".service-card").click(function() {
+                $(`.${$(this).data("id")}`).show();
+            });
         });
     </script>
-    <?php include(DRIVE_PATH . "/user_panel/footer/footer.php"); ?>
 </body>
 
 </html>

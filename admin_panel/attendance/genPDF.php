@@ -1,12 +1,12 @@
 <?php
 
-require_once "vendor/autoload.php";
+require_once "C:/xampp/htdocs/php/IFS/user_panel/membership/PDF/vendor/autoload.php";
 
 use Dompdf\Dompdf;
 
 $pdf = new Dompdf();
 
-include("C:/xampp/htdocs/php/IFS/user_panel/membership/PDF/adminAttendance.php");
+include("C:/xampp/htdocs/php/IFS/admin_panel/attendance/PDF.php");
 
 $pdf->load_html($html);
 $pdf->set_option("isRemoteEnabled", true);

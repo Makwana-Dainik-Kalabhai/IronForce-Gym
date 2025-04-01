@@ -11,6 +11,16 @@
     <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
 </head>
 
+<style>
+    .products i {
+        color: green !important;
+    }
+
+    .products h5 {
+        color: green !important;
+    }
+</style>
+
 <script>
     $(document).ready(() => {
         $(".product-list").DataTable();

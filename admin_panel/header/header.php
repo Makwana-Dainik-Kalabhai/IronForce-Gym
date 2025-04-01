@@ -1,5 +1,6 @@
 <style>
     .content {
+        margin: 10rem auto 0 auto !important;
         padding: 30px 40px 20px 40px !important;
     }
 </style>

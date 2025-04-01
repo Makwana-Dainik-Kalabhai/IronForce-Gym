@@ -28,6 +28,14 @@
         background-color: #111111;
     }
 
+    .reviews i {
+        color: green !important;
+    }
+
+    .reviews h5 {
+        color: green !important;
+    }
+
     h1 {
         font-size: 1.8rem;
         margin-bottom: 10px;
@@ -85,10 +93,21 @@
     }
 
     .feedback-grid {
+        position: relative;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
         gap: 25px;
         margin-bottom: 50px;
+        padding-bottom: 5rem;
+    }
+
+    .load-more {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 0);
+        margin: auto;
+        z-index: 10;
     }
 
     .feedback-card {
@@ -276,7 +295,16 @@
 
                     <div class="feedback-grid">
                         <?php
-                        $sel = $conn->prepare("SELECT service.name, service.description, feedback.* FROM feedback JOIN service ON service.service_id=feedback.service_id");
+                        $total = $conn->prepare("SELECT COUNT(*) AS total FROM `service`");
+                        $total->execute();
+                        $total = $total->fetchAll();
+
+                        $total_records = $total[0]["total"];
+                        ?>
+                        <input type="hidden" id="total_records" value="<?php echo $total_records; ?>" />
+
+                        <?php
+                        $sel = $conn->prepare("SELECT service.name, service.description, feedback.* FROM feedback JOIN service ON service.service_id=feedback.service_id LIMIT 6");
                         $sel->execute();
                         $sel = $sel->fetchAll();
 
@@ -296,17 +324,40 @@
                                 <span class="feedback-date"><?php echo date("d/m/Y h:i A", strtotime($r["created_at"])); ?></span>
                             </div>
                         <?php } ?>
+                        <button class="btn btn-danger load-more">Load More</button>
                     </div>
                 </div>
             </div>
 
             <script>
                 $(document).ready(function() {
+                    let last = 6;
+                    let limit = 12;
+                    let total_records = $("#total_records").val();
+                    $(".load-more").click(function() {
+                        if (limit >= total_records) $(".load-more").hide();
+                        $.ajax({
+                            type: "POST",
+                            url: "load_more.php",
+                            data: {
+                                last: last,
+                                limit: limit
+                            },
+                            success: function(res) {
+                                if (limit <= total_records) {
+                                    last += 6;
+                                    limit += 6;
+                                }
+                                $(".feedback-grid").append(res);
+                            }
+                        });
+                    });
+
                     // Filter buttons click handler
                     $('.filter-btn').click(function() {
                         $(".feedback-card").hide();
                         ($(this).data('filter') != "all") ? $(`.${$(this).data('filter')}`).show(): $(".feedback-card").show();
-                        
+
                         $('.filter-btn').removeClass('active');
                         $(this).addClass('active');
 

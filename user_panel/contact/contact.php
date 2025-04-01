@@ -17,6 +17,12 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
     <title>Contact US</title>
 </head>
 
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
 <body>
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="<?php echo HTTP_PATH . "/img/breadcrumb-bg.jpg"; ?>">
@@ -59,7 +65,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                     <div class="contact-widget">
                         <div class="cw-text">
                             <i class="fa fa-map-marker"></i>
-                            <p>123 Fitness Plaza, Near Shivranjani Crossroads Opposite Skyline Tower, Bodakdev Ahmedabad, Gujarat - 380054</p>
+                            <p>Nr.Shell petrol pump, f.f 109m Fortune Business hub, science city road, Ahmedabad, Gujarat - 380060</p>
                         </div>
                         <div class="cw-text">
                             <i class="fa fa-mobile"></i>
@@ -86,9 +92,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                 </div>
             </div>
             <div class="map">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12087.069761554938!2d-74.2175599360452!3d40.767139456514954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c254b5958982c3%3A0xb6ab3931055a2612!2sEast%20Orange%2C%20NJ%2C%20USA!5e0!3m2!1sen!2sbd!4v1581710470843!5m2!1sen!2sbd"
-                    height="550" style="border:0;" allowfullscreen=""></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3670.4815435060905!2d72.4980183747719!3d23.079461714203905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e9d7d0ea41449%3A0x87a1351a9fbd4e0a!2sShell%20Petrol%20Pump!5e0!3m2!1sen!2sin!4v1743504705591!5m2!1sen!2sin" height="550" style="border:0;border-radius: 10px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </section>

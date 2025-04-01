@@ -23,6 +23,14 @@
   tbody tr:hover a {
     display: block;
   }
+
+  .memberships i {
+    color: green !important;
+  }
+
+  .memberships h5 {
+    color: green !important;
+  }
 </style>
 
 <script>
@@ -84,7 +92,7 @@
                   <td class="col-md-1"><?php echo $r["plan_duration"]; ?></td>
                   <td class="col-md-1"><?php echo $r["payment_type"]; ?></td>
                   <td class="col-md-1"><?php echo ($r["payment_type"] == "Razorpay") ? "Paid" : "Pending"; ?></td>
-                  <td class="col-md-1"><a href="<?php echo HTTP_PATH . "/admin_panel/membership/details.php?id=" . $r["MemberID"] . ""; ?>">View</a></td>
+                  <td class="col-md-1"><a href="<?php echo HTTP_PATH . "/admin_panel/membership/details.php?MemberID=" . $r["MemberID"] . ""; ?>">View</a></td>
                 </tr>
               <?php } ?>
             </tbody>

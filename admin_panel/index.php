@@ -10,6 +10,16 @@
   <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
 </head>
 
+<style>
+  .members i {
+    color: green !important;
+  }
+
+  .members h5 {
+    color: green !important;
+  }
+</style>
+
 <script>
   $(document).ready(() => {
     $(".user-list").DataTable();

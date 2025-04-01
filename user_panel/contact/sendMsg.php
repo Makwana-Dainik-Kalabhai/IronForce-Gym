@@ -1,16 +1,14 @@
 <?php
-
+session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require("C:/xampp/htdocs/php/IFS/path.php");
 
-include(DRIVE_PATH . "../database.php");
 
-
-function send_email($name, $email, $message)
+function send_email($name, $email, $phone, $message)
 {
-
+    global $conn;
     require DRIVE_PATH . "/user_panel/class/phpmailer/src/Exception.php";
     require DRIVE_PATH . "/user_panel/class/phpmailer/src/PHPMailer.php";
     require DRIVE_PATH . "/user_panel/class/phpmailer/src/SMTP.php";
@@ -35,11 +33,18 @@ function send_email($name, $email, $message)
 
     $mail->Body = $msg;
     if ($mail->send()) {
-        $_SESSION["success"] = "Message sent Successfully";
+        $_SESSION["success"] = "Message Sent Successfully";
+
+        $notification = $conn->prepare("INSERT INTO notification VALUES ('','" . $_SESSION["email"] . "', '4', 'Congratulations! Your Message has been Sended Successfully.
+            <br/><br/>Your Details:<br/>
+            <b>Name: </b>$name<br/>
+            <b>Phone: </b>$phone<br/>
+            <b>Message: </b>$message<br/>', NOW(), 'Unread')");
+        $notification->execute();
     }
     if (isset($_SERVER['HTTP_REFERER'])) {
         header("Location: " . $_SERVER['HTTP_REFERER'] . "");
     }
 }
 
-send_email($_POST["name"], $_POST["email"], $_POST["message"]);
+send_email($_POST["name"], $_POST["email"], $_POST["phone"], $_POST["message"]);

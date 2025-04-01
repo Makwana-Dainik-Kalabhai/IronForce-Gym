@@ -554,7 +554,7 @@ include(DRIVE_PATH . "/user_panel/login/login.php");
                     </div>
                 </div>
 
-                <form action="<?php echo HTTP_PATH . "/user_panel/membership/PDF/genUsAttendance.php"; ?>" method="post" class="date-range-picker" id="date-range-picker" style="display: none;">
+                <form action="<?php echo HTTP_PATH . "/user_panel/attendance/genPDF.php"; ?>" method="post" class="date-range-picker" id="date-range-picker" style="display: none;">
                     <div class="date-inputs">
                         <input type="date" name="start_date" id="start-date" class="date-input">
                         <span>to</span>

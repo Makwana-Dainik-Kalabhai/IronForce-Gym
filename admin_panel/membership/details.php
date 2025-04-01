@@ -10,9 +10,19 @@
     <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
 </head>
 
+<style>
+    .memberships i {
+    color: green !important;
+  }
+
+  .memberships h5 {
+    color: green !important;
+  }
+</style>
+
 <?php
-if (isset($_GET["id"])) {
-    $_SESSION["id"] = $_GET["id"];
+if (isset($_GET["MemberID"])) {
+    $_SESSION["MemberID"] = $_GET["MemberID"];
 }
 ?>
 
@@ -26,11 +36,11 @@ if (isset($_GET["id"])) {
 
             <div class="content">
                 <div class="card">
-                    <h6 class="mx-5 py-3" style="color: red;">Membership Details of ID:- <?php echo $_SESSION["id"]; ?></h6>
+                    <h6 class="mx-5 py-3" style="color: red;">Membership Details of ID:- <?php echo $_SESSION["MemberID"]; ?></h6>
                 </div>
 
                 <?php
-                $sel = $conn->prepare("SELECT * FROM `membership`");
+                $sel = $conn->prepare("SELECT * FROM membership JOIN member ON member.email=membership.email WHERE membership.MemberID=" . $_SESSION["MemberID"] . "");
                 $sel->execute();
                 $sel = $sel->fetchAll();
                 $i = 1;
@@ -39,9 +49,6 @@ if (isset($_GET["id"])) {
                     <div class="card px-3 py-0 my-5 overflow-hidden">
                         <h4 class="text-center text-danger">Member Details</h4>
                         <div class="row text-light pt-4" style="background-color: #d9d9d9;">
-                            <div class="col-md-1">
-                                <h6>Membership ID</h6>
-                            </div>
                             <div class="col-md-2">
                                 <h6>Name</h6>
                             </div>
@@ -65,8 +72,7 @@ if (isset($_GET["id"])) {
                             </div>
                         </div>
                         <div class="row py-3 border-bottom">
-                            <div class="col-md-1"><?php echo $r["id"]; ?></div>
-                            <div class="col-md-2"><?php echo $r["name"]; ?></div>
+                            <div class="col-md-2"><?php echo $r["FirstName"] . " " . $r["LastName"]; ?></div>
                             <div class="col-md-2"><?php echo $r["email"]; ?></div>
                             <div class="col-md-2"><?php echo $r["phone"]; ?></div>
                             <div class="col-md-1"><?php echo $r["gender"]; ?></div>
@@ -78,6 +84,9 @@ if (isset($_GET["id"])) {
 
                         <h4 class="text-center text-danger">Membership Details</h4>
                         <div class="row text-light pt-4" style="background-color: #d9d9d9;">
+                            <div class="col-md-1">
+                                <h6>Membership ID</h6>
+                            </div>
                             <div class="col-md-2">
                                 <h6>Type</h6>
                             </div>
@@ -105,6 +114,7 @@ if (isset($_GET["id"])) {
                         </div>
 
                         <div class="row py-3 border-bottom">
+                            <div class="col-md-1"><?php echo $r["MemberID"]; ?></div>
                             <div class="col-md-2"><?php echo $r["membership_type"]; ?></div>
                             <div class="col-md-2"><?php echo date("d/m/Y", strtotime($r["start_date"])) . " - " . date("d/m/Y", strtotime($r["end_date"])); ?></div>
                             <div class="col-md-1"><?php echo $r["status"] ?></div>
@@ -146,7 +156,7 @@ if (isset($_GET["id"])) {
                             <div class="col-md-2"><?php echo $r["medical_condition"]; ?></div>
                             <div class="col-md-2"><?php echo $r["experience"]; ?></div>
 
-                            <?php $address = unserialize($r["address"])["house-number"]." ".unserialize($r["address"])["apartment"]." near ".unserialize($r["address"])["suite"].", ".unserialize($r["address"])["city"]." - ".unserialize($r["address"])["pincode"]; ?>
+                            <?php $address = unserialize($r["address"])[0] . " " . unserialize($r["address"])[1] . " near " . unserialize($r["address"])[2] . ", " . unserialize($r["address"])[3] . " - " . unserialize($r["address"])[4]; ?>
                             <div class="col-md-3"><?php echo $address; ?></div>
                         </div>
                     </div>

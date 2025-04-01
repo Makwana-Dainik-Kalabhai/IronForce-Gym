@@ -10,6 +10,16 @@
     <?php include("C:/xampp/htdocs/php/IFS/admin_panel/links.php"); ?>
 </head>
 
+<style>
+    .services i {
+        color: green !important;
+    }
+
+    .services h5 {
+        color: green !important;
+    }
+</style>
+
 <script>
     $(document).ready(() => {
         $(".service-list").DataTable();

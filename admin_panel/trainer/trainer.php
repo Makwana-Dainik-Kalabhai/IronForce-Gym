@@ -12,14 +12,36 @@
 
 <style>
     td img {
-        width: 150px;
-        height: 75px;
+        width: 100px;
+        height: 100px;
+    }
+
+    .trainer-form {
+        display: none;
+    }
+
+    .trainers i {
+        color: green !important;
+    }
+
+    .trainers h5 {
+        color: green !important;
     }
 </style>
 
 <script>
-    $(document).ready(() => {
+    $(document).ready(function() {
+        $(".add-trainer").click(function() {
+            $(".trainer-form").show();
+            $(".trainers-list").hide();
+        });
+        $(".cancel-btn").click(function() {
+            $(".trainer-form").hide();
+            $(".trainers-list").show();
+        });
+
         $(".trainer-list").DataTable();
+
     });
 </script>
 
@@ -32,17 +54,91 @@
             <?php include(DRIVE_PATH . "/admin_panel/header/header.php"); ?>
 
             <div class="content">
+                <?php if (isset($_SESSION["success"])) { ?>
+                    <div class="alert alert-success"><?php echo $_SESSION["success"]; ?></div>
+                    <script>
+                        $(document).ready(function() {
+                            $(".alert").fadeOut(10000);
+                            <?php unset($_SESSION["success"]); ?>
+                        });
+                    </script>
+                <?php } ?>
+                <?php if (isset($_SESSION["error"])) { ?>
+                    <div class="alert alert-danger"><?php echo $_SESSION["error"]; ?></div>
+                    <script>
+                        $(document).ready(function() {
+                            $(".alert").fadeOut(10000);
+                            <?php unset($_SESSION["error"]); ?>
+                        });
+                    </script>
+                <?php } ?>
+
 
                 <!-- //! Trainer's List -->
                 <div class="card">
                     <div class="row">
-                        <h6 class="mx-5 py-3 text-danger">Trainer's List</h6>
+                        <div class="col-md-10">
+                            <h6 class="mx-5 py-3 text-danger">Trainer's List</h6>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger add-trainer">Add Trainer</button>
+                        </div>
                     </div>
                 </div>
                 <hr />
 
-                <div class="card p-3">
-                    <table class="user-list">
+
+
+                <!-- //! Add New Trainer -->
+                <div class="card p-4 trainer-form">
+                    <div class="card-header">
+                        <h2>Trainer's Information</h2>
+                    </div>
+
+                    <form action="add.php" method="post" enctype="multipart/form-data">
+                        <div class="row px-3 py-2">
+                            <div class="col-md-6">
+                                <h6 class="text-danger" for="trainerName">Trainer's Image *</h6 class="text-danger">
+                                <input type="file" name="img" placeholder="Choose Service Image" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row px-3 py-2">
+                            <div class="col-md-6">
+                                <h6 class="text-danger" for="trainerName">First Name *</h6 class="text-danger">
+                                <input type="text" name="FirstName" id="trainerName" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-danger" for="trainerName">Last Name *</h6 class="text-danger">
+                                <input type="text" name="LastName" id="trainerName" class="form-control" required>
+                            </div>
+                        </div>
+
+
+                        <div class="row px-3 py-2">
+                            <div class="col-md-6">
+                                <h6 class="text-danger" for="trainerName">Phone *</h6 class="text-danger">
+                                <input type="number" name="phone" id="trainerName" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-danger" for="trainerName">Specialization *</h6 class="text-danger">
+                                <input type="text" name="specialization" id="trainerName" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row px-3 pt-2">
+                            <div class="col-md-12">
+                                <button type="submit" name="save_trainer" class="btn btn-danger">Save Service</button>
+                            </div>
+                        </div>
+                    </form>
+                    <button class="btn btn-dark cancel-btn mx-3">Cancel</button>
+                </div>
+
+
+
+                <div class="card p-3 trainers-list">
+                    <table class="trainer-list">
                         <thead class="bg-danger text-light">
                             <tr>
                                 <th class="col-md-1">Sr.</th>

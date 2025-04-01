@@ -6,9 +6,6 @@ use function PHPSTORM_META\map;
 
 require("C:/xampp/htdocs/php/IFS/path.php");
 
-include(DRIVE_PATH . "../database.php");
-
-
 function setValues($membership_type, $name, $phone, $gender, $dob, $start_date, $end_date, $membership_fee, $goal, $weight, $height, $medical_condition, $experience, $plan_duration, $payment_type, $address, $timing)
 {
     $_SESSION["membership_type"] = $membership_type;
@@ -84,13 +81,7 @@ else if (isset($_POST["fresh_submit"])) {
 
     ($_POST["payment_type"] == "Razorpay") ? $payment_status = "Paid" : "Pending";
 
-    $_POST["address"] = array(
-        "house-number" => $_POST["house-number"],
-        "apartment" => $_POST["apartment"],
-        "suite" => $_POST["suite"],
-        "city" => $_POST["city"],
-        "pincode" => $_POST["pincode"]
-    );
+    $_POST["address"] = [$_POST["house-number"], $_POST["apartment"], $_POST["suite"], $_POST["city"], $_POST["pincode"]];
 
     setValues($_SESSION["membership_type"], $_POST["name"], $_POST["phone"], $_POST["phone"], $_POST["dob"], $_POST["start_date"], $_POST["end_date"], $_SESSION["membership_fee"], $_POST["goal"], $_POST["weight"], $_POST["height"], $_POST["medical_condition"], $_POST["experience"], $_POST["plan_duration"], $_POST["payment_type"], $_POST["address"], $_POST["timing"]);
 } ?>
@@ -165,3 +156,9 @@ if ($_POST["payment_type"] == "Razorpay") {
         location.href = "insert.php";
     </script>
 <?php } ?>
+
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>

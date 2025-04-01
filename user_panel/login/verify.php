@@ -29,13 +29,7 @@ if (isset($_POST["sign"])) {
             $this->gender = $_POST["gender"];
             $this->dob = $_POST["dob"];
 
-            $this->address = array(
-                "house-number" => $_POST["house-number"],
-                "apartment" => $_POST["apartment"],
-                "suite" => $_POST["suite"],
-                "city" => $_POST["city"],
-                "pincode" => $_POST["pincode"]
-            );
+            $this->address = [$_POST["house-number"], $_POST["apartment"], $_POST["suite"], $_POST["city"], $_POST["pincode"]];
         }
 
         function insertValue()

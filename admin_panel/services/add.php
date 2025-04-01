@@ -17,6 +17,14 @@
             --light: #ECF0F1;
         }
 
+        .services i {
+            color: green !important;
+        }
+
+        .services h5 {
+            color: green !important;
+        }
+
         /* Form Styles */
         .card {
             background: white;
