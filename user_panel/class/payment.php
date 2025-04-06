@@ -22,7 +22,8 @@ function setValues($membership_type, $name, $phone, $gender, $dob, $start_date, 
     $_SESSION["height"] = $height;
     $_SESSION["medical_condition"] = $medical_condition;
     $_SESSION["experience"] = $experience;
-    $_SESSION["plan_duration"] = "1 Day";
+
+    $_SESSION["plan_duration"] = $plan_duration;
     $_SESSION["payment_type"] = $payment_type;
 
     ($_SESSION["payment_type"] == "Razorpay") ? $_SESSION["payment_status"] = "Paid" : "Pending";
